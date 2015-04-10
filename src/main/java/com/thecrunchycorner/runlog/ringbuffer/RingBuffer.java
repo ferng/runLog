@@ -1,24 +1,30 @@
 package com.thecrunchycorner.runlog.ringbuffer;
 
-import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class RingBuffer<E> {
+    private static Logger logger = LogManager.getLogger(RingBuffer.class);
 
-    private ArrayList<E> buffer;
+    private AtomicReferenceArray<E> buffer;
     private int modSize;
 
+
     public RingBuffer(int size) {
-        buffer = new ArrayList<E>(size);
+        buffer = new AtomicReferenceArray<E>(size);
         this.modSize = size;
     }
 
 
     public void put(int pos, E item) {
-        if (buffer.size() < modSize) {
-            buffer.add(pos % modSize, item);
-        } else {
-            buffer.set((pos % modSize) - 1, item);
+        int realPos = pos % modSize;
+        if (buffer.get(modSize-1) != null) {
+            realPos--;
         }
+        buffer.set(realPos % modSize, item);
+        logger.debug("put: {} at {} (internal {})", item, pos, realPos);
     }
 
 
@@ -28,6 +34,6 @@ public class RingBuffer<E> {
 
 
     public int size() {
-        return buffer.size();
+        return buffer.length();
     }
 }

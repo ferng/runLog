@@ -11,15 +11,18 @@ public class PutNoIndexWrappingTest {
 
     RingBuffer<Integer> buffer;
 
+
     @Before
     public void setup() {
         buffer = new RingBuffer(8);
     }
 
+
     @After
     public void tearDOWN() {
 
     }
+
 
     @Test
     public void Test() {

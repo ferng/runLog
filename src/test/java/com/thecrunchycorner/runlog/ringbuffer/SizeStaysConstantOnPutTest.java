@@ -12,6 +12,7 @@ public class SizeStaysConstantOnPutTest {
     private RingBuffer<Integer> buffer;
     private static final int bufferSize = 4;
 
+
     @Before
     public void setup() {
         buffer = new RingBuffer(bufferSize);
@@ -22,6 +23,7 @@ public class SizeStaysConstantOnPutTest {
     public void tearDOWN() {
 
     }
+
 
     @Test
     public void Test() {

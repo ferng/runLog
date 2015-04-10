@@ -1,0 +1,28 @@
+INFO - main com.thecrunchycorner.runlog.App : this gets called with important info
+INFO - main com.thecrunchycorner.runlog.App : something else happened, here's more info
+INFO - main com.thecrunchycorner.runlog.App : and finally here, everything is ok, with this info
+INFO - main com.thecrunchycorner.runlog.App : --COMPLETE
+INFO - main com.thecrunchycorner.runlog.App : this gets called too
+INFO - main com.thecrunchycorner.runlog.App : and finally
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 0 at 0 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 1 at 1 (internal 1)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 2 at 2 (internal 2)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 3 at 3 (internal 3)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 23 at 5 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 23 at 0 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 0 at 0 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 1 at 1 (internal 1)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 2 at 2 (internal 2)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 3 at 3 (internal 3)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer : put: 1 at 9 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 0 at 0 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 1 at 1 (internal 1)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 2 at 2 (internal 2)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 3 at 3 (internal 3)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 23 at 5 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 23 at 0 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 0 at 0 (internal 0)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 1 at 1 (internal 1)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 2 at 2 (internal 2)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 3 at 3 (internal 3)
+DEBUG - main com.thecrunchycorner.runlog.ringbuffer.RingBuffer - put: 1 at 9 (internal 0)

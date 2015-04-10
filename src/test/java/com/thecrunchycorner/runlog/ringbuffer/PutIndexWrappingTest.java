@@ -14,6 +14,7 @@ public class PutIndexWrappingTest {
     private RingBuffer<Integer> buffer;
     private static final int bufferSize = 4;
 
+
     @Before
     public void setup() {
         buffer = new RingBuffer(bufferSize);
@@ -24,6 +25,7 @@ public class PutIndexWrappingTest {
     public void tearDOWN() {
 
     }
+
 
     @Test
     public void Test() {
