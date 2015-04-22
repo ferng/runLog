@@ -4,11 +4,11 @@
 
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%p - %t [%x] %c : %m%n"/>
+            <PatternLayout pattern="%d %p - %t %c : %m%n"/>
         </Console>
 
         <File name="FILE" fileName="runLog.log" append="true">
-            <PatternLayout pattern="%p - %t %c - %m%n"/>
+            <PatternLayout pattern="%d %p - %t %c - %m%n"/>
         </File>
     </Appenders>
 

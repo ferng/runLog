@@ -1,5 +1,6 @@
 package com.thecrunchycorner.runlog.ringbuffer;
 
+import com.thecrunchycorner.runlog.ringbuffer.types.BufferType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,11 +11,13 @@ public class RingBuffer<E> {
 
     private AtomicReferenceArray<E> buffer;
     private int modSize;
+    private BufferType type;
 
 
-    public RingBuffer(int size) {
+    public RingBuffer(int size, BufferType type) {
         buffer = new AtomicReferenceArray<E>(size);
         this.modSize = size;
+        this.type = type;
     }
 
 
@@ -36,4 +39,11 @@ public class RingBuffer<E> {
     public int size() {
         return buffer.length();
     }
+
+
+    public BufferType getType() {
+        return type;
+    }
+
+
 }

@@ -6,69 +6,86 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/** SystemProperties should not be instantiated directly, this should be done through SystemPropertiesFactory instead **/
 public class SystemProperties {
     private static Logger logger = LogManager.getLogger(SystemProperties.class);
-    private static boolean propertiesLoaded = false;
-    private static String propsFile = "runLog.properties";
 
+    private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<String, String>();
+    private static boolean propertiesLoaded = false;
+    private static String propsFileName = "runLog.properties";
     private static Properties systemProperties;
 
-    // Not using volatile as once it's up it never changes but can change while app is initializing
-    private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<String, String>();
 
-    private SystemProperties() {
+    public SystemProperties() {
+        loadSystemProperties();
     }
+
 
     public static String get(String key) {
-        getSystemProperties();
-        return propMap.get(key);
+        if (propMap.get(key) == null) {
+            logger.error("Undefined property: {}", key);
+            return "Undefined property";
+        } else {
+            return propMap.get(key);
+        }
     }
 
-    private synchronized static void getSystemProperties() {
 
+    public static void setProperty(String key, String value) {
+        propMap.put(key, value);
+    }
+
+
+    private synchronized static void loadSystemProperties() {
         if (propertiesLoaded == true) {
             return;
         }
 
         systemProperties = new Properties();
-
-        logger.info("Loading properties file");
-        logger.info("Loading properties file");
-        logger.info("Loading properties file");
-        logger.info("Loading properties file");
-        logger.info("Loading properties file");
-
-        propMap.put("data.store.path", "fernRunLog");
+        prepPop();
 
         FileInputStream stream = null;
         try {
-            File f = new File(propsFile);
-            if (f.exists()) {
+            File propsFile = new File(SystemProperties.class.getClassLoader().getResource(propsFileName).getFile());
+            if (propsFile.exists()) {
+                logger.info("Loading properties file");
                 stream = new FileInputStream(propsFile);
                 systemProperties.load(stream);
+            } else {
+                logger.warn("Properties file not found: {}", propsFile.getAbsolutePath());
             }
 
-            // Load existing properties and warn about any missing ones
-            Set<String> propNames = propMap.keySet();
+            Set<String> propNames = new HashSet<String>() ;//= propMap.keySet();
+
+            for (Object sysPropName : systemProperties.keySet()) {
+                propNames.add((String) sysPropName);
+            }
+
+            for (Object propName : propMap.keySet()) {
+                propNames.add((String) propName);
+            }
+
+
+
             String readPropVal = null;
             for (String propName : propNames) {
                 readPropVal = systemProperties.getProperty(propName);
                 if (readPropVal == null) {
-                    logger.warn("Property [" + propName + "] not found in " + propsFile + "file.  Using ["
-                            + propMap.get(propName) + "] as a default.");
+                    logger.warn("Property [{}] not found in {} file.  Using [{}] as a default.",  propName, propsFileName, propMap.get(propName)  );
                 } else {
                     propMap.put(propName, readPropVal);
                 }
             }
             propertiesLoaded = true;
-
         } catch (IOException ex) {
-            logger.error("Can't load the properties file: " + propsFile);
+            logger.error("Can't load the properties file: {}", propsFileName);
         } finally {
+
             if (stream != null) {
                 try {
                     stream.close();
@@ -79,9 +96,13 @@ public class SystemProperties {
         }
     }
 
-    // Used by clients and code to set/change a property
-    public static void setProperty(String key, String value) {
-        propMap.put(key, value);
+
+
+    //pre-populate any vital data in case we don't find properties files or property
+    private static void prepPop() {
+        propMap.put("unit.test.value.preloaded", "Pre-loaded test data");
+        propMap.put("data.store.path", "fernRunLog");
     }
+
 
 }

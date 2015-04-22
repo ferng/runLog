@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 
 public class BufferPointers {
-    public static final Integer INPUT_PROCESSOR = 1;
+    public enum ProcessorType {INPUT_PROCESSOR, UNMARSHALLER, BUSINESS_PROCESSOR}
 
     private HashMap<Integer, Integer> posMap = new HashMap<Integer, Integer>(6);
 
@@ -16,8 +16,5 @@ public class BufferPointers {
     public Integer get(Integer key) {
         return posMap.get(key);
     }
-
-
-
 
 }

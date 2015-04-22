@@ -3,19 +3,20 @@ package com.thecrunchycorner.runlog.ringbuffer;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import com.thecrunchycorner.runlog.ringbuffer.types.BufferType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SizeStaysConstantOnPutTest {
+public class BufferTypeTest {
 
     private RingBuffer<Integer> buffer;
-    private static final int bufferSize = 4;
+    private static final int BUFFER_SIZE = 4;
 
 
     @Before
     public void setup() {
-        buffer = new RingBuffer(bufferSize);
+        buffer = new RingBuffer(BUFFER_SIZE, BufferType.INPUT);
     }
 
 
@@ -27,12 +28,6 @@ public class SizeStaysConstantOnPutTest {
 
     @Test
     public void Test() {
-        for (int i=0; i<bufferSize; i++) {
-            buffer.put(i, new Integer(i));
-        }
-
-        buffer.put(9, new Integer(1));
-
-        assertThat(buffer.size(), is(bufferSize));
+        assertThat(buffer.getType(), is(BufferType.INPUT));
     }
 }

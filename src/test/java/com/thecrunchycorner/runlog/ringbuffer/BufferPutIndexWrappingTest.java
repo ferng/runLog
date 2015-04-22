@@ -3,21 +3,22 @@ package com.thecrunchycorner.runlog.ringbuffer;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import com.thecrunchycorner.runlog.ringbuffer.types.BufferType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-public class PutIndexWrappingTest {
+public class BufferPutIndexWrappingTest {
 
     private RingBuffer<Integer> buffer;
-    private static final int bufferSize = 4;
+    private static final int BUFFER_SIZE = 4;
 
 
     @Before
     public void setup() {
-        buffer = new RingBuffer(bufferSize);
+        buffer = new RingBuffer(BUFFER_SIZE, BufferType.INPUT);
     }
 
 
@@ -31,13 +32,13 @@ public class PutIndexWrappingTest {
     public void Test() {
         Integer testInt1 = new Integer(23);
 
-        for (int i=0; i<bufferSize; i++) {
+        for (int i=0; i<BUFFER_SIZE; i++) {
             buffer.put(i, new Integer(i));
         }
 
-        buffer.put(bufferSize+1, testInt1);
+        buffer.put(BUFFER_SIZE+1, testInt1);
 
-        assertThat(buffer.get(bufferSize), is(testInt1));
+        assertThat(buffer.get(BUFFER_SIZE), is(testInt1));
         assertThat(buffer.get(0), is(testInt1));
 
     }
