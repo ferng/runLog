@@ -1,7 +1,7 @@
-package com.thecrunchycorner.runlog.ringbufferaccess.types;
+package com.thecrunchycorner.runlog.ringbufferaccess.enums;
 
 public enum ProcessorStatus {
-    INITILAIZED,
+    INITIALIZED,
     STARTED,
     RUNNING,
     PAUSED,

@@ -3,9 +3,7 @@ package com.thecrunchycorner.runlog.services;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -13,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class SystemPropertiesGetWithoutInitTest {
+public class SystemPropertiesSetGetTest {
 
     //used for parameterized tests
     @Parameterized.Parameter(value = 0)
@@ -27,9 +25,9 @@ public class SystemPropertiesGetWithoutInitTest {
     @Parameterized.Parameters(name = "{index}: testGetUriParametersParameterized({0})={1}")
     public static Collection<Object[]> queryStrings() {
         return Arrays.asList(new Object[][]{
-                {"unit.test.value.preloaded", "Undefined property"},
-                {"unit.test.value.notpreloaded", "Test data from properties file not loaded"},
-                {"unit.test.value.notpresent", "Undefined property"},
+                {"unit.test.value.systemdefault", "Pre-loaded test data"},
+                {"unit.test.value.fromfile", "Test data from properties file not loaded"},
+                {"unit.test.value.undefined", "Undefined property"},
         });
     }
 
@@ -38,6 +36,7 @@ public class SystemPropertiesGetWithoutInitTest {
     public void setUp() throws Exception {
         SystemPropertiesFactory.loadSystemProperties();
     }
+
 
     @Test
     public void testPreLoadedValue() {

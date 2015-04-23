@@ -1,22 +1,18 @@
 package com.thecrunchycorner.runlog.ringbuffer;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
 import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BufferTypeTest {
+public class BufferMinimumSizeTest {
 
     private RingBuffer<Integer> buffer;
-    private static final int BUFFER_SIZE = 4;
 
 
     @Before
     public void setup() {
-        buffer = new RingBuffer(BUFFER_SIZE, BufferType.INPUT);
+
     }
 
 
@@ -26,8 +22,8 @@ public class BufferTypeTest {
     }
 
 
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void Test() {
-        assertThat(buffer.getType(), is(BufferType.INPUT));
+        new RingBuffer(4, BufferType.INPUT);
     }
 }

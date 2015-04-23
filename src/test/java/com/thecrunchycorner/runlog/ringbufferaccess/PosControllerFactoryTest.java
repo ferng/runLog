@@ -8,13 +8,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BufferPosControllerFactoryTest {
-    private BufferPosController posController;
+public class PosControllerFactoryTest {
+    private PosController posController;
 
 
     @Before
     public void setup() {
-        posController = BufferPosControllerFactory.getInstance();
+        posController = PosControllerFactory.getInstance();
     }
 
 
@@ -26,7 +26,7 @@ public class BufferPosControllerFactoryTest {
 
     @Test
     public void Test() {
-        assertThat(posController, isA(BufferPosController.class));
+        assertThat(posController, isA(PosController.class));
     }
 
 }

@@ -70,8 +70,6 @@ public class SystemProperties {
                 propNames.add((String) propName);
             }
 
-
-
             String readPropVal = null;
             for (String propName : propNames) {
                 readPropVal = systemProperties.getProperty(propName);
@@ -100,8 +98,14 @@ public class SystemProperties {
 
     //pre-populate any vital data in case we don't find properties files or property
     private static void prepPop() {
-        propMap.put("unit.test.value.preloaded", "Pre-loaded test data");
+        //used for unit tests
+        propMap.put("unit.test.value.systemdefault", "Pre-loaded test data");
+
+        //data that can be overwritten by properties file
         propMap.put("data.store.path", "fernRunLog");
+
+        //these are minimum threshold values, by all means go above, but never below
+        propMap.put("threshold.buffer.minimum.size", "32");
     }
 
 

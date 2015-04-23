@@ -18,12 +18,13 @@ public class SystemPropertiesSetNewValueTest {
     @Test
     public void testSetter() {
         String key = "unit.test.value.newvalue";
-        String value = "my little pencil";
+        String value = "Undefined property";
 
         SystemProperties.setProperty(key, value);
 
         assertThat(SystemProperties.get(key), is(value));
     }
+
 
     @After
     public void tearDown() throws Exception {

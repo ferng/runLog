@@ -1,6 +1,6 @@
-package com.thecrunchycorner.runlog.ringbuffer.types;
+package com.thecrunchycorner.runlog.ringbuffer.enums;
 
-public enum AccessStatus {
+public enum OpStatus {
     WRITE_SUCCESS,
     READ_SUCCESS,
     UPDATE_SUCCESS,

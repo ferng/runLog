@@ -3,28 +3,25 @@
 //import static org.hamcrest.core.Is.is;
 //import static org.junit.Assert.assertThat;
 //
-//import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 //import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
+//import com.thecrunchycorner.runlog.ringbuffer.enums.OpStatus;
 //import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 //import org.junit.After;
 //import org.junit.Before;
 //import org.junit.Test;
 //
-//public class BufferWriteReadTest {
+//public class WriterInsertBeyondHeadTest {
 //
 //    private RingBuffer<Integer> buffer;
 //    private static final int BUFFER_SIZE = 4;
+//
 //    private Writer writer;
 //    private Reader reader;
-//    private ProcProperties procProp;
 //
 //    @Before
 //    public void setup() {
-//        procProp
 //        buffer = new RingBuffer(BUFFER_SIZE, BufferType.INPUT);
 //        writer = new Writer(buffer);
-//        reader = new Reader(buffer);
-//
 //    }
 //
 //
@@ -36,14 +33,11 @@
 //
 //    @Test
 //    public void Test() {
-//        Integer testObj1 = 3;
-//        Integer testObj2 = 4;
+//        for (int i=0; i <= BUFFER_SIZE - 2; i++) {
+//            writer.write(i);
+//        }
 //
-//        writer.write(testObj1);
-//        writer.write(testObj2);
-//
-//        assertThat(reader.read(), is(testObj1));
-//        assertThat(reader.read(), is(testObj2));
+//        assertThat(writer.write("hello"), is(OpStatus.HEADER_REACHED));
 //    }
 //
 //}

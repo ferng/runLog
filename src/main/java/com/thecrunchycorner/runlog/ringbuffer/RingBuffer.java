@@ -1,6 +1,7 @@
 package com.thecrunchycorner.runlog.ringbuffer;
 
-import com.thecrunchycorner.runlog.ringbuffer.types.BufferType;
+import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
+import com.thecrunchycorner.runlog.services.SystemProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +16,11 @@ public class RingBuffer<E> {
 
 
     public RingBuffer(int size, BufferType type) {
+        int minSize = Integer.getInteger(SystemProperties.get("buffer.minimum.size"));
+        if (size < minSize) {
+            logger.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
+            size = minSize;
+        }
         buffer = new AtomicReferenceArray<E>(size);
         this.modSize = size;
         this.type = type;

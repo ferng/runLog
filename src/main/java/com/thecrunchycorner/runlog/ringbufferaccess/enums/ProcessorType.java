@@ -1,4 +1,4 @@
-package com.thecrunchycorner.runlog.ringbufferaccess.types;
+package com.thecrunchycorner.runlog.ringbufferaccess.enums;
 
 public enum ProcessorType {
     INPUT_PROCESSOR,

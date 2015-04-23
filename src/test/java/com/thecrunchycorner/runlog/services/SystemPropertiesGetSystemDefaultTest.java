@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SystemPropertiesSetOverwritesLoadTest {
+public class SystemPropertiesGetSystemDefaultTest {
 
     @Before
     public void setUp() throws Exception {
@@ -16,12 +16,9 @@ public class SystemPropertiesSetOverwritesLoadTest {
 
 
     @Test
-    public void testSetFirstNotOverWrittenByLoader() {
-        String key = "unit.test.value.preloaded";
-        String value = "As this is after should overwrite";
-
-        SystemProperties.get(key);
-        SystemProperties.setProperty(key, value);
+    public void testSetter() {
+        String key = "unit.test.value.systemdefault";
+        String value = "Pre-loaded test data";
 
         assertThat(SystemProperties.get(key), is(value));
     }

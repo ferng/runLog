@@ -3,7 +3,7 @@ package com.thecrunchycorner.runlog.ringbuffer;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import com.thecrunchycorner.runlog.ringbuffer.types.BufferType;
+import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

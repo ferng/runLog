@@ -7,20 +7,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SystemPropertiesLoadOverwritesSetTest {
+public class SystemPropertiesGetUndefinedTest {
 
     @Before
     public void setUp() throws Exception {
         SystemPropertiesFactory.loadSystemProperties();
     }
 
-    @Test
-    public void testSetFirstNotOverWrittenByLoader() {
-        String key = "unit.test.value.preloaded";
-        String value = "Pre-loaded test data";
-        String newValue = "We change data here";
 
-        SystemProperties.setProperty(key, newValue);
+    @Test
+    public void testSetter() {
+        String key = "unit.test.value.undefined";
+        String value = "my little pencil";
 
         assertThat(SystemProperties.get(key), is(value));
     }
