@@ -15,17 +15,17 @@ public class SystemPropertiesGetUndefinedTest {
     }
 
 
-    @Test
-    public void testSetter() {
-        String key = "unit.test.value.undefined";
-        String value = "my little pencil";
-
-        assertThat(SystemProperties.get(key), is(value));
-    }
-
-
     @After
     public void tearDown() throws Exception {
 
+    }
+
+
+    @Test
+    public void testSetter() {
+        String key = "unit.test.value.undefined";
+        String value = "Undefined property";
+
+        assertThat(SystemProperties.get(key), is(value));
     }
 }

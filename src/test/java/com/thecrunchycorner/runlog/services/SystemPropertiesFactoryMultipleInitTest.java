@@ -7,25 +7,25 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SystemPropertiesGetSystemDefaultTest {
+public class SystemPropertiesFactoryMultipleInitTest {
+    String key = "unit.test.value.systemdefault";
+    String value = "Pre-loaded test data";
 
     @Before
-    public void setUp() throws Exception {
+    public void setup() {
         SystemPropertiesFactory.loadSystemProperties();
     }
 
-
     @After
-    public void tearDown() throws Exception {
+    public void tearDOWN() {
 
     }
 
-
     @Test
-    public void testSetter() {
-        String key = "unit.test.value.systemdefault";
-        String value = "Pre-loaded test data";
+    public void Test() {
+        assertThat(SystemProperties.get(key), is(value));
 
+        SystemPropertiesFactory.loadSystemProperties();
         assertThat(SystemProperties.get(key), is(value));
     }
 }

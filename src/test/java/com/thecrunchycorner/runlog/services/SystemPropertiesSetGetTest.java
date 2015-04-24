@@ -26,7 +26,7 @@ public class SystemPropertiesSetGetTest {
     public static Collection<Object[]> queryStrings() {
         return Arrays.asList(new Object[][]{
                 {"unit.test.value.systemdefault", "Pre-loaded test data"},
-                {"unit.test.value.fromfile", "Test data from properties file not loaded"},
+                {"unit.test.value.fromfile", "Test data from properties file"},
                 {"unit.test.value.undefined", "Undefined property"},
         });
     }
@@ -38,14 +38,14 @@ public class SystemPropertiesSetGetTest {
     }
 
 
-    @Test
-    public void testPreLoadedValue() {
-        assertThat(SystemProperties.get(keyToGet), is(expectedValue));
-    }
-
-
     @After
     public void tearDown() throws Exception {
 
+    }
+
+
+    @Test
+    public void testPreLoadedValue() {
+        assertThat(SystemProperties.get(keyToGet), is(expectedValue));
     }
 }

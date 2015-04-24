@@ -16,7 +16,7 @@ public class RingBuffer<E> {
 
 
     public RingBuffer(int size, BufferType type) {
-        int minSize = Integer.getInteger(SystemProperties.get("buffer.minimum.size"));
+        int minSize = Integer.getInteger(SystemProperties.get("threshold.buffer.minimum.size"));
         if (size < minSize) {
             logger.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
             size = minSize;

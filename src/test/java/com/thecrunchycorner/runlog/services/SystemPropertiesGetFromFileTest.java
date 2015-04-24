@@ -15,17 +15,17 @@ public class SystemPropertiesGetFromFileTest {
     }
 
 
-    @Test
-    public void testSetter() {
-        String key = "unit.test.value.fromfile";
-        String value = "Test data from properties file not loaded";
-
-        assertThat(SystemProperties.get(key), is(value));
-    }
-
-
     @After
     public void tearDown() throws Exception {
 
+    }
+
+
+    @Test
+    public void testSetter() {
+        String key = "unit.test.value.fromfile";
+        String value = "Test data from properties file";
+
+        assertThat(SystemProperties.get(key), is(value));
     }
 }

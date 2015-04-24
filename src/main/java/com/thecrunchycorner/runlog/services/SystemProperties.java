@@ -41,6 +41,11 @@ public class SystemProperties {
     }
 
 
+    public static void remove(String key) {
+        propMap.remove(key);
+    }
+
+
     private synchronized static void loadSystemProperties() {
         if (propertiesLoaded == true) {
             return;

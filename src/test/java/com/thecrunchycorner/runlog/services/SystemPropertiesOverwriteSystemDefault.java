@@ -7,11 +7,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SystemPropertiesSetOverwritesLoadTest {
+public class SystemPropertiesOverwriteSystemDefault {
 
     @Before
     public void setUp() throws Exception {
         SystemPropertiesFactory.loadSystemProperties();
+    }
+
+
+    @After
+    public void tearDown() throws Exception {
+
     }
 
 
@@ -24,11 +30,5 @@ public class SystemPropertiesSetOverwritesLoadTest {
         SystemProperties.setProperty(key, value);
 
         assertThat(SystemProperties.get(key), is(value));
-    }
-
-
-    @After
-    public void tearDown() throws Exception {
-
     }
 }
