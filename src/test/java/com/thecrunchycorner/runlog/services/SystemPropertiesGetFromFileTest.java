@@ -11,7 +11,6 @@ public class SystemPropertiesGetFromFileTest {
 
     @Before
     public void setUp() throws Exception {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 
@@ -22,7 +21,7 @@ public class SystemPropertiesGetFromFileTest {
 
 
     @Test
-    public void testSetter() {
+    public void test() {
         String key = "unit.test.value.fromfile";
         String value = "Test data from properties file";
 

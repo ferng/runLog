@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.services.SystemProperties;
-import com.thecrunchycorner.runlog.services.SystemPropertiesFactory;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +17,6 @@ public class BufferMinimumSizeTest {
 
     @Before
     public void setup() {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 

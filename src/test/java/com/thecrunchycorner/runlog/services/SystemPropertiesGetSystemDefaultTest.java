@@ -11,7 +11,6 @@ public class SystemPropertiesGetSystemDefaultTest {
 
     @Before
     public void setUp() throws Exception {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 
@@ -22,7 +21,7 @@ public class SystemPropertiesGetSystemDefaultTest {
 
 
     @Test
-    public void testSetter() {
+    public void test() {
         String key = "unit.test.value.systemdefault";
         String value = "Pre-loaded test data";
 

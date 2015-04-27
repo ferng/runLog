@@ -13,7 +13,6 @@ public class SystemPropertiesOverwriteFromFileTest {
 
     @Before
     public void setUp() throws Exception {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 
@@ -24,7 +23,7 @@ public class SystemPropertiesOverwriteFromFileTest {
 
 
     @Test
-    public void testSetter() {
+    public void test() {
         assertThat(SystemProperties.get(key), is(value));
 
         value = "This value overwrites the one in the file";

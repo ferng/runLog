@@ -13,7 +13,6 @@ public class SystemPropertiesSetNewValueTest {
 
     @Before
     public void setUp() throws Exception {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 
@@ -24,9 +23,8 @@ public class SystemPropertiesSetNewValueTest {
 
 
     @Test
-    public void testSetter() {
+    public void test() {
         SystemProperties.setProperty(key, value);
-
         assertThat(SystemProperties.get(key), is(value));
     }
 }

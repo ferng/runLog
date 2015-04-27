@@ -29,6 +29,10 @@ public class SystemProperties {
 
 
     public static String get(String key) {
+        if (propertiesInitialized() == false) {
+            loadSystemProperties();
+        }
+
         while (propertiesLoaded == false) {
         }
 
@@ -42,6 +46,10 @@ public class SystemProperties {
 
 
     public static void setProperty(String key, String value) {
+        if (propertiesInitialized() == false) {
+            loadSystemProperties();
+        }
+
         propMap.put(key, value);
     }
 
@@ -57,13 +65,15 @@ public class SystemProperties {
     }
 
 
-    private synchronized static void loadSystemProperties() {
+    private static void loadSystemProperties() {
         if (propertiesLoaded == true) {
             return;
         }
 
-        systemProperties = new Properties();
-        prepPop();
+        if (propertiesInitialized() == false) {
+            systemProperties = new Properties();
+            prepPop();
+        }
 
         FileInputStream stream = null;
         try {
@@ -86,7 +96,7 @@ public class SystemProperties {
                 propNames.add((String) propName);
             }
 
-            String readPropVal = null;
+            String readPropVal;
             for (String propName : propNames) {
                 readPropVal = systemProperties.getProperty(propName);
                 if (readPropVal == null) {
@@ -110,6 +120,10 @@ public class SystemProperties {
         }
     }
 
+
+    private static boolean propertiesInitialized() {
+        return propMap.size() != 0;
+    }
 
 
     //pre-populate any vital data in case we don't find properties files or property

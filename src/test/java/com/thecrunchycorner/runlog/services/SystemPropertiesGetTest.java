@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class SystemPropertiesSetGetTest {
+public class SystemPropertiesGetTest {
 
     //used for parameterized tests
     @Parameterized.Parameter(value = 0)
@@ -34,18 +34,16 @@ public class SystemPropertiesSetGetTest {
 
     @Before
     public void setUp() throws Exception {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 
     @After
     public void tearDown() throws Exception {
-
     }
 
 
     @Test
-    public void testPreLoadedValue() {
+    public void test() {
         assertThat(SystemProperties.get(keyToGet), is(expectedValue));
     }
 }

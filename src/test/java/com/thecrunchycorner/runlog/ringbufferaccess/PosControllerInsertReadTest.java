@@ -29,6 +29,7 @@ public class PosControllerInsertReadTest {
         int inputIndex = 45;
 
         posController.setPos(ProcessorType.INPUT_PROCESSOR, inputIndex);
+
         assertThat(posController.getPos(ProcessorType.INPUT_PROCESSOR), is(inputIndex));
     }
 

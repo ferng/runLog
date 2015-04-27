@@ -11,7 +11,6 @@ public class SystemPropertiesGetUndefinedTest {
 
     @Before
     public void setUp() throws Exception {
-        SystemPropertiesFactory.loadSystemProperties();
     }
 
 
@@ -22,7 +21,7 @@ public class SystemPropertiesGetUndefinedTest {
 
 
     @Test
-    public void testSetter() {
+    public void test() {
         String key = "unit.test.value.undefined";
         String value = "Undefined property";
 

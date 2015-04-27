@@ -9,7 +9,7 @@ public class ProcProperties {
     private ProcessorType leadProc;
     private int initialHead;
 
-    public ProcProperties(RingBuffer buffer, ProcessorType proc, ProcessorType leadProc, int initialHead) {
+    protected ProcProperties(RingBuffer buffer, ProcessorType proc, ProcessorType leadProc, int initialHead) {
         this.buffer = buffer;
         this.proc = proc;
         this.leadProc = leadProc;
