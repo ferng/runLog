@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class SystemPropertiesSetNewValueTest {
     String key = "unit.test.value.newvalue";
-    String value = "Undefined property";
+    String value = "New key value pair";
 
     @Before
     public void setUp() throws Exception {

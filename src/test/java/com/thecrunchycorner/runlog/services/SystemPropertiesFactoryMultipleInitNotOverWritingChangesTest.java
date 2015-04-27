@@ -18,8 +18,7 @@ public class SystemPropertiesFactoryMultipleInitNotOverWritingChangesTest {
 
     @After
     public void tearDOWN() {
-        value = "This value overwrites the one in the file";
-        SystemProperties.setProperty(key, value);
+        SystemProperties.refreshProperties();
     }
 
     @Test

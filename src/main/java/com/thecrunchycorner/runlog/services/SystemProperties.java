@@ -11,7 +11,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** SystemProperties should not be instantiated directly, this should be done through SystemPropertiesFactory instead **/
+/**
+ * SystemProperties should not be instantiated directly, this should be done through SystemPropertiesFactory instead
+ * **/
 public class SystemProperties {
     private static Logger logger = LogManager.getLogger(SystemProperties.class);
 
@@ -27,6 +29,9 @@ public class SystemProperties {
 
 
     public static String get(String key) {
+        while (propertiesLoaded == false) {
+        }
+
         if (propMap.get(key) == null) {
             logger.error("Undefined property: {}", key);
             return "Undefined property";
@@ -43,6 +48,12 @@ public class SystemProperties {
 
     public static void remove(String key) {
         propMap.remove(key);
+    }
+
+
+    public static void refreshProperties() {
+        propertiesLoaded = false;
+        loadSystemProperties();
     }
 
 

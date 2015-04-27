@@ -17,7 +17,7 @@ public class SystemPropertiesOverwriteSystemDefault {
 
     @After
     public void tearDown() throws Exception {
-
+        SystemProperties.refreshProperties();
     }
 
 

@@ -7,9 +7,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SystemPropertiesOverwriteFromFileTest {
+public class SystemPropertiesRefreshTest {
     String key = "unit.test.value.fromfile";
-    String value = "Test data from properties file";
+    String originalValue = "Test data from properties file";
+    String newValue = "This value overwrites the one in the file";
+
 
     @Before
     public void setUp() throws Exception {
@@ -19,17 +21,19 @@ public class SystemPropertiesOverwriteFromFileTest {
 
     @After
     public void tearDown() throws Exception {
-        SystemProperties.refreshProperties();
     }
 
 
     @Test
     public void testSetter() {
-        assertThat(SystemProperties.get(key), is(value));
+        assertThat(SystemProperties.get(key), is(originalValue));
 
-        value = "This value overwrites the one in the file";
-        SystemProperties.setProperty(key, value);
+        SystemProperties.setProperty(key, newValue);
 
-        assertThat(SystemProperties.get(key), is(value));
+        assertThat(SystemProperties.get(key), is(newValue));
+
+        SystemProperties.refreshProperties();
+
+        assertThat(SystemProperties.get(key), is(originalValue));
     }
 }

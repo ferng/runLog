@@ -1,6 +1,10 @@
 package com.thecrunchycorner.runlog.ringbuffer;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
+import com.thecrunchycorner.runlog.services.SystemProperties;
 import com.thecrunchycorner.runlog.services.SystemPropertiesFactory;
 
 import org.junit.After;
@@ -23,9 +27,9 @@ public class BufferMinimumSizeTest {
 
     }
 
-
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void Test() {
-        new RingBuffer(4, BufferType.INPUT);
+        buffer = new RingBuffer(4, BufferType.INPUT);
+        assertThat(buffer.size(), is(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))));
     }
 }
