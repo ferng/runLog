@@ -13,7 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * SystemProperties should not be instantiated directly, this should be done through SystemPropertiesFactory instead
- * **/
+ * *
+ */
 public class SystemProperties {
     private static Logger logger = LogManager.getLogger(SystemProperties.class);
 
@@ -74,7 +75,15 @@ public class SystemProperties {
             systemProperties = new Properties();
             prepPop();
         }
+        attemptLoadPropsFile();
 
+        populateSystemProperties(getStartupPropNames());
+        propertiesLoaded = true;
+    }
+
+
+
+    private static void attemptLoadPropsFile() {
         FileInputStream stream = null;
         try {
             File propsFile = new File(SystemProperties.class.getClassLoader().getResource(propsFileName).getFile());
@@ -85,37 +94,42 @@ public class SystemProperties {
             } else {
                 logger.warn("Properties file not found: {}", propsFile.getAbsolutePath());
             }
-
-            Set<String> propNames = new HashSet<String>() ;//= propMap.keySet();
-
-            for (Object sysPropName : systemProperties.keySet()) {
-                propNames.add((String) sysPropName);
-            }
-
-            for (Object propName : propMap.keySet()) {
-                propNames.add((String) propName);
-            }
-
-            String readPropVal;
-            for (String propName : propNames) {
-                readPropVal = systemProperties.getProperty(propName);
-                if (readPropVal == null) {
-                    logger.warn("Property [{}] not found in {} file.  Using [{}] as a default.",  propName, propsFileName, propMap.get(propName)  );
-                } else {
-                    propMap.put(propName, readPropVal);
-                }
-            }
-            propertiesLoaded = true;
         } catch (IOException ex) {
             logger.error("Can't load the properties file: {}", propsFileName);
         } finally {
-
             if (stream != null) {
                 try {
                     stream.close();
                 } catch (Exception ex1) {
-                    logger.debug(ex1);
+                    logger.debug("Can't close file, could have been closed already or was never opened");
                 }
+            }
+        }
+    }
+
+
+    private static Set<String> getStartupPropNames() {
+        Set<String> propNames = new HashSet<String>();//= propMap.keySet();
+
+        for (Object sysPropName : systemProperties.keySet()) {
+            propNames.add((String) sysPropName);
+        }
+
+        for (Object propName : propMap.keySet()) {
+            propNames.add((String) propName);
+        }
+        return propNames;
+    }
+
+
+    private static void populateSystemProperties(Set<String> propNames) {
+        String readPropVal;
+        for (String propName : propNames) {
+            readPropVal = systemProperties.getProperty(propName);
+            if (readPropVal == null) {
+                logger.warn("Property [{}] not found in {} file.  Using [{}] as a default.", propName, propsFileName, propMap.get(propName));
+            } else {
+                propMap.put(propName, readPropVal);
             }
         }
     }

@@ -14,7 +14,7 @@ public class PosControllerFactoryTest {
 
     @Before
     public void setup() {
-        posController = PosControllerFactory.getInstance();
+        posController = PosControllerFactory.getController();
     }
 
 

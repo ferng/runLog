@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesOverwriteFromFileTest {
-    String key = "unit.test.value.fromfile";
-    String value = "Test data from properties file";
+    private String key = "unit.test.value.fromfile";
+    private String value = "Test data from properties file";
 
     @Before
     public void setUp() throws Exception {

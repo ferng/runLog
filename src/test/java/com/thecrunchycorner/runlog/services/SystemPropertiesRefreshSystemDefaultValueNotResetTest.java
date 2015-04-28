@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesRefreshSystemDefaultValueNotResetTest {
-    String key = "unit.test.value.systemdefault";
-    String originalValue = "Pre-loaded test data";
-    String newValue = "This value overwrites the system default";
+    private String key = "unit.test.value.systemdefault";
+    private String originalValue = "Pre-loaded test data";
+    private String newValue = "This value overwrites the system default";
 
 
     @Before

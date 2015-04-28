@@ -10,7 +10,7 @@ public class PosControllerFactory {
         private static final PosController posController = new PosController();
     }
 
-    public static PosController getInstance() {
+    public static PosController getController() {
         return LazyHolder.posController;
     }
 }

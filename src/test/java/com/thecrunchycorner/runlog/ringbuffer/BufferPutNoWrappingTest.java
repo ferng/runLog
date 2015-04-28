@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class BufferPutNoWrappingTest {
 
-    RingBuffer<Integer> buffer;
+    private RingBuffer<Integer> buffer;
 
     @Before
     public void setup() {

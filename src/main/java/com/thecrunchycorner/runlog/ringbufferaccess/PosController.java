@@ -20,8 +20,25 @@ public class PosController {
             logger.error("Arguments cannot be null: proctype[{}] pos[{}]", procType, pos);
             throw new IllegalArgumentException("Arguments cannot be null");
         }
+
         posMap.put(procType, pos);
     }
+
+
+    /**
+     * @throws IllegalArgumentException - If any parameter is null
+     */
+    public void incrPos(ProcessorType procType) {
+        int pos = posMap.get(procType);
+
+        if (procType==null) {
+            logger.error("Arguments cannot be null: proctype[{}]", procType);
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
+        posMap.put(procType, pos+1);
+    }
+
 
     /**
      * @throws IllegalArgumentException - If any parameter is null
@@ -31,6 +48,7 @@ public class PosController {
             logger.error("Arguments cannot be null: proctype[{}]", procType);
             throw new IllegalArgumentException("Arguments cannot be null");
         }
+
         return posMap.get(procType);
     }
 

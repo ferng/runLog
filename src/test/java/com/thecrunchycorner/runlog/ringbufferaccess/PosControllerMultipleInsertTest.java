@@ -8,13 +8,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PosControllerMultipleTest {
+public class PosControllerMultipleInsertTest {
     private PosController posController;
 
 
     @Before
     public void setup() {
-        posController = PosControllerFactory.getInstance();
+        posController = PosControllerFactory.getController();
     }
 
 
@@ -31,13 +31,9 @@ public class PosControllerMultipleTest {
         int businessProcIndex = 72;
 
         posController.setPos(ProcessorType.INPUT_PROCESSOR, inputIndex);
-        assertThat(posController.getPos(ProcessorType.INPUT_PROCESSOR), is(inputIndex));
-
         posController.setPos(ProcessorType.UNMARSHELLER, unMarshallerIndex);
-        assertThat(posController.getPos(ProcessorType.UNMARSHELLER), is(unMarshallerIndex));
-
         posController.setPos(ProcessorType.BUSINESS_PROCESSOR, businessProcIndex);
-        assertThat(posController.getPos(ProcessorType.BUSINESS_PROCESSOR), is(businessProcIndex));
+        assertThat(posController.getPos(ProcessorType.INPUT_PROCESSOR), is(inputIndex));
 
 
     }

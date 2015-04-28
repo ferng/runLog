@@ -8,13 +8,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PosControllerInsertReadTest {
+public class PosControllerSingleInsertTest {
     private PosController posController;
 
 
     @Before
     public void setup() {
-        posController = PosControllerFactory.getInstance();
+        posController = PosControllerFactory.getController();
     }
 
 

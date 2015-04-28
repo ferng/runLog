@@ -7,9 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SystemPropertiesOverwriteSystemDefault {
-    private String key = "unit.test.value.systemdefault";
-    private String value = "Pre-loaded test data";
+public class SystemPropertiesRemoveNewValueTest {
+    private String key = "unit.test.value.newvalue";
+    private String value = "New key value pair";
+    private String removedValue = "Undefined property";
 
     @Before
     public void setUp() throws Exception {
@@ -18,15 +19,14 @@ public class SystemPropertiesOverwriteSystemDefault {
 
     @After
     public void tearDown() throws Exception {
-        SystemProperties.refreshProperties();
+        SystemProperties.remove(key);
     }
 
 
     @Test
     public void test() {
-        value = "This value overwrites the system default";
         SystemProperties.setProperty(key, value);
-
-        assertThat(SystemProperties.get(key), is(value));
+        SystemProperties.remove(key);
+        assertThat(SystemProperties.get(key), is(removedValue));
     }
 }

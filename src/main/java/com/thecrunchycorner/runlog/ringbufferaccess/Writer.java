@@ -10,13 +10,12 @@ import org.apache.logging.log4j.Logger;
 public class Writer {
     private static Logger logger = LogManager.getLogger(Writer.class);
 
-    private PosController posController =  PosControllerFactory.getInstance();
+    private PosController posController =  PosControllerFactory.getController();
 
     private RingBuffer buffer;
     private ProcessorType processor;
     private ProcessorType myLead;
     private int head;
-    private int pos;
 
     public Writer(ProcProperties props) {
         buffer = props.getBuffer();
@@ -29,6 +28,8 @@ public class Writer {
 
 
     public OpStatus write(Object msg) {
+        int pos = posController.getPos(processor);
+
         if (msg == null) {
             logger.warn("attempting to insert null in buffer at pos {})", pos);
             return OpStatus.ERROR;
@@ -40,7 +41,10 @@ public class Writer {
                 return OpStatus.HEADER_REACHED;
             }
         }
-        buffer.put(pos++, msg);
+
+        buffer.put(pos, msg);
+        posController.incrPos(processor);
+
         return OpStatus.WRITE_SUCCESS;
     }
 

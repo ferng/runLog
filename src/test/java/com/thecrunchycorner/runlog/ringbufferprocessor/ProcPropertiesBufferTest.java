@@ -14,9 +14,9 @@ import org.junit.Test;
 
 public class ProcPropertiesBufferTest {
 
-    RingBuffer<Integer> buffer;
-    ProcProperties procProps;
-    int initialHead = 20;
+    private RingBuffer<Integer> buffer;
+    private ProcProperties procProps;
+    private int initialHead = 20;
 
     @Before
     public void setup() {

@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WriterInsertNullTest {
+public class WriterAttemptInsertBeyondHeadTest {
 
     private RingBuffer<Integer> buffer;
     private Writer writer;
@@ -51,7 +51,12 @@ public class WriterInsertNullTest {
 
     @Test
     public void Test() {
-        assertThat(writer.write(null), is(OpStatus.ERROR));
+        //write to head
+        for (int i = 0; i < busProcHead; i++) {
+            writer.write(new Integer((i)));
+        }
+
+        assertThat(writer.write(new Integer((11))), is(OpStatus.HEADER_REACHED));
     }
 
 }

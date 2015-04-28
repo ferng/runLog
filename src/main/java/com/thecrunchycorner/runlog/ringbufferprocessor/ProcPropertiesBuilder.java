@@ -26,7 +26,7 @@ public class ProcPropertiesBuilder {
     }
 
     public ProcPropertiesBuilder setInitialHead(int initialHead) {
-        this.initialHead = initialHead;
+        this.initialHead = initialHead-1;       //starts at 0 so head==9 is for 10 elements
         return this;
     }
 

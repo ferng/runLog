@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WriterInsertNullTest {
+public class WriterInsertToHeadTest {
 
     private RingBuffer<Integer> buffer;
     private Writer writer;
@@ -40,6 +40,8 @@ public class WriterInsertNullTest {
                 .createProcProperties();
 
         writer = new Writer(procProps);
+
+        new a new setpos for input
     }
 
 
@@ -51,7 +53,13 @@ public class WriterInsertNullTest {
 
     @Test
     public void Test() {
-        assertThat(writer.write(null), is(OpStatus.ERROR));
+        //write to head
+        for (int i = 0; i < busProcHead; i++) {
+            writer.write(new Integer((i)));
+        }
+
+
+        assertThat(PosControllerFactory.getController().getPos(ProcessorType.BUSINESS_PROCESSOR), is(busProcHead));
     }
 
 }
