@@ -24,8 +24,6 @@ public class SystemPropertiesOverwriteSystemDefault {
 
     @Test
     public void test() {
-        assertThat(SystemProperties.get(key), is(value));
-
         value = "This value overwrites the system default";
         SystemProperties.setProperty(key, value);
 

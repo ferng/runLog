@@ -24,8 +24,6 @@ public class SystemPropertiesOverwriteFromFileTest {
 
     @Test
     public void test() {
-        assertThat(SystemProperties.get(key), is(value));
-
         value = "This value overwrites the one in the file";
         SystemProperties.setProperty(key, value);
 

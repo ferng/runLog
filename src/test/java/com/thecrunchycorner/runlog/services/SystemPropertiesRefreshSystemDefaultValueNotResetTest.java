@@ -10,7 +10,7 @@ import org.junit.Test;
 public class SystemPropertiesRefreshSystemDefaultValueNotResetTest {
     String key = "unit.test.value.systemdefault";
     String originalValue = "Pre-loaded test data";
-    String newValue = "This value overwrites the one in the file";
+    String newValue = "This value overwrites the system default";
 
 
     @Before
@@ -26,10 +26,7 @@ public class SystemPropertiesRefreshSystemDefaultValueNotResetTest {
 
     @Test
     public void test() {
-        assertThat(SystemProperties.get(key), is(originalValue));
-
         SystemProperties.setProperty(key, newValue);
-        assertThat(SystemProperties.get(key), is(newValue));
 
         SystemProperties.refreshProperties();
         assertThat(SystemProperties.get(key), is(newValue));

@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ProcPropertiesTest {
+public class ProcPropertiesBuilderBufferTest {
 
     RingBuffer<Integer> buffer;
     ProcProperties procProps;
@@ -21,7 +21,13 @@ public class ProcPropertiesTest {
     @Before
     public void setup() {
         buffer = new RingBuffer(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")), BufferType.INPUT);
-        procProps = new ProcProperties(buffer, ProcessorType.BUSINESS_PROCESSOR, ProcessorType.INPUT_PROCESSOR, initialHead);
+
+        procProps = new ProcPropertiesBuilder()
+                .setBuffer(buffer)
+                .setProcessor(ProcessorType.BUSINESS_PROCESSOR)
+                .setLeadProc(ProcessorType.INPUT_PROCESSOR)
+                .setInitialHead(initialHead)
+                .createProcProperties();
     }
 
 
@@ -34,9 +40,6 @@ public class ProcPropertiesTest {
     @Test
     public void Test() {
         assertThat(procProps.getBuffer().getType(), is(BufferType.INPUT));
-        assertThat(procProps.getProc(), is(ProcessorType.BUSINESS_PROCESSOR));
-        assertThat(procProps.getLeadProc(), is(ProcessorType.INPUT_PROCESSOR));
-        assertThat(procProps.getInitialHead(), is(initialHead));
     }
 
 }

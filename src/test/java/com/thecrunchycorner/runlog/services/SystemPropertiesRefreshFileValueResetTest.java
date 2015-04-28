@@ -26,10 +26,7 @@ public class SystemPropertiesRefreshFileValueResetTest {
 
     @Test
     public void test() {
-        assertThat(SystemProperties.get(key), is(originalValue));
-
         SystemProperties.setProperty(key, newValue);
-        assertThat(SystemProperties.get(key), is(newValue));
 
         SystemProperties.refreshProperties();
         assertThat(SystemProperties.get(key), is(originalValue));
