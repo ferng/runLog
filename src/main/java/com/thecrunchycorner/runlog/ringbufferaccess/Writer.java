@@ -35,9 +35,9 @@ public class Writer {
             return OpStatus.ERROR;
         }
 
-        if (pos > head) {
+        if (pos == head) {
             head = posController.getPos(myLead);
-            if (pos > head) {
+            if (pos == head) {
                 return OpStatus.HEADER_REACHED;
             }
         }

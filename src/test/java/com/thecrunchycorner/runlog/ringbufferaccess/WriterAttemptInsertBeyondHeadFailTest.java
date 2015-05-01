@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WriterInsertToHeadTest {
+public class WriterAttemptInsertBeyondHeadFailTest {
 
     private RingBuffer<Integer> buffer;
     private Writer writer;
@@ -39,9 +39,9 @@ public class WriterInsertToHeadTest {
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 
-        writer = new Writer(procProps);
+        proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead);
 
-        new a new setpos for input
+        writer = new Writer(procProps);
     }
 
 
@@ -58,8 +58,8 @@ public class WriterInsertToHeadTest {
             writer.write(new Integer((i)));
         }
 
-
-        assertThat(PosControllerFactory.getController().getPos(ProcessorType.BUSINESS_PROCESSOR), is(busProcHead));
+        //attempt to go beyond head
+        assertThat(writer.write(new Integer((600))), is(OpStatus.HEADER_REACHED));
     }
 
 }
