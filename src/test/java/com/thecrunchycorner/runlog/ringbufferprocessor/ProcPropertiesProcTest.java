@@ -4,7 +4,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
@@ -20,7 +19,7 @@ public class ProcPropertiesProcTest {
 
     @Before
     public void setup() {
-        buffer = new RingBuffer(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")), BufferType.INPUT);
+        buffer = new RingBuffer(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
         procProps = new ProcProperties(buffer, ProcessorType.BUSINESS_PROCESSOR, ProcessorType.INPUT_PROCESSOR, initialHead);
     }
 

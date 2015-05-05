@@ -3,6 +3,12 @@ package com.thecrunchycorner.runlog.ringbufferprocessor;
 import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 
+
+/**
+ * Used to instantiate PosController. Behaviour is undefined if PosController is instantiate directly.
+ * Immutable details about the processor. Once created the processor cannot change it's identity
+
+ */
 public class ProcProperties {
     private RingBuffer buffer;
     private ProcessorType proc;

@@ -2,6 +2,9 @@ package com.thecrunchycorner.runlog.ringbufferaccess;
 
 import net.jcip.annotations.ThreadSafe;
 
+/**
+ * Used to instantiate PosController. Behaviour is undefined if PosController is instantiated directly.
+ */
 @ThreadSafe
 public class PosControllerFactory {
     private PosControllerFactory() {};

@@ -3,10 +3,9 @@ package com.thecrunchycorner.runlog.ringbufferaccess;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
-import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
@@ -14,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WriterReaderTest {
+public class ReaderTest {
 
     private RingBuffer<Integer> buffer;
     private Writer writer;
@@ -28,7 +27,7 @@ public class WriterReaderTest {
     @Before
     public void setup() {
         bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
-        buffer = new RingBuffer(bufferSize, BufferType.INPUT);
+        buffer = new RingBuffer(bufferSize);
         inputProcHead = bufferSize;
         busProcHead = 10;
 
@@ -65,13 +64,10 @@ public class WriterReaderTest {
     @Test
     public void Test() {
         Object testObj1 = new Integer(3);
-        Object testObj2 = new Integer(4);
 
         writer.write(testObj1);
-        writer.write(testObj2);
 
         assertThat(reader.read(), is(testObj1));
-        assertThat(reader.read(), is(testObj2));
     }
 
 }

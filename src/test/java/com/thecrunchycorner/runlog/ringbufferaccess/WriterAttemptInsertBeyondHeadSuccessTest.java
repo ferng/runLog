@@ -4,7 +4,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.ringbuffer.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
@@ -27,7 +26,7 @@ public class WriterAttemptInsertBeyondHeadSuccessTest {
     @Before
     public void setup() {
         bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
-        buffer = new RingBuffer(bufferSize, BufferType.INPUT);
+        buffer = new RingBuffer(bufferSize);
         busProcHead = 10;
 
         proc = PosControllerFactory.getController();
@@ -59,7 +58,8 @@ public class WriterAttemptInsertBeyondHeadSuccessTest {
             writer.write(new Integer((i)));
         }
 
-        proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead+10);
+        proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead + 10);
+
         //attempt to go beyond head
         assertThat(writer.write(new Integer((600))), is(OpStatus.WRITE_SUCCESS));
     }

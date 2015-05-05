@@ -1,10 +1,8 @@
 package com.thecrunchycorner.runlog.ringbufferprocessor;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
@@ -20,7 +18,7 @@ public class ProcPropertiesBuilderBufferTest {
 
     @Before
     public void setup() {
-        buffer = new RingBuffer(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")), BufferType.INPUT);
+        buffer = new RingBuffer(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
@@ -39,7 +37,7 @@ public class ProcPropertiesBuilderBufferTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getBuffer().getType(), is(BufferType.INPUT));
+        assertEquals(procProps.getBuffer() instanceof RingBuffer, Boolean.TRUE);
     }
 
 }

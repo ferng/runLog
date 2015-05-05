@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * SystemProperties should not be instantiated directly, this should be done through SystemPropertiesFactory instead
+ * System-wide properties this is normally something like: database connectivity (if not using an app server), file locations/names, maximum/minimum values.
  * *
  */
 public class SystemProperties {
@@ -29,7 +29,13 @@ public class SystemProperties {
     }
 
 
-    public static String get(String key) {
+    /**
+     * Retrieve property value using the property identifier given
+     *
+     * @param id
+     * @return
+     */
+    public static String get(String id) {
         if (propertiesInitialized() == false) {
             loadSystemProperties();
         }
@@ -37,29 +43,46 @@ public class SystemProperties {
         while (propertiesLoaded == false) {
         }
 
-        if (propMap.get(key) == null) {
-            logger.error("Undefined property: {}", key);
+        if (propMap.get(id) == null) {
+            logger.error("Undefined property: {}", id);
             return "Undefined property";
         } else {
-            return propMap.get(key);
+            return propMap.get(id);
         }
     }
 
 
-    public static void setProperty(String key, String value) {
+    /**
+     * Set the property identified by the given identifier to a value
+     * @param id
+     * @param value
+     */
+    public static void setProperty(String id, String value) {
         if (propertiesInitialized() == false) {
             loadSystemProperties();
         }
 
-        propMap.put(key, value);
+        propMap.put(id, value);
     }
 
 
-    public static void remove(String key) {
-        propMap.remove(key);
+    /**
+     * Remove the property identified by the given identifier
+     *
+     * @param id
+     * @return
+     */
+    public static void remove(String id) {
+        propMap.remove(id);
     }
 
 
+    /**
+     * Reload all properties from the properties file.
+     *
+     * Only properties defined in the file wil be reset/refreshed.
+     * Any properties set programmatically *not* specified in the properties file will retain their current values
+     */
     public static void refreshProperties() {
         propertiesLoaded = false;
         loadSystemProperties();

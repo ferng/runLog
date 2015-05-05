@@ -6,7 +6,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
-
+/**
+ * Readers can only read up to the position in the buffer where a write has placed a message specifically for them. Same goes for writers.
+ * PosController is shared by all processors to keep track of where they can process up to.
+ *
+ * Behaviour is undefined if PosController is instantiated directly, instead use PosControllerFactory.getController()
+ */
 public class PosController {
     private static Logger logger = LogManager.getLogger(PosController.class);
 

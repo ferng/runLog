@@ -3,7 +3,6 @@ package com.thecrunchycorner.runlog.ringbuffer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
 import org.junit.After;
@@ -27,7 +26,7 @@ public class BufferMinimumSizeTest {
 
     @Test
     public void Test() {
-        buffer = new RingBuffer(4, BufferType.INPUT);
+        buffer = new RingBuffer(4);
         assertThat(buffer.size(), is(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))));
     }
 }

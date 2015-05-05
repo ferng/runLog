@@ -3,7 +3,6 @@ package com.thecrunchycorner.runlog.ringbuffer;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
 import org.junit.After;
@@ -18,7 +17,7 @@ public class BufferPutWrappingTest {
 
     @Before
     public void setup() {
-        buffer = new RingBuffer(bufferSize, BufferType.INPUT);
+        buffer = new RingBuffer(bufferSize);
     }
 
 

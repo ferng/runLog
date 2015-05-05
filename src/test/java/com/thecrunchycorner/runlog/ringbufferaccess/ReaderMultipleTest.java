@@ -13,33 +13,45 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WriterInsertUpToHeadTest {
+public class ReaderMultipleTest {
 
     private RingBuffer<Integer> buffer;
     private Writer writer;
-    private ProcProperties procProps;
+    private Reader reader;
+    private ProcProperties busProcProps;
+    private ProcProperties inputProcProps;
     private int bufferSize;
     private int busProcHead;
+    private int inputProcHead;
 
     @Before
     public void setup() {
         bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
         buffer = new RingBuffer(bufferSize);
+        inputProcHead = bufferSize;
         busProcHead = 10;
 
         PosController proc = PosControllerFactory.getController();
         proc.setPos(ProcessorType.BUSINESS_PROCESSOR, 0);
 
-        procProps = new ProcPropertiesBuilder()
+        busProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
                 .setProcessor(ProcessorType.BUSINESS_PROCESSOR)
                 .setLeadProc(ProcessorType.INPUT_PROCESSOR)
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 
-        writer = new Writer(procProps);
+        writer = new Writer(busProcProps);
 
-        proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead);
+        inputProcProps = new ProcPropertiesBuilder()
+                .setBuffer(buffer)
+                .setProcessor(ProcessorType.INPUT_PROCESSOR)
+                .setLeadProc(ProcessorType.BUSINESS_PROCESSOR)
+                .setInitialHead(busProcHead)
+                .createProcProperties();
+
+        reader = new Reader(inputProcProps);
+
     }
 
 
@@ -51,12 +63,14 @@ public class WriterInsertUpToHeadTest {
 
     @Test
     public void Test() {
-        //write to head
-        for (int i = 0; i < busProcHead; i++) {
-            writer.write(new Integer((i)));
-        }
+        Object testObj1 = new Integer(3);
+        Object testObj2 = new Integer(4);
 
-        assertThat(PosControllerFactory.getController().getPos(ProcessorType.BUSINESS_PROCESSOR), is(busProcHead));
+        writer.write(testObj1);
+        writer.write(testObj2);
+
+        reader.read();
+        assertThat(reader.read(), is(testObj2));
     }
 
 }

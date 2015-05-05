@@ -1,21 +1,30 @@
 package com.thecrunchycorner.runlog.ringbuffer;
 
-import com.thecrunchycorner.runlog.ringbuffer.enums.BufferType;
 import com.thecrunchycorner.runlog.services.SystemProperties;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
+
+/**
+ * @param <E> The type of the contents held by the buffer.
+ *            <p>
+ *            The buffer carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
+ */
 public class RingBuffer<E> {
     private static Logger logger = LogManager.getLogger(RingBuffer.class);
 
     private AtomicReferenceArray<E> buffer;
     private int modSize;
-    private BufferType type;
 
 
-    public RingBuffer(int size, BufferType type) {
+    /**
+     * @param size The size of the buffer.  Once instantiated it cannot be changed.  If the size requested is less than that specified in threshold.buffer.minimum.size
+     *             it will quietly be increased to that threshold.
+     */
+    public RingBuffer(int size) {
         int minSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
         if (size < minSize) {
             logger.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
@@ -23,13 +32,12 @@ public class RingBuffer<E> {
         }
         buffer = new AtomicReferenceArray<E>(size);
         this.modSize = size;
-        this.type = type;
     }
 
 
     public void put(int pos, E item) {
         int realPos = pos % modSize;
-        if (buffer.get(modSize-1) != null) {
+        if (buffer.get(modSize - 1) != null) {
             realPos--;
         }
         buffer.set(realPos % modSize, item);
@@ -44,11 +52,6 @@ public class RingBuffer<E> {
 
     public int size() {
         return buffer.length();
-    }
-
-
-    public BufferType getType() {
-        return type;
     }
 
 

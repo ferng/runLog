@@ -1,5 +1,8 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
+/**
+ * For runlog we are using messages to communicate via the buffer.
+ */
 public class Message {
     private String id;
     private String type;

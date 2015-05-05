@@ -4,6 +4,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
+import com.thecrunchycorner.runlog.ringbuffer.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
@@ -13,13 +14,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WriterInsertUpToHeadTest {
+public class WriterGetNewHeadTest {
 
     private RingBuffer<Integer> buffer;
     private Writer writer;
     private ProcProperties procProps;
     private int bufferSize;
     private int busProcHead;
+    private PosController proc;
 
     @Before
     public void setup() {
@@ -27,7 +29,7 @@ public class WriterInsertUpToHeadTest {
         buffer = new RingBuffer(bufferSize);
         busProcHead = 10;
 
-        PosController proc = PosControllerFactory.getController();
+        proc = PosControllerFactory.getController();
         proc.setPos(ProcessorType.BUSINESS_PROCESSOR, 0);
 
         procProps = new ProcPropertiesBuilder()
@@ -37,9 +39,9 @@ public class WriterInsertUpToHeadTest {
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 
-        writer = new Writer(procProps);
-
         proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead);
+
+        writer = new Writer(procProps);
     }
 
 
@@ -56,7 +58,15 @@ public class WriterInsertUpToHeadTest {
             writer.write(new Integer((i)));
         }
 
-        assertThat(PosControllerFactory.getController().getPos(ProcessorType.BUSINESS_PROCESSOR), is(busProcHead));
+        busProcHead += 10;
+        proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead);
+
+        for (int i = 10; i < busProcHead; i++) {
+            writer.write(new Integer((i)));
+        }
+
+        //attempt to go beyond head
+        assertThat(writer.write(new Integer((600))), is(OpStatus.HEADER_REACHED));
     }
 
 }
