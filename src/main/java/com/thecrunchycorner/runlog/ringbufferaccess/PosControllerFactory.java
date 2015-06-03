@@ -7,7 +7,10 @@ import net.jcip.annotations.ThreadSafe;
  */
 @ThreadSafe
 public class PosControllerFactory {
-    private PosControllerFactory() {};
+    private PosControllerFactory() {
+    }
+
+    ;
 
     private static class LazyHolder {
         private static final PosController posController = new PosController();

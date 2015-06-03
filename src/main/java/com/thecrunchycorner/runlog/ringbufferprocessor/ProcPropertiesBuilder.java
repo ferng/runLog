@@ -53,6 +53,7 @@ public class ProcPropertiesBuilder {
 
     /**
      * Instantiate this set of properties
+     *
      * @return newly created properties object
      */
     public ProcProperties createProcProperties() {

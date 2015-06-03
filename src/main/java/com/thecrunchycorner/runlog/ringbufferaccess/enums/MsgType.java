@@ -1,6 +1,6 @@
 package com.thecrunchycorner.runlog.ringbufferaccess.enums;
 
-public enum MsgType{
+public enum MsgType {
     PAYLOAD,
     DB_REQUEST,
     DB_RESPONSE,

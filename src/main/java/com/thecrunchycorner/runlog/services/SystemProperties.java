@@ -31,9 +31,6 @@ public class SystemProperties {
 
     /**
      * Retrieve property value using the property identifier given
-     *
-     * @param id
-     * @return
      */
     public static String get(String id) {
         if (propertiesInitialized() == false) {
@@ -54,8 +51,6 @@ public class SystemProperties {
 
     /**
      * Set the property identified by the given identifier to a value
-     * @param id
-     * @param value
      */
     public static void setProperty(String id, String value) {
         if (propertiesInitialized() == false) {
@@ -68,9 +63,6 @@ public class SystemProperties {
 
     /**
      * Remove the property identified by the given identifier
-     *
-     * @param id
-     * @return
      */
     public static void remove(String id) {
         propMap.remove(id);
@@ -79,7 +71,7 @@ public class SystemProperties {
 
     /**
      * Reload all properties from the properties file.
-     *
+     * <p>
      * Only properties defined in the file wil be reset/refreshed.
      * Any properties set programmatically *not* specified in the properties file will retain their current values
      */
@@ -103,7 +95,6 @@ public class SystemProperties {
         populateSystemProperties(getStartupPropNames());
         propertiesLoaded = true;
     }
-
 
 
     private static void attemptLoadPropsFile() {

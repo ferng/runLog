@@ -4,6 +4,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

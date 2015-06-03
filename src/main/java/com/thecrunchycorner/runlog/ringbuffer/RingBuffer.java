@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 
 /**
- * @param <E> The type of the contents held by the buffer.
+ * @param <E> - the type of the contents held by the buffer.
  *            <p>
  *            The buffer carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
  */
@@ -21,7 +21,7 @@ public class RingBuffer<E> {
 
 
     /**
-     * @param size The size of the buffer.  Once instantiated it cannot be changed.  If the size requested is less than that specified in threshold.buffer.minimum.size
+     * @param size - the size of the buffer.  Once instantiated it cannot be changed.  If the size requested is less than that specified in threshold.buffer.minimum.size
      *             it will quietly be increased to that threshold.
      */
     public RingBuffer(int size) {

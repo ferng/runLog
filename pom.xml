@@ -1,52 +1,78 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.thecrunchycorner.runlog</groupId>
-  <artifactId>runlog</artifactId>
-  <version>0.0.1</version>
-  <packaging>jar</packaging>
+    <groupId>com.thecrunchycorner.runlog</groupId>
+    <artifactId>runlog</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
 
-  <name>runlog</name>
-  <url>http://maven.apache.org</url>
+    <name>runlog</name>
+    <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <dependencies>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.11</version>
-          <scope>test</scope>
-      </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.2</version>
+        </dependency>
 
-      <dependency>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest-all</artifactId>
-          <version>1.3</version>
-          <scope>test</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.2</version>
+        </dependency>
 
-      <dependency>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>log4j-api</artifactId>
-          <version>2.2</version>
-      </dependency>
-      <dependency>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>log4j-core</artifactId>
-          <version>2.2</version>
-      </dependency>
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0</version>
+        </dependency>
 
-      <dependency>
-          <groupId>net.jcip</groupId>
-          <artifactId>jcip-annotations</artifactId>
-          <version>1.0</version>
-      </dependency>
 
-  </dependencies>
+        <!-- TEST DEPENDENCIES -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>1.0-groovy-2.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18</version>
+                <configuration>
+                    <includes>
+                        <!-- By default only files ending in 'Test' will be included, so also include support for Spock style naming convention -->
+                        <!-- Oddly enough for Groovy files, *Spec.groovy does not work, but *Spec.java does -->
+                        <include>**/*Test.java</include>
+                        <include>**/*Spec.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
