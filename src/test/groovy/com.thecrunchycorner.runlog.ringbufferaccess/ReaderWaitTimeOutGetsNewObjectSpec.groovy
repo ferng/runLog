@@ -44,7 +44,7 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
         Thread writerThread = new Thread() {
             public void run() {
                 try {
-                    Thread.sleep(500)
+                    Thread.sleep(50)
                     writer.write(testObj2)
                 } catch (InterruptedException ex) {
                     println(ex)
@@ -59,7 +59,7 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
 
 
         then:
-        reader.read(1000) == testObj2
+        reader.read(100) == testObj2
     }
 
 }

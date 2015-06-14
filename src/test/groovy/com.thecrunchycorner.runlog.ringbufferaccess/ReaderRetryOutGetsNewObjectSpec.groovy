@@ -44,7 +44,7 @@ class ReaderRetryOutGetsNewObjectSpec extends Specification {
         Thread writerThread = new Thread() {
             public void run() {
                 try {
-                    Thread.sleep(500)
+                    Thread.sleep(50)
                     writer.write(testObj2)
                 } catch (InterruptedException ex) {
                     println(ex)

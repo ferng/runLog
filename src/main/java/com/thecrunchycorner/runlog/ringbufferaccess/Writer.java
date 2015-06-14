@@ -57,8 +57,6 @@ public class Writer {
             return OpStatus.ERROR;
         }
 
-        System.out.println("Here");
-
         if (pos == head) {
             head = posController.getPos(myLead);
             if (pos == head) {

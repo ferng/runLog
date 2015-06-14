@@ -1,7 +1,6 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
 import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
-import com.thecrunchycorner.runlog.ringbuffer.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 
@@ -66,7 +65,6 @@ public class Reader {
      * Retrieves an object from its buffer if any within a specified time (ms) or null upon time out.
      *
      * @param timeout - millisesonds to wait until we give up
-     *
      * @throws InterruptedException if interrupted while waiting
      */
     public Object read(long timeout) throws InterruptedException {
@@ -89,7 +87,7 @@ public class Reader {
      * Retrieves an object from its buffer if any within a number of attempts, waiting the specified time (ms) between each attempt or null upon retyr exhaustion.
      *
      * @param attempts - how many times to retry the read before giving up
-     * @param timeout - millisesonds to wait until we give up
+     * @param timeout  - millisesonds to wait until we give up
      */
     public Object read(long timeout, long attempts) throws InterruptedException {
         int pos = posController.getPos(processor);

@@ -19,6 +19,7 @@ public class SystemPropertiesOverwriteFromFileTest {
     @After
     public void tearDown() throws Exception {
         SystemProperties.refreshProperties();
+        SystemProperties.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
     }
 
 

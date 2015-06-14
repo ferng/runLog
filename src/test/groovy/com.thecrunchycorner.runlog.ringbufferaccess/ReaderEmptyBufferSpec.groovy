@@ -13,7 +13,7 @@ class ReaderEmptyBufferSpec extends Specification {
         given:
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
         def buffer = new RingBuffer(bufferSize)
-        def inputProcHead = bufferSize
+        def inputProcHead = 0
         def busProcHead = 10
 
         def PosController proc = PosControllerFactory.getController()

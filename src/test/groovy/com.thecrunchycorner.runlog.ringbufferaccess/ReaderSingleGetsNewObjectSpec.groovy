@@ -7,7 +7,7 @@ import com.thecrunchycorner.runlog.services.SystemProperties
 
 import spock.lang.Specification
 
-class ReaderSingleSpec extends Specification {
+class ReaderSingleGetsNewObjectSpec extends Specification {
 
     def 'test'() {
         given:

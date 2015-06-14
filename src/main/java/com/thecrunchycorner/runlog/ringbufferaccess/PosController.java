@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * Readers can only read up to the position in the buffer where a write has placed a message specifically for them. Same goes for writers.
  * PosController is shared by all processors to keep track of where they can process up to.
- * <p>
+ *
  * Behaviour is undefined if PosController is instantiated directly, instead use PosControllerFactory.getController()
  */
 public class PosController {
@@ -35,13 +35,12 @@ public class PosController {
      * @throws IllegalArgumentException - If any parameter is null
      */
     public void incrPos(ProcessorType procType) {
-        int pos = posMap.get(procType);
-
         if (procType == null) {
             logger.error("Arguments cannot be null: proctype[{}]", procType);
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
+        int pos = posMap.get(procType);
         posMap.put(procType, pos + 1);
     }
 

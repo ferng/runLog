@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
  * @param <E> - the type of the contents held by the buffer.
- *            <p>
- *            The buffer carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
+ *
+ *              The buffer carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
  */
 public class RingBuffer<E> {
     private static Logger logger = LogManager.getLogger(RingBuffer.class);

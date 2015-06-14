@@ -13,20 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * System-wide properties this is normally something like: database connectivity (if not using an app server), file locations/names, maximum/minimum values.
- * *
  */
-public class SystemProperties {
+public final class SystemProperties {
     private static Logger logger = LogManager.getLogger(SystemProperties.class);
 
     private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<String, String>();
     private static boolean propertiesLoaded = false;
     private static String propsFileName = "runLog.properties";
     private static Properties systemProperties;
-
-
-    public SystemProperties() {
-        loadSystemProperties();
-    }
 
 
     /**
@@ -73,7 +67,7 @@ public class SystemProperties {
      * Reload all properties from the properties file.
      * <p>
      * Only properties defined in the file wil be reset/refreshed.
-     * Any properties set programmatically *not* specified in the properties file will retain their current values
+     * Any properties set programmatically and *not* specified in the properties file will retain their current values
      */
     public static void refreshProperties() {
         propertiesLoaded = false;
@@ -159,7 +153,7 @@ public class SystemProperties {
         //used for unit tests
         propMap.put("unit.test.value.systemdefault", "Pre-loaded test data");
 
-        //data that can be overwritten by properties file
+        //neo4j database location
         propMap.put("data.store.path", "fernRunLog");
 
         //these are minimum threshold values, by all means go above, but never below

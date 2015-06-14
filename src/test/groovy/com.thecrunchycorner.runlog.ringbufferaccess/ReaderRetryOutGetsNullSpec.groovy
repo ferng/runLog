@@ -41,20 +41,8 @@ class ReaderRetryOutGetsNullSpec extends Specification {
         Object testObj1 = new Integer(3)
         Object testObj2 = new Integer(4)
 
-        Thread writerThread = new Thread() {
-            public void run() {
-                try {
-                    Thread.sleep(500)
-                    writer.write(testObj2)
-                } catch (InterruptedException ex) {
-                    println(ex)
-                }
-            }
-        }
-
         when:
         writer.write(testObj1)
-        writerThread.start()
         reader.read()
 
 
