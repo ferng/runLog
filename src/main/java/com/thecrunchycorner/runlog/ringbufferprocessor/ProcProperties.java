@@ -5,19 +5,18 @@ import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 
 
 /**
- * Used to instantiate PosController. Behaviour is undefined if PosController is instantiate directly.
- * Immutable details about the processor. Once created the processor cannot change it's identity
+ * Immutable details about the processor. Must be instantiated through ProcPropertiesBuilder, behaviour is undefined otherwise.
  */
 public class ProcProperties {
     private RingBuffer buffer;
-    private ProcessorType proc;
-    private ProcessorType leadProc;
+    private ProcessorType procType;
+    private ProcessorType leadProcType;
     private int initialHead;
 
-    protected ProcProperties(RingBuffer buffer, ProcessorType proc, ProcessorType leadProc, int initialHead) {
+    protected ProcProperties(RingBuffer buffer, ProcessorType procType, ProcessorType leadProcType, int initialHead) {
         this.buffer = buffer;
-        this.proc = proc;
-        this.leadProc = leadProc;
+        this.procType = procType;
+        this.leadProcType = leadProcType;
         this.initialHead = initialHead;
     }
 
@@ -26,11 +25,11 @@ public class ProcProperties {
     }
 
     public ProcessorType getProc() {
-        return proc;
+        return procType;
     }
 
     public ProcessorType getLeadProc() {
-        return leadProc;
+        return leadProcType;
     }
 
     public int getInitialHead() {
