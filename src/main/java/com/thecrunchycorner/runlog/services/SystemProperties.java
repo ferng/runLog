@@ -18,20 +18,19 @@ public final class SystemProperties {
     private static Logger logger = LogManager.getLogger(SystemProperties.class);
 
     private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<String, String>();
-    private static boolean propertiesLoaded = false;
     private static String propsFileName = "runLog.properties";
     private static Properties systemProperties;
+
+    private SystemProperties() {
+    }
 
 
     /**
      * Retrieve property value using the property identifier given
      */
     public static String get(String id) {
-        if (propertiesInitialized() == false) {
+        if (! propertiesInitialized()) {
             loadSystemProperties();
-        }
-
-        while (propertiesLoaded == false) {
         }
 
         if (propMap.get(id) == null) {
@@ -47,7 +46,7 @@ public final class SystemProperties {
      * Set the property identified by the given identifier to a value
      */
     public static void setProperty(String id, String value) {
-        if (propertiesInitialized() == false) {
+        if (! propertiesInitialized()) {
             loadSystemProperties();
         }
 
@@ -70,24 +69,18 @@ public final class SystemProperties {
      * Any properties set programmatically and *not* specified in the properties file will retain their current values
      */
     public static void refreshProperties() {
-        propertiesLoaded = false;
         loadSystemProperties();
     }
 
 
     private static void loadSystemProperties() {
-        if (propertiesLoaded == true) {
-            return;
-        }
-
-        if (propertiesInitialized() == false) {
+        if (! propertiesInitialized()) {
             systemProperties = new Properties();
             prepPop();
         }
         attemptLoadPropsFile();
 
         populateSystemProperties(getStartupPropNames());
-        propertiesLoaded = true;
     }
 
 

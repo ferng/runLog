@@ -1,34 +1,40 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType;
+
+import java.util.UUID;
+
 /**
- * For runlog we are using messages to communicate via the buffer.
+ * For runlog we use messages to communicate via the buffer.
  */
 public class Message {
-    private String id;
-    private String type;
-    private String payload;
+    private UUID id;
+    private MsgType msgType;
+    private Object payload;
 
-    public String getId() {
+    public Message(MsgType msgType, Object payload) {
+        this.id = UUID.randomUUID();
+        this.msgType = msgType;
+        this.payload = payload;
+    }
+
+    public final UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public final MsgType getType() {
+        return msgType;
     }
 
-    public String getType() {
-        return type;
+    public final void setType(MsgType msgType) {
+        this.msgType = msgType;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getPayload() {
+    public final Object getPayload() {
         return payload;
     }
 
-    public void setPayload(String payload) {
+    public final void setPayload(Object payload) {
         this.payload = payload;
     }
 }

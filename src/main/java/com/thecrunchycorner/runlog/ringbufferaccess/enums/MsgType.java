@@ -6,6 +6,8 @@ public enum MsgType {
     DB_RESPONSE,
     DB_ACTION,
     VIEW_ACTION,
-    VIEW_UPDATE
+    VIEW_UPDATE,
+    QUEUE_PAYLOAD,
+    NULL_MSG
 
 }

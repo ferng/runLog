@@ -11,11 +11,12 @@ public final class PosControllerFactory {
     private PosControllerFactory() {
     }
 
+    public static PosController getController() {
+        return LazyHolder.posController;
+    }
+
     private static class LazyHolder {
         private static final PosController posController = new PosController();
     }
 
-    public static PosController getController() {
-        return LazyHolder.posController;
-    }
 }

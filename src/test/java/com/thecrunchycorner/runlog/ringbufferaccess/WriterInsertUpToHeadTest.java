@@ -3,7 +3,7 @@ package com.thecrunchycorner.runlog.ringbufferaccess;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
+import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class WriterInsertUpToHeadTest {
 
-    private RingBuffer<Integer> buffer;
+    private RingBufferStore<Integer> buffer;
     private Writer writer;
     private ProcProperties procProps;
     private int bufferSize;
@@ -24,7 +24,7 @@ public class WriterInsertUpToHeadTest {
     @Before
     public void setup() {
         bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
-        buffer = new RingBuffer(bufferSize);
+        buffer = new RingBufferStore(bufferSize);
         busProcHead = 10;
 
         PosController proc = PosControllerFactory.getController();

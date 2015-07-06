@@ -1,17 +1,20 @@
 package com.thecrunchycorner.runlog.ringbufferprocessor;
 
+import com.thecrunchycorner.runlog.ringbufferaccess.Message;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType;
+
 import java.util.Observable;
 import java.util.Observer;
 
 public class ObserverProcessor implements Observer {
-    private int value = 20;
+    private Message msg = new Message(MsgType.NULL_MSG, 0);
 
-    public int getValue() {
-        return value;
+    public final Message getMsg() {
+        return msg;
     }
 
-    public void update(Observable o, Object arg) {
-        value = (Integer)arg;
+    public final void update(Observable o, Object arg) {
+        msg = (Message)arg;
     }
 
 }

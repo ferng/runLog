@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Readers can only read up to the position in the buffer where a write has placed a message specifically for them. Same goes for writers.
@@ -16,45 +17,45 @@ import java.util.HashMap;
 public class PosController {
     private static Logger logger = LogManager.getLogger(PosController.class);
 
-    private HashMap<ProcessorType, Integer> posMap = new HashMap<ProcessorType, Integer>(ProcessorType.values().length);
+    private Map<ProcessorType, Integer> posMap = new HashMap<ProcessorType, Integer>(ProcessorType.values().length);
 
     /**
      * @throws IllegalArgumentException - If any parameter is null
      */
-    public void setPos(ProcessorType procType, Integer pos) {
+    public final void setPos(ProcessorType procType, Integer pos) {
         if (procType == null || pos == null) {
             logger.error("Arguments cannot be null: proctype[{}] pos[{}]", procType, pos);
             throw new IllegalArgumentException("Arguments cannot be null");
+        } else {
+            posMap.put(procType, pos);
         }
-
-        posMap.put(procType, pos);
     }
 
 
     /**
      * @throws IllegalArgumentException - If any parameter is null
      */
-    public void incrPos(ProcessorType procType) {
+    public final void incrPos(ProcessorType procType) {
         if (procType == null) {
-            logger.error("Arguments cannot be null: proctype[{}]", procType);
+            logger.error("Arguments cannot be null: proctype");
             throw new IllegalArgumentException("Arguments cannot be null");
+        } else {
+            int pos = posMap.get(procType);
+            posMap.put(procType, pos + 1);
         }
-
-        int pos = posMap.get(procType);
-        posMap.put(procType, pos + 1);
     }
 
 
     /**
      * @throws IllegalArgumentException - If any parameter is null
      */
-    public Integer getPos(ProcessorType procType) {
+    public final Integer getPos(ProcessorType procType) {
         if (procType == null) {
-            logger.error("Arguments cannot be null: proctype[{}]", procType);
+            logger.error("Arguments cannot be null: proctype");
             throw new IllegalArgumentException("Arguments cannot be null");
+        } else {
+            return posMap.get(procType);
         }
-
-        return posMap.get(procType);
     }
 
 

@@ -1,7 +1,7 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
-import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
-import com.thecrunchycorner.runlog.ringbuffer.enums.OpStatus;
+import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
+import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 
@@ -19,7 +19,7 @@ public class Writer {
 
     private PosController posController = PosControllerFactory.getController();
 
-    private RingBuffer buffer;
+    private RingBufferStore buffer;
     private ProcessorType processor;
     private ProcessorType myLead;
     private int head;
@@ -49,7 +49,7 @@ public class Writer {
      * @return OpStatus.WRITE_SUCCESS if object was successfully written to the buffer
      * or, OpStatus.HEADER_REACHED if there was no room, it is up to the client to wait an appropriate amount of time before retrying.
      */
-    public OpStatus write(Object msg) {
+    public final OpStatus write(Object msg) {
         int pos = posController.getPos(processor);
 
         if (msg == null) {
@@ -64,7 +64,7 @@ public class Writer {
             }
         }
 
-        buffer.put(pos, msg);
+        buffer.set(pos, msg);
         posController.incrPos(processor);
 
         return OpStatus.WRITE_SUCCESS;

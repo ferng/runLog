@@ -1,6 +1,6 @@
 package com.thecrunchycorner.runlog.ringbufferaccess
 
-import com.thecrunchycorner.runlog.ringbuffer.RingBuffer
+import com.thecrunchycorner.runlog.msgstore.RingBufferStore
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder
 import com.thecrunchycorner.runlog.services.SystemProperties
@@ -12,7 +12,7 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
     def 'test'() {
         given:
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
-        def buffer = new RingBuffer(bufferSize)
+        def buffer = new RingBufferStore(bufferSize)
         def busProcHead = 10
         def inputProcHead = 0
 

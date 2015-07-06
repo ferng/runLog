@@ -1,11 +1,8 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
-import com.thecrunchycorner.runlog.ringbuffer.RingBuffer;
+import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Provides client classes with the means to read from a buffer.  Each reader is unique to the processor using it and keeps track of:
@@ -14,11 +11,9 @@ import org.apache.logging.log4j.Logger;
  * 3) where it can read up to
  */
 public class Reader {
-    private static Logger logger = LogManager.getLogger(Writer.class);
-
     private PosController posController = PosControllerFactory.getController();
 
-    private RingBuffer buffer;
+    private RingBufferStore buffer;
     private ProcessorType processor;
     private ProcessorType myLead;
     private int head;
@@ -46,7 +41,7 @@ public class Reader {
     /**
      * Retrieves an object from its buffer or null if none, it is up to the client to wait an appropriate amount of time before retrying.
      */
-    public Object read() {
+    public final Object read() {
         int pos = posController.getPos(processor);
 
         if (pos == head) {
@@ -67,7 +62,7 @@ public class Reader {
      * @param timeout - millisesonds to wait until we give up
      * @throws InterruptedException if interrupted while waiting
      */
-    public Object read(long timeout) throws InterruptedException {
+    public final Object read(long timeout) throws InterruptedException {
         int pos = posController.getPos(processor);
 
         if (pos == head) {
@@ -89,14 +84,15 @@ public class Reader {
      * @param attempts - how many times to retry the read before giving up
      * @param timeout  - millisesonds to wait until we give up
      */
-    public Object read(long timeout, long attempts) throws InterruptedException {
+    public final Object read(long timeout, long attempts) throws InterruptedException {
         int pos = posController.getPos(processor);
+        long attemptsLeft = attempts;
 
-        while (attempts > 0) {
+        while (attemptsLeft > 0) {
             if (pos == head) {
                 Thread.sleep(timeout);
                 head = posController.getPos(myLead);
-                attempts--;
+                attemptsLeft--;
             } else {
                 posController.incrPos(processor);
                 return buffer.get(pos);
