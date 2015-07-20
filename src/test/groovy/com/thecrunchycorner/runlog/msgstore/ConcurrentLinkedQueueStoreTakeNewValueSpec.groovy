@@ -5,7 +5,7 @@ import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType
 
 import spock.lang.Specification
 
-class ConcurrentLinkedQueueStorePollNewValueSpec extends Specification{
+class ConcurrentLinkedQueueStoreTakeNewValueSpec extends Specification{
 
     def 'test'() {
         given:

@@ -1,27 +1,15 @@
-package com.thecrunchycorner.runlog.ringbufferprocessor
+package com.thecrunchycorner.runlog.processors
 
-import com.thecrunchycorner.runlog.msgstore.LinkedBlockingQueueStore
-import com.thecrunchycorner.runlog.msgstore.RingBufferStore
+import com.thecrunchycorner.runlog.processors.ObserverProcessor
 import com.thecrunchycorner.runlog.ringbufferaccess.Message
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType
-import com.thecrunchycorner.runlog.services.SystemProperties
 
 import spock.lang.Specification
 
-import java.util.concurrent.LinkedBlockingQueue
-
-class ProcessorGetMsgObjectSpec extends Specification{
+class ObserverProcessorNotifySpec extends Specification{
 
     def 'test'() {
         given:
-        //Mocks are broken for classes (what???) using the real class instead
-        def qStore = new LinkedBlockingQueueStore()
-        def ringStore = new RingBufferStore(SystemProperties.get("threshold.buffer.minimum.size"))
-
-        
-
-
-
         def random = new Random()
         def processor = new ObserverProcessor()
         def notifier = new Notifier()

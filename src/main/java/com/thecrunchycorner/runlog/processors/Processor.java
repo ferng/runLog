@@ -1,4 +1,4 @@
-package com.thecrunchycorner.runlog.ringbufferprocessor;
+package com.thecrunchycorner.runlog.processors;
 
 import com.thecrunchycorner.runlog.msgstore.Store;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;

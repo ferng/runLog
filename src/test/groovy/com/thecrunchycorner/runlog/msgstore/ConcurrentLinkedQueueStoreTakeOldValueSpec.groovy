@@ -5,7 +5,7 @@ import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType
 
 import spock.lang.Specification
 
-class ConcurrentLinkedQueueStorePollNullSpec extends Specification{
+class ConcurrentLinkedQueueStoreTakeOldValueSpec extends Specification{
 
     def 'test'() {
         given:
@@ -20,11 +20,9 @@ class ConcurrentLinkedQueueStorePollNullSpec extends Specification{
         store.add(oldMsg)
         store.add(newMsg)
         def returnVal = store.take()
-        returnVal = store.take()
-        returnVal = store.take()
 
         then:
-        returnVal == null
+        returnVal == oldMsg
     }
 
 

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  *              The queue carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
  */
-public class LinkedBlockingQueueStore<E> implements Store<E>, Runnable{
+public class LinkedBlockingQueueStore<E> implements Store<E>{
     private static Logger logger = LogManager.getLogger(LinkedBlockingQueueStore.class);
 
     private ConcurrentLinkedQueue queue;
@@ -42,8 +42,4 @@ public class LinkedBlockingQueueStore<E> implements Store<E>, Runnable{
         return (E) queue.poll();
     }
 
-
-    public void run() {
-
-    }
 }
