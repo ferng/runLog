@@ -28,7 +28,7 @@ public final class SystemProperties {
     /**
      * Retrieve property value using the property identifier given
      */
-    public static String get(String id) {
+    public static synchronized String get(String id) {
         if (! propertiesInitialized()) {
             loadSystemProperties();
         }
@@ -49,7 +49,6 @@ public final class SystemProperties {
         if (! propertiesInitialized()) {
             loadSystemProperties();
         }
-
         propMap.put(id, value);
     }
 

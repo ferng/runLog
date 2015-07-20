@@ -36,6 +36,11 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
+    /**
+     * @param pos - the index to write to
+     * @param item - the new value
+     * @return - the value of the array position prior to any update
+     */
     public final E set(int pos, E item) {
         int realPos = pos % modSize;
         E prevVal = get(pos);
@@ -43,17 +48,24 @@ public class RingBufferStore<E> implements Store<E> {
             realPos--;
         }
         buffer.set(realPos % modSize, item);
-        logger.debug("set: {} at {} (internal {})", item, pos, realPos);
+        logger.debug("value [{}] placed at index[{}] (real position [{}])", item, pos, realPos);
 
         return prevVal;
     }
 
 
+    /**
+     * @param pos - the index to read from
+     * @return - the value of the array position
+     */
     public final E get(int pos) {
         return buffer.get(pos % modSize);
     }
 
 
+    /**
+     * @return - the size of the array
+     */
     public final int size() {
         return buffer.length();
     }
