@@ -10,43 +10,41 @@ import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
 
 public class QueueToRingProcessor extends Processor implements Runnable {
+    private LinkedBlockingQueueStore queue;
     private ProcessorID writeProcID;
     private ProcessorID writeLeadProcID;
-    private LinkedBlockingQueueStore queue;
-    private RingBufferStore ring;
-    private ProcProperties procProps;
     private volatile boolean interrupt = false;
 
 
     public QueueToRingProcessor(LinkedBlockingQueueStore queue, RingBufferStore ring) {
         this.queue = queue;
-        this.ring = ring;
 
         writeProcID = ProcessorID.INPUT_QUEUE_PROCESSOR;
         writeLeadProcID = ProcessorID.UNMARSHALER;
 
-        initRingWriter(ring, 0);
-    }
-
-
-    @Override
-    protected void initRingWriter(RingBufferStore store, int initPos) {
-        posCtrlr.setPos(writeProcID, initPos);
+        ProcProperties procProps;
+        posCtrlr.setPos(writeProcID, 0);
         int leadProcHead = posCtrlr.getPos(writeLeadProcID);
 
         procProps = new ProcPropertiesBuilder()
-                .setBuffer(store)
+                .setBuffer(ring)
                 .setProcessor(writeProcID)
                 .setLeadProc(writeLeadProcID)
                 .setInitialHead(leadProcHead)
                 .createProcProperties();
 
+        initRingWriter(procProps);
+    }
+
+
+    @Override
+    protected void initRingWriter(ProcProperties procProps) {
         writer = new Writer(procProps);
     }
 
 
     @Override
-    protected void initRingReader(RingBufferStore store, int initPos) {
+    protected void initRingReader(ProcProperties procProps) {
 
     }
 

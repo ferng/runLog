@@ -6,17 +6,16 @@ import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
 
-public class RingUnmarshalerProcessor extends RingProcessor implements Runnable {
+public class RingBusinessProcessor extends RingProcessor implements Runnable {
 
-    public RingUnmarshalerProcessor(RingBufferStore ring) {
-        ProcProperties procProps = getWriterProcProperties(ring);
+    public RingBusinessProcessor(RingBufferStore readRing, RingBufferStore writeRing) {
+        initRingReader(getProcProperties(readRing));
 
-        initRingWriter(procProps);
-        initRingReader(procProps);
+        initRingWriter(getProcProperties(writeRing));
     }
 
 
-    private ProcProperties getWriterProcProperties(RingBufferStore ring) {
+    private ProcProperties getProcProperties(RingBufferStore ring) {
         ringProcID = ProcessorID.UNMARSHALER;
         ringLeadProcID = ProcessorID.BUSINESS_PROCESSOR;
 
