@@ -2,7 +2,6 @@ package com.thecrunchycorner.runlog.processors;
 
 import com.thecrunchycorner.runlog.msgstore.LinkedBlockingQueueStore;
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
-import com.thecrunchycorner.runlog.msgstore.Store;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.Message;
 import com.thecrunchycorner.runlog.ringbufferaccess.PosController;
@@ -12,13 +11,13 @@ import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
 
-public class QueueToRingProcessor implements Processor, Runnable{
+public class QueueToRingProcessor extends Processor implements Runnable{
     private LinkedBlockingQueueStore queue;
     private RingBufferStore ring;
     private ProcProperties procProps;
     private Writer writer;
     private PosController posCtrlr = PosControllerFactory.getController();
-
+    private volatile boolean interrupt = false;
 
 
     public QueueToRingProcessor(LinkedBlockingQueueStore queue, RingBufferStore ring) {
@@ -30,8 +29,8 @@ public class QueueToRingProcessor implements Processor, Runnable{
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(ring)
-                .setProcessor(ProcessorType.INPUT_PROCESSOR)
-                .setLeadProc(ProcessorType.BUSINESS_PROCESSOR)
+                .setProcessor(ProcessorType.BUSINESS_PROCESSOR)
+                .setLeadProc(ProcessorType.INPUT_PROCESSOR)
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 
@@ -39,27 +38,47 @@ public class QueueToRingProcessor implements Processor, Runnable{
     }
 
 
-    public Message getMessage(Store store) {
-        return null;
+    @Override
+    protected Message getMessage() {
+        return (Message) queue.take();
     }
 
-    public Message processMessage(Message msg) {
+
+    @Override
+    protected Message processMessage(Message msg) {
         return msg;
     }
 
-    public OpStatus putMessage(Store store, Message msg) {
-        return null;
+
+    @Override
+    protected OpStatus putMessage(Message msg) {
+        return writer.write(msg);
     }
 
-    public boolean updatePos(PosController pCtrlr) {
-        return false;
+
+    @Override
+    protected void nextPos(ProcessorType prcType) {
+        posCtrlr.incrPos(prcType);
     }
+
+
+    public void reqInterrupt() {
+        interrupt = true;
+    }
+
 
     public void run() {
-//        while (true) {
-            Message msg = processMessage((Message) queue.take());
-            while (writer.write(msg) != OpStatus.WRITE_SUCCESS) {
-            }
-//        }
+        while (! interrupt) {
+            getAndProcessMsg();
+        }
+    }
+
+
+    protected void getAndProcessMsg() {
+        Message msg = processMessage(getMessage());
+        while (putMessage(msg) == OpStatus.HEADER_REACHED) {
+
+        }
+        nextPos(ProcessorType.BUSINESS_PROCESSOR);
     }
 }

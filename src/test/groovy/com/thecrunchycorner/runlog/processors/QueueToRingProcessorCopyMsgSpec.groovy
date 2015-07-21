@@ -29,12 +29,13 @@ class QueueToRingProcessorCopyMsgSpec extends Specification {
         when:
         qStore.add(newMsg)
 
-        proc.run()
+
+        proc.getAndProcessMsg()
 
         then:
         ((Message) ringStore.get(0)).getPayload() == newMsg.getPayload()
-
-
     }
+
+
 
 }
