@@ -1,7 +1,7 @@
 package com.thecrunchycorner.runlog.ringbufferaccess
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder
 import com.thecrunchycorner.runlog.services.SystemProperties
 
@@ -17,12 +17,12 @@ class ReaderMultipleSpec extends Specification {
         def busProcHead = 10
 
         def PosController proc = PosControllerFactory.getController()
-        proc.setPos(ProcessorType.BUSINESS_PROCESSOR, 0)
+        proc.setPos(ProcessorID.BUSINESS_PROCESSOR, 0)
 
         def busProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorType.BUSINESS_PROCESSOR)
-                .setLeadProc(ProcessorType.INPUT_PROCESSOR)
+                .setProcessor(ProcessorID.BUSINESS_PROCESSOR)
+                .setLeadProc(ProcessorID.INPUT_QUEUE_PROCESSOR)
                 .setInitialHead(busProcHead)
                 .createProcProperties()
 
@@ -30,8 +30,8 @@ class ReaderMultipleSpec extends Specification {
 
         def inputProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorType.INPUT_PROCESSOR)
-                .setLeadProc(ProcessorType.BUSINESS_PROCESSOR)
+                .setProcessor(ProcessorID.INPUT_QUEUE_PROCESSOR)
+                .setLeadProc(ProcessorID.BUSINESS_PROCESSOR)
                 .setInitialHead(inputProcHead)
                 .createProcProperties()
 

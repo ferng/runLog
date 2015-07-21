@@ -1,7 +1,7 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 
 /**
@@ -14,8 +14,8 @@ public class Reader {
     private PosController posController = PosControllerFactory.getController();
 
     private RingBufferStore buffer;
-    private ProcessorType processor;
-    private ProcessorType myLead;
+    private ProcessorID processor;
+    private ProcessorID myLead;
     private int head;
 
 

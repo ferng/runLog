@@ -1,7 +1,7 @@
 package com.thecrunchycorner.runlog.ringbufferprocessor;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 
 
 /**
@@ -9,11 +9,11 @@ import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
  */
 public class ProcProperties {
     private RingBufferStore buffer;
-    private ProcessorType procType;
-    private ProcessorType leadProcType;
+    private ProcessorID procType;
+    private ProcessorID leadProcType;
     private int initialHead;
 
-    protected ProcProperties(RingBufferStore buffer, ProcessorType procType, ProcessorType leadProcType, int initialHead) {
+    protected ProcProperties(RingBufferStore buffer, ProcessorID procType, ProcessorID leadProcType, int initialHead) {
         this.buffer = buffer;
         this.procType = procType;
         this.leadProcType = leadProcType;
@@ -24,11 +24,11 @@ public class ProcProperties {
         return buffer;
     }
 
-    public final ProcessorType getProc() {
+    public final ProcessorID getProc() {
         return procType;
     }
 
-    public final ProcessorType getLeadProc() {
+    public final ProcessorID getLeadProc() {
         return leadProcType;
     }
 

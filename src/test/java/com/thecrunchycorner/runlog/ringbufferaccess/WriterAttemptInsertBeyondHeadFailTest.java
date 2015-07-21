@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
 import com.thecrunchycorner.runlog.services.SystemProperties;
@@ -29,16 +29,16 @@ public class WriterAttemptInsertBeyondHeadFailTest {
         busProcHead = 10;
 
         PosController proc = PosControllerFactory.getController();
-        proc.setPos(ProcessorType.BUSINESS_PROCESSOR, 0);
+        proc.setPos(ProcessorID.BUSINESS_PROCESSOR, 0);
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorType.BUSINESS_PROCESSOR)
-                .setLeadProc(ProcessorType.INPUT_PROCESSOR)
+                .setProcessor(ProcessorID.BUSINESS_PROCESSOR)
+                .setLeadProc(ProcessorID.INPUT_QUEUE_PROCESSOR)
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 
-        proc.setPos(ProcessorType.INPUT_PROCESSOR, busProcHead);
+        proc.setPos(ProcessorID.INPUT_QUEUE_PROCESSOR, busProcHead);
 
         writer = new Writer(procProps);
     }

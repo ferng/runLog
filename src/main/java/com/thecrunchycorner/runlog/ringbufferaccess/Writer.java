@@ -2,7 +2,7 @@ package com.thecrunchycorner.runlog.ringbufferaccess;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,8 +20,8 @@ public class Writer {
     private PosController posController = PosControllerFactory.getController();
 
     private RingBufferStore buffer;
-    private ProcessorType processor;
-    private ProcessorType myLead;
+    private ProcessorID processor;
+    private ProcessorID myLead;
     private int head;
 
 

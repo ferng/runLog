@@ -1,15 +1,15 @@
 package com.thecrunchycorner.runlog.ringbufferprocessor;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 
 /**
  * Used to instantiate ProcProperties. Behaviour is undefined if ProcProperties is instantiated directly.
  */
 public class ProcPropertiesBuilder {
     private RingBufferStore buffer;
-    private ProcessorType proc;
-    private ProcessorType leadProc;
+    private ProcessorID proc;
+    private ProcessorID leadProc;
     private int initialHead;
 
 
@@ -25,7 +25,7 @@ public class ProcPropertiesBuilder {
     /**
      * ID of the processor accessing the buffer.
      */
-    public final ProcPropertiesBuilder setProcessor(ProcessorType proc) {
+    public final ProcPropertiesBuilder setProcessor(ProcessorID proc) {
         this.proc = proc;
         return this;
     }
@@ -35,7 +35,7 @@ public class ProcPropertiesBuilder {
      * Id of the processor we are following so we don't jump ahead of it to avoid reading stale data or loose our data somewhere
      * as it will be overwritte
      */
-    public final ProcPropertiesBuilder setLeadProc(ProcessorType leadProc) {
+    public final ProcPropertiesBuilder setLeadProc(ProcessorID leadProc) {
         this.leadProc = leadProc;
         return this;
     }

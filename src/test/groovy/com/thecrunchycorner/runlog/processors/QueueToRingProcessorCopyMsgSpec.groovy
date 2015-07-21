@@ -4,7 +4,7 @@ import com.thecrunchycorner.runlog.msgstore.RingBufferStore
 import com.thecrunchycorner.runlog.ringbufferaccess.Message
 import com.thecrunchycorner.runlog.ringbufferaccess.PosControllerFactory
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID
 import com.thecrunchycorner.runlog.services.SystemProperties
 
 import spock.lang.Specification
@@ -18,7 +18,7 @@ class QueueToRingProcessorCopyMsgSpec extends Specification {
         def newMsg = new Message(MsgType.QUEUE_PAYLOAD, newValue)
 
         def posCtrlr = PosControllerFactory.getController()
-        posCtrlr.setPos(ProcessorType.BUSINESS_PROCESSOR, 10);
+        posCtrlr.setPos(ProcessorID.UNMARSHALER, 10);
 
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
         def ringStore = new RingBufferStore(bufferSize)

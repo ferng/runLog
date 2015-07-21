@@ -1,6 +1,6 @@
 package com.thecrunchycorner.runlog.ringbufferaccess;
 
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,12 +17,12 @@ import java.util.Map;
 public class PosController {
     private static Logger logger = LogManager.getLogger(PosController.class);
 
-    private Map<ProcessorType, Integer> posMap = new HashMap<ProcessorType, Integer>(ProcessorType.values().length);
+    private Map<ProcessorID, Integer> posMap = new HashMap<ProcessorID, Integer>(ProcessorID.values().length);
 
     /**
      * @throws IllegalArgumentException - If any parameter is null
      */
-    public final void setPos(ProcessorType procType, Integer pos) {
+    public final void setPos(ProcessorID procType, Integer pos) {
         if (procType == null || pos == null) {
             logger.error("Arguments cannot be null: proctype[{}] pos[{}]", procType, pos);
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -35,7 +35,7 @@ public class PosController {
     /**
      * @throws IllegalArgumentException - If any parameter is null
      */
-    public final void incrPos(ProcessorType procType) {
+    public final void incrPos(ProcessorID procType) {
         if (procType == null) {
             logger.error("Arguments cannot be null: proctype");
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -49,7 +49,7 @@ public class PosController {
     /**
      * @throws IllegalArgumentException - If any parameter is null
      */
-    public final Integer getPos(ProcessorType procType) {
+    public final Integer getPos(ProcessorID procType) {
         if (procType == null) {
             logger.error("Arguments cannot be null: proctype");
             throw new IllegalArgumentException("Arguments cannot be null");

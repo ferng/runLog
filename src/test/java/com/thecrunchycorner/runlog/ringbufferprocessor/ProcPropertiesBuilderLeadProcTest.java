@@ -4,7 +4,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorType;
+import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
 import org.junit.After;
@@ -23,8 +23,8 @@ public class ProcPropertiesBuilderLeadProcTest {
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorType.BUSINESS_PROCESSOR)
-                .setLeadProc(ProcessorType.INPUT_PROCESSOR)
+                .setProcessor(ProcessorID.BUSINESS_PROCESSOR)
+                .setLeadProc(ProcessorID.INPUT_QUEUE_PROCESSOR)
                 .setInitialHead(initialHead)
                 .createProcProperties();
     }
@@ -38,7 +38,7 @@ public class ProcPropertiesBuilderLeadProcTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getLeadProc(), is(ProcessorType.INPUT_PROCESSOR));
+        assertThat(procProps.getLeadProc(), is(ProcessorID.INPUT_QUEUE_PROCESSOR));
     }
 
 }
