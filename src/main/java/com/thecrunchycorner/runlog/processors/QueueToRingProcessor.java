@@ -25,16 +25,17 @@ public class QueueToRingProcessor extends Processor implements Runnable {
         writeProcID = ProcessorID.INPUT_QUEUE_PROCESSOR;
         writeLeadProcID = ProcessorID.UNMARSHALER;
 
-        initWriter(0);
+        initRingWriter(ring, 0);
     }
 
 
-    protected void initWriter(int initPos) {
+    @Override
+    protected void initRingWriter(RingBufferStore store, int initPos) {
         posCtrlr.setPos(writeProcID, initPos);
         int leadProcHead = posCtrlr.getPos(writeLeadProcID);
 
         procProps = new ProcPropertiesBuilder()
-                .setBuffer(ring)
+                .setBuffer(store)
                 .setProcessor(writeProcID)
                 .setLeadProc(writeLeadProcID)
                 .setInitialHead(leadProcHead)
@@ -44,16 +45,25 @@ public class QueueToRingProcessor extends Processor implements Runnable {
     }
 
 
+    @Override
+    protected void initRingReader(RingBufferStore store, int initPos) {
+
+    }
+
+
+    @Override
     protected Message getMessage() {
         return (Message) queue.take();
     }
 
 
+    @Override
     protected Message processMessage(Message msg) {
         return msg;
     }
 
 
+    @Override
     protected OpStatus putMessage(Message msg) {
         return writer.write(msg);
     }
@@ -70,7 +80,7 @@ public class QueueToRingProcessor extends Processor implements Runnable {
         Message msg = processMessage(getMessage());
         while (putMessage(msg) == OpStatus.HEADER_REACHED) {
         }
-        nextPos(writeLeadProcID);
+        nextPos(writeProcID);
     }
 
 

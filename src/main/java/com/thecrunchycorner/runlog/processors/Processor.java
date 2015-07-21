@@ -1,5 +1,6 @@
 package com.thecrunchycorner.runlog.processors;
 
+import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.Message;
 import com.thecrunchycorner.runlog.ringbufferaccess.PosController;
@@ -19,7 +20,9 @@ public abstract class Processor {
 
     protected abstract OpStatus putMessage(Message msg);
 
-    protected abstract void initWriter(int initPos);
+    protected abstract void initRingReader(RingBufferStore ring, int initPos);
+
+    protected abstract void initRingWriter(RingBufferStore ring, int initPos);
 
     protected void nextPos(ProcessorID prcType) {
         posCtrlr.incrPos(prcType);
