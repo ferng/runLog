@@ -20,7 +20,7 @@ public class QueueToRingProcessor extends Processor implements Runnable {
         this.queue = queue;
 
         writeProcID = ProcessorID.INPUT_QUEUE_PROCESSOR;
-        writeLeadProcID = ProcessorID.UNMARSHALER;
+        writeLeadProcID = ProcessorWorkflow.getLeadProc(writeProcID);
 
         ProcProperties procProps;
         posCtrlr.setPos(writeProcID, 0);

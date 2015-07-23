@@ -4,6 +4,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
+import com.thecrunchycorner.runlog.processors.ProcessorWorkflow;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
@@ -20,7 +21,11 @@ public class ProcPropertiesLeadProcTest {
     @Before
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
-        procProps = new ProcProperties(buffer, ProcessorID.BUSINESS_PROCESSOR, ProcessorID.INPUT_QUEUE_PROCESSOR, initialHead);
+
+        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
+
+        procProps = new ProcProperties(buffer, trailProc, leadProc, initialHead);
     }
 
 
@@ -32,7 +37,7 @@ public class ProcPropertiesLeadProcTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getLeadProc(), is(ProcessorID.INPUT_QUEUE_PROCESSOR));
+        assertThat(procProps.getLeadProc(), is(ProcessorID.UNMARSHALER));
     }
 
 }

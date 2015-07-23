@@ -17,7 +17,7 @@ public class RingBusinessProcessor extends RingProcessor implements Runnable {
 
     private ProcProperties getProcProperties(RingBufferStore ring) {
         ringProcID = ProcessorID.UNMARSHALER;
-        ringLeadProcID = ProcessorID.BUSINESS_PROCESSOR;
+        ringLeadProcID = ProcessorWorkflow.getLeadProc(ringProcID);
 
         ProcProperties procProps;
         posCtrlr.setPos(ringProcID, 0);

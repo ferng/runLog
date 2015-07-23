@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
+import com.thecrunchycorner.runlog.processors.ProcessorWorkflow;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
@@ -22,6 +23,8 @@ public class WriterGetNewHeadTest {
     private int bufferSize;
     private int busProcHead;
     private PosController proc;
+    private ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+    private ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
     @Before
     public void setup() {
@@ -30,16 +33,16 @@ public class WriterGetNewHeadTest {
         busProcHead = 10;
 
         proc = PosControllerFactory.getController();
-        proc.setPos(ProcessorID.BUSINESS_PROCESSOR, 0);
+        proc.setPos(trailProc, 0);
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorID.BUSINESS_PROCESSOR)
-                .setLeadProc(ProcessorID.INPUT_QUEUE_PROCESSOR)
+                .setProcessor(trailProc)
+                .setLeadProc(leadProc)
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 
-        proc.setPos(ProcessorID.INPUT_QUEUE_PROCESSOR, busProcHead);
+        proc.setPos(leadProc, busProcHead);
 
         writer = new Writer(procProps);
     }
@@ -59,7 +62,7 @@ public class WriterGetNewHeadTest {
         }
 
         busProcHead += 10;
-        proc.setPos(ProcessorID.INPUT_QUEUE_PROCESSOR, busProcHead);
+        proc.setPos(leadProc, busProcHead);
 
         for (int i = 10; i < busProcHead; i++) {
             writer.write(new Integer((i)));

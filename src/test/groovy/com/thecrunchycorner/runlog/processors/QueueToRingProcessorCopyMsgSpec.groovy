@@ -18,7 +18,7 @@ class QueueToRingProcessorCopyMsgSpec extends Specification {
         def newMsg = new Message(MsgType.QUEUE_PAYLOAD, newValue)
 
         def posCtrlr = PosControllerFactory.getController()
-        posCtrlr.setPos(ProcessorID.UNMARSHALER, 10);
+        posCtrlr.setPos(ProcessorID.BUSINESS_PROCESSOR, 10);
 
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
         def ringStore = new RingBufferStore(bufferSize)

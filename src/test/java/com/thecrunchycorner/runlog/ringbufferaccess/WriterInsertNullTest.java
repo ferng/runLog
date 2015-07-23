@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
+import com.thecrunchycorner.runlog.processors.ProcessorWorkflow;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
@@ -28,13 +29,16 @@ public class WriterInsertNullTest {
         buffer = new RingBufferStore(bufferSize);
         busProcHead = 10;
 
+        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
+
         PosController proc = PosControllerFactory.getController();
-        proc.setPos(ProcessorID.BUSINESS_PROCESSOR, 0);
+        proc.setPos(leadProc, 0);
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorID.BUSINESS_PROCESSOR)
-                .setLeadProc(ProcessorID.INPUT_QUEUE_PROCESSOR)
+                .setProcessor(leadProc)
+                .setLeadProc(trailProc)
                 .setInitialHead(busProcHead)
                 .createProcProperties();
 

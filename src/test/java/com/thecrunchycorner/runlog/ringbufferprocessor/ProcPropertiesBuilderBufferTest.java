@@ -3,6 +3,7 @@ package com.thecrunchycorner.runlog.ringbufferprocessor;
 import static org.junit.Assert.assertEquals;
 
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
+import com.thecrunchycorner.runlog.processors.ProcessorWorkflow;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.services.SystemProperties;
 
@@ -19,11 +20,13 @@ public class ProcPropertiesBuilderBufferTest {
     @Before
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
+        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
-                .setProcessor(ProcessorID.BUSINESS_PROCESSOR)
-                .setLeadProc(ProcessorID.INPUT_QUEUE_PROCESSOR)
+                .setProcessor(trailProc)
+                .setLeadProc(leadProc)
                 .setInitialHead(initialHead)
                 .createProcProperties();
     }

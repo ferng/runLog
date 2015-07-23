@@ -18,7 +18,7 @@ public class RingUnmarshalerProcessor extends RingProcessor implements Runnable 
 
     private ProcProperties getWriterProcProperties(RingBufferStore ring) {
         ringProcID = ProcessorID.UNMARSHALER;
-        ringLeadProcID = ProcessorID.BUSINESS_PROCESSOR;
+        ringLeadProcID = ProcessorWorkflow.getLeadProc(ringProcID);
 
         ProcProperties procProps;
         posCtrlr.setPos(ringProcID, 0);
