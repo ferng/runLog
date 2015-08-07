@@ -22,7 +22,7 @@ public class ProcPropertiesLeadProcTest {
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
 
-        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
         ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         procProps = new ProcProperties(buffer, trailProc, leadProc, initialHead);
@@ -37,7 +37,7 @@ public class ProcPropertiesLeadProcTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getLeadProc(), is(ProcessorID.UNMARSHALER));
+        assertThat(procProps.getLeadProc(), is(ProcessorID.IN_UNMARSHALER));
     }
 
 }

@@ -21,7 +21,7 @@ public class ProcPropertiesProcTest {
     @Before
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
-        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
         ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         procProps = new ProcProperties(buffer, trailProc, leadProc, initialHead);
@@ -36,7 +36,7 @@ public class ProcPropertiesProcTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getProc(), is(ProcessorID.BUSINESS_PROCESSOR));
+        assertThat(procProps.getProc(), is(ProcessorID.IN_BUSINESS_PROCESSOR));
     }
 
 }

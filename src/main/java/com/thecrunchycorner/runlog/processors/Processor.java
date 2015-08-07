@@ -6,13 +6,32 @@ import com.thecrunchycorner.runlog.ringbufferaccess.PosController;
 import com.thecrunchycorner.runlog.ringbufferaccess.PosControllerFactory;
 import com.thecrunchycorner.runlog.ringbufferaccess.Reader;
 import com.thecrunchycorner.runlog.ringbufferaccess.Writer;
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 
 public abstract class Processor {
-    protected PosController posCtrlr = PosControllerFactory.getController();
-    protected Writer writer;
-    protected Reader reader;
+    private PosController posCtrlr = PosControllerFactory.getController();
+    private Writer writer;
+    private Reader reader;
+
+    public final PosController getPosCtrlr() {
+        return posCtrlr;
+    }
+
+    public final Writer getWriter() {
+        return writer;
+    }
+
+    public final void setWriter(Writer writer) {
+        this.writer = writer;
+    }
+
+    public final Reader getReader() {
+        return reader;
+    }
+
+    public final void setReader(Reader reader) {
+        this.reader = reader;
+    }
 
     protected abstract Message getMessage();
 
@@ -23,8 +42,4 @@ public abstract class Processor {
     protected abstract void initRingReader(ProcProperties procProps);
 
     protected abstract void initRingWriter(ProcProperties procProps);
-
-    protected void nextPos(ProcessorID prcType) {
-        posCtrlr.incrPos(prcType);
-    }
 }

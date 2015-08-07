@@ -9,7 +9,7 @@ import com.thecrunchycorner.runlog.services.SystemProperties
 
 import spock.lang.Specification
 
-class RingUnmarshalerProcessorCopyMsgSpec extends Specification {
+class BusinessProcessorCopyMsgSpec extends Specification {
 
     def 'test'() {
         given:
@@ -17,23 +17,28 @@ class RingUnmarshalerProcessorCopyMsgSpec extends Specification {
         def newValue = random.nextInt()
         def newMsg = new Message(MsgType.PAYLOAD, newValue)
 
-        def leadProcID = ProcessorID.IN_Q_RECEIVER
-        def posCtrlr = PosControllerFactory.getController()
-        posCtrlr.setPos(leadProcID, 0);
-
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
-        def ringStore = new RingBufferStore(bufferSize)
 
-        def proc = new RingUnmarshalerProcessor(ringStore)
+        def inLeadProcID = ProcessorID.IN_UNMARSHALER
+        def inPosCtrlr = PosControllerFactory.getController()
+        inPosCtrlr.setPos(inLeadProcID, 0);
+        def inRingStore = new RingBufferStore(bufferSize)
+
+        def outLeadProcID = ProcessorID.OUT_Q_SENDER
+        def outPosCtrlr = PosControllerFactory.getController()
+        outPosCtrlr.setPos(outLeadProcID, 10);
+        def outRingStore = new RingBufferStore(bufferSize)
+
+        def proc = new RingBusinessProcessor(inRingStore,outRingStore)
 
         when:
-        ringStore.set(0, newMsg)
-        posCtrlr.incrPos(leadProcID)
+        inRingStore.set(0, newMsg)
+        inPosCtrlr.incrPos(inLeadProcID)
 
         proc.getAndProcessMsg()
 
         then:
-        ((Message) ringStore.get(0)).getPayload() == newMsg.getPayload()
+        ((Message) outRingStore.get(0)).getPayload() == newMsg.getPayload()
     }
 
 

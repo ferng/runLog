@@ -21,7 +21,12 @@ class ProcessorWorkflowLeadOrderSpec extends Specification {
 
         where:
         trailProc                         | leadProc
-        ProcessorID.INPUT_QUEUE_PROCESSOR | ProcessorID.BUSINESS_PROCESSOR
+        ProcessorID.IN_Q_RECEIVER | ProcessorID.IN_BUSINESS_PROCESSOR
+        ProcessorID.IN_BUSINESS_PROCESSOR | ProcessorID.IN_UNMARSHALER
+        ProcessorID.IN_UNMARSHALER | ProcessorID.IN_Q_RECEIVER
+        ProcessorID.OUT_BUSINESS_PROCESSOR | ProcessorID.OUT_Q_SENDER
+        ProcessorID.OUT_Q_SENDER| ProcessorID.OUT_MARSHALER
+        ProcessorID.OUT_MARSHALER | ProcessorID.OUT_BUSINESS_PROCESSOR
     }
 
 

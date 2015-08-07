@@ -29,9 +29,9 @@ public class PosControllerSingleInsertTest {
     public void Test() {
         int inputIndex = 45;
 
-        posController.setPos(ProcessorID.INPUT_QUEUE_PROCESSOR, inputIndex);
+        posController.setPos(ProcessorID.IN_Q_RECEIVER, inputIndex);
 
-        assertThat(posController.getPos(ProcessorID.INPUT_QUEUE_PROCESSOR), is(inputIndex));
+        assertThat(posController.getPos(ProcessorID.IN_Q_RECEIVER), is(inputIndex));
     }
 
 }

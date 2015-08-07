@@ -11,7 +11,7 @@ class PosControllerSetPosNullPosExceptionSpec extends Specification {
         def PosController proc = PosControllerFactory.getController()
 
         when:
-        proc.setPos ProcessorID.BUSINESS_PROCESSOR, null
+        proc.setPos ProcessorID.IN_BUSINESS_PROCESSOR, null
 
         then:
         def exception = thrown(IllegalArgumentException)

@@ -23,7 +23,7 @@ public class LinkedBlockingQueueStore<E> implements Store<E>{
 
     /**
      * @param item - item to add to the tail of the queue
-     * @return - true
+     * @return - true if successful
      * @throws NullPointerException - if item is null
      */
     public final boolean add(E item) {
@@ -38,7 +38,7 @@ public class LinkedBlockingQueueStore<E> implements Store<E>{
     /**
      * @return - the head of of this queue or
      */
-    public  E take() {
+    public final E take() {
         return (E) queue.poll();
     }
 

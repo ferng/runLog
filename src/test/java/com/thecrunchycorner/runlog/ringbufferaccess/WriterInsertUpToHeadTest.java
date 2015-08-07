@@ -28,7 +28,7 @@ public class WriterInsertUpToHeadTest {
         buffer = new RingBufferStore(bufferSize);
         busProcHead = 10;
 
-        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
         ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         PosController proc = PosControllerFactory.getController();
@@ -60,7 +60,7 @@ public class WriterInsertUpToHeadTest {
             writer.write(new Integer((i)));
         }
 
-        assertThat(PosControllerFactory.getController().getPos(ProcessorID.BUSINESS_PROCESSOR), is(busProcHead));
+        assertThat(PosControllerFactory.getController().getPos(ProcessorID.IN_BUSINESS_PROCESSOR), is(busProcHead));
     }
 
 }

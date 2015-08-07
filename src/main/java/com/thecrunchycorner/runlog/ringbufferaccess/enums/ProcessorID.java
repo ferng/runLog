@@ -1,7 +1,10 @@
 package com.thecrunchycorner.runlog.ringbufferaccess.enums;
 
 public enum ProcessorID {
-    INPUT_QUEUE_PROCESSOR,
-    UNMARSHALER,
-    BUSINESS_PROCESSOR
+    IN_Q_RECEIVER,
+    IN_UNMARSHALER,
+    IN_BUSINESS_PROCESSOR,
+    OUT_BUSINESS_PROCESSOR,
+    OUT_MARSHALER,
+    OUT_Q_SENDER,
 }

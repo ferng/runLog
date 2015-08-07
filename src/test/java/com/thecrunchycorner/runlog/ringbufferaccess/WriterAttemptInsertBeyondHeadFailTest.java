@@ -28,7 +28,7 @@ public class WriterAttemptInsertBeyondHeadFailTest {
         bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
         buffer = new RingBufferStore(bufferSize);
         busProcHead = 10;
-        ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+        ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
         ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         PosController proc = PosControllerFactory.getController();

@@ -23,7 +23,7 @@ public class WriterGetNewHeadTest {
     private int bufferSize;
     private int busProcHead;
     private PosController proc;
-    private ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR;
+    private ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
     private ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
     @Before

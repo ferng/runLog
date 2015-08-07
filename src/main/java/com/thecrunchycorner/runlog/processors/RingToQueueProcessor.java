@@ -4,55 +4,53 @@ import com.thecrunchycorner.runlog.msgstore.LinkedBlockingQueueStore;
 import com.thecrunchycorner.runlog.msgstore.RingBufferStore;
 import com.thecrunchycorner.runlog.msgstore.enums.OpStatus;
 import com.thecrunchycorner.runlog.ringbufferaccess.Message;
-import com.thecrunchycorner.runlog.ringbufferaccess.Writer;
+import com.thecrunchycorner.runlog.ringbufferaccess.Reader;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder;
 
-public class QueueToRingProcessor extends Processor implements Runnable {
+public class RingToQueueProcessor extends Processor implements Runnable {
     private LinkedBlockingQueueStore queue;
-
     private volatile boolean interrupt = false;
 
 
-    public QueueToRingProcessor(LinkedBlockingQueueStore queue, RingBufferStore ring) {
-        ProcessorID writeProcID;
-        ProcessorID writeLeadProcID;
-
+    public RingToQueueProcessor(RingBufferStore ring, LinkedBlockingQueueStore queue) {
+        ProcessorID readProcID;
+        ProcessorID readLeadProcID;
         this.queue = queue;
 
-        writeProcID = ProcessorID.IN_Q_RECEIVER;
-        writeLeadProcID = ProcessorWorkflow.getLeadProc(writeProcID);
+        readProcID = ProcessorID.OUT_Q_SENDER;
+        readLeadProcID = ProcessorWorkflow.getLeadProc(readProcID);
 
         ProcProperties procProps;
-        getPosCtrlr().setPos(writeProcID, 0);
-        int leadProcHead = getPosCtrlr().getPos(writeLeadProcID);
+        getPosCtrlr().setPos(readProcID, 0);
+        int leadProcHead = getPosCtrlr().getPos(readLeadProcID);
 
         procProps = new ProcPropertiesBuilder()
                 .setBuffer(ring)
-                .setProcessor(writeProcID)
-                .setLeadProc(writeLeadProcID)
+                .setProcessor(readProcID)
+                .setLeadProc(readLeadProcID)
                 .setInitialHead(leadProcHead)
                 .createProcProperties();
 
-        initRingWriter(procProps);
+        initRingReader(procProps);
     }
 
 
     @Override
     protected final void initRingWriter(ProcProperties procProps) {
-        setWriter(new Writer(procProps));
     }
 
 
     @Override
     protected final void initRingReader(ProcProperties procProps) {
+        setReader(new Reader(procProps));
     }
 
 
     @Override
     protected final Message getMessage() {
-        return (Message) queue.take();
+        return (Message) getReader().read();
     }
 
 
@@ -64,7 +62,7 @@ public class QueueToRingProcessor extends Processor implements Runnable {
 
     @Override
     protected final OpStatus putMessage(Message msg) {
-        return getWriter().write(msg);
+        return (queue.add(msg) ? OpStatus.WRITE_SUCCESS : OpStatus.ERROR);
     }
 
 

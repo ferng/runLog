@@ -31,10 +31,10 @@ public class PosControllerMultipleInsertTest {
         int unMarshallerIndex = 84;
         int businessProcIndex = 72;
 
-        posController.setPos(ProcessorID.INPUT_QUEUE_PROCESSOR, inputIndex);
-        posController.setPos(ProcessorID.UNMARSHALER, unMarshallerIndex);
-        posController.setPos(ProcessorID.BUSINESS_PROCESSOR, businessProcIndex);
-        assertThat(posController.getPos(ProcessorID.INPUT_QUEUE_PROCESSOR), is(inputIndex));
+        posController.setPos(ProcessorID.IN_Q_RECEIVER, inputIndex);
+        posController.setPos(ProcessorID.IN_UNMARSHALER, unMarshallerIndex);
+        posController.setPos(ProcessorID.IN_BUSINESS_PROCESSOR, businessProcIndex);
+        assertThat(posController.getPos(ProcessorID.IN_Q_RECEIVER), is(inputIndex));
 
 
     }

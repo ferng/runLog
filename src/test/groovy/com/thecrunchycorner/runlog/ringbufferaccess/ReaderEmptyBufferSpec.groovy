@@ -16,7 +16,7 @@ class ReaderEmptyBufferSpec extends Specification {
         def buffer = new RingBufferStore(bufferSize)
         def inputProcHead = 0
         def busProcHead = 10
-        def ProcessorID trailProc = ProcessorID.BUSINESS_PROCESSOR
+        def ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR
         def ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc)
 
         def PosController proc = PosControllerFactory.getController()

@@ -5,10 +5,10 @@ import com.thecrunchycorner.runlog.ringbufferaccess.Message;
 import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID;
 import com.thecrunchycorner.runlog.ringbufferprocessor.ProcProperties;
 
-public class RingUnmarshalerProcessor extends RingProcessor implements Runnable {
+public class RingMarshalerProcessor extends RingProcessor implements Runnable {
 
-    public RingUnmarshalerProcessor(RingBufferStore ring) {
-        ProcProperties procProps = getProcProperties(ring, ProcessorID.IN_UNMARSHALER);
+    public RingMarshalerProcessor(RingBufferStore ring) {
+        ProcProperties procProps = getProcProperties(ring, ProcessorID.OUT_MARSHALER);
 
         initRingReader(procProps);
         initRingWriter(procProps);
