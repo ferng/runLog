@@ -1,10 +1,10 @@
-package com.thecrunchycorner.runlog.ringbufferaccess
+package com.thecrunchycorner.lmax.ringbufferaccess
 
-import com.thecrunchycorner.runlog.msgstore.RingBufferStore
-import com.thecrunchycorner.runlog.processors.ProcessorWorkflow
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID
-import com.thecrunchycorner.runlog.ringbufferprocessor.ProcPropertiesBuilder
-import com.thecrunchycorner.runlog.services.SystemProperties
+import com.thecrunchycorner.lmax.msgstore.RingBufferStore
+import com.thecrunchycorner.lmax.processors.ProcessorWorkflow
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
+import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder
+import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
 

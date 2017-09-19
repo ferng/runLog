@@ -1,4 +1,4 @@
-package com.thecrunchycorner.runlog.ringbufferaccess
+package com.thecrunchycorner.lmax.ringbufferaccess
 
 import spock.lang.Specification
 

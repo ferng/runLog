@@ -1,12 +1,12 @@
-package com.thecrunchycorner.runlog.processors
+package com.thecrunchycorner.lmax.processors
 
-import com.thecrunchycorner.runlog.msgstore.LinkedBlockingQueueStore
-import com.thecrunchycorner.runlog.msgstore.RingBufferStore
-import com.thecrunchycorner.runlog.ringbufferaccess.Message
-import com.thecrunchycorner.runlog.ringbufferaccess.PosControllerFactory
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID
-import com.thecrunchycorner.runlog.services.SystemProperties
+import com.thecrunchycorner.lmax.msgstore.LinkedBlockingQueueStore
+import com.thecrunchycorner.lmax.msgstore.RingBufferStore
+import com.thecrunchycorner.lmax.ringbufferaccess.Message
+import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.MsgType
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
+import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
 

@@ -1,6 +1,6 @@
-package com.thecrunchycorner.runlog.processors
+package com.thecrunchycorner.lmax.processors
 
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.ProcessorID
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
 
 import spock.lang.Specification
 

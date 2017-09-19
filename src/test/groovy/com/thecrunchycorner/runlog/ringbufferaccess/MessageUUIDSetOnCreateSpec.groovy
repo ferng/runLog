@@ -1,6 +1,6 @@
-package com.thecrunchycorner.runlog.ringbufferaccess
+package com.thecrunchycorner.lmax.ringbufferaccess
 
-import com.thecrunchycorner.runlog.ringbufferaccess.enums.MsgType
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.MsgType
 
 import spock.lang.Specification
 

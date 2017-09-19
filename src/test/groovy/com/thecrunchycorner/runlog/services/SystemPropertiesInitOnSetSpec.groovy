@@ -1,4 +1,4 @@
-package com.thecrunchycorner.runlog.services
+package com.thecrunchycorner.lmax.services
 
 import spock.lang.Specification
 
