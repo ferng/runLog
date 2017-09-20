@@ -5,7 +5,8 @@ import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
 
 
 /**
- * Immutable details about the processor. Must be instantiated through ProcPropertiesBuilder, behaviour is undefined otherwise.
+ * Immutable details about the processor. Must be instantiated through
+ * ProcPropertiesBuilder, behaviour is undefined otherwise.
  */
 public class ProcProperties {
     private RingBufferStore buffer;

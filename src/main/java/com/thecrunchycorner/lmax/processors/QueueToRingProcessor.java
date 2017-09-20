@@ -10,12 +10,12 @@ import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
 
 public class QueueToRingProcessor extends Processor implements Runnable {
-    private LinkedBlockingQueueStore queue;
+    private LinkedBlockingQueueStore<Message> queue;
 
     private volatile boolean interrupt = false;
 
 
-    public QueueToRingProcessor(LinkedBlockingQueueStore queue, RingBufferStore ring) {
+    public QueueToRingProcessor(LinkedBlockingQueueStore<Message> queue, RingBufferStore ring) {
         ProcessorID writeProcID;
         ProcessorID writeLeadProcID;
 
@@ -52,7 +52,7 @@ public class QueueToRingProcessor extends Processor implements Runnable {
 
     @Override
     protected final Message getMessage() {
-        return (Message) queue.take();
+        return queue.take();
     }
 
 

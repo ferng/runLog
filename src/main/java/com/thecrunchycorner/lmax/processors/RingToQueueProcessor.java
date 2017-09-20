@@ -10,11 +10,11 @@ import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
 
 public class RingToQueueProcessor extends Processor implements Runnable {
-    private LinkedBlockingQueueStore queue;
+    private LinkedBlockingQueueStore<Message> queue;
     private volatile boolean interrupt = false;
 
 
-    public RingToQueueProcessor(RingBufferStore ring, LinkedBlockingQueueStore queue) {
+    public RingToQueueProcessor(RingBufferStore ring, LinkedBlockingQueueStore<Message> queue) {
         ProcessorID readProcID;
         ProcessorID readLeadProcID;
         this.queue = queue;

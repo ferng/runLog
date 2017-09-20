@@ -13,7 +13,7 @@ public abstract class Processor {
     private Writer writer;
     private Reader reader;
 
-    public final PosController getPosCtrlr() {
+    final PosController getPosCtrlr() {
         return posCtrlr;
     }
 

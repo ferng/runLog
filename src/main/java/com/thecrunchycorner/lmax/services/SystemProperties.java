@@ -12,12 +12,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * System-wide properties this is normally something like: database connectivity (if not using an app server), file locations/names, maximum/minimum values.
+ * System-wide properties this is normally something like: database
+ * connectivity (if not using an app server), file locations/names, maximum/minimum values.
  */
 public final class SystemProperties {
     private static Logger logger = LogManager.getLogger(SystemProperties.class);
 
-    private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<String, String>();
+    private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<>();
     private static String propsFileName = "runLog.properties";
     private static Properties systemProperties;
 
@@ -65,7 +66,8 @@ public final class SystemProperties {
      * Reload all properties from the properties file.
      * <p>
      * Only properties defined in the file wil be reset/refreshed.
-     * Any properties set programmatically and *not* specified in the properties file will retain their current values
+     * Any properties set programmatically and *not* specified in the
+     * properties file will retain their current values
      */
     public static void refreshProperties() {
         loadSystemProperties();
@@ -109,7 +111,7 @@ public final class SystemProperties {
 
 
     private static Set<String> getStartupPropNames() {
-        Set<String> propNames = new HashSet<String>();//= propMap.keySet();
+        Set<String> propNames = new HashSet<>();
 
         for (Object sysPropName : systemProperties.keySet()) {
             propNames.add((String) sysPropName);

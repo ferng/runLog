@@ -9,9 +9,10 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 
 /**
- * @param <E> - the type of the contents held by the buffer.
+ * @param <E> the type of the contents held by the buffer.
  *
- *              The buffer carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
+ * The buffer carries out no checks on the data being inserted
+ * besides the type checks carried out by the generics framework.
  */
 public class RingBufferStore<E> implements Store<E> {
     private static Logger logger = LogManager.getLogger(RingBufferStore.class);
@@ -21,8 +22,9 @@ public class RingBufferStore<E> implements Store<E> {
 
 
     /**
-     * @param size - the size of the buffer.  Once instantiated it cannot be changed.  If the size requested is less than that specified in threshold.buffer.minimum.size
-     *             it will quietly be increased to that threshold.
+     * @param size the size of the buffer. Once instantiated it cannot
+     * be changed. If the size requested is less than that specified in
+     * threshold.buffer.minimum.size it will quietly be increased to that threshold.
      */
     public RingBufferStore(int size) {
         int minSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
@@ -31,15 +33,15 @@ public class RingBufferStore<E> implements Store<E> {
         } else {
             minSize = size;
         }
-        buffer = new AtomicReferenceArray<E>(minSize);
+        buffer = new AtomicReferenceArray<>(minSize);
         this.modSize = minSize;
     }
 
 
     /**
-     * @param pos - the index to write to
-     * @param item - the new value
-     * @return - the value of the array position prior to any update
+     * @param pos the index to write to
+     * @param item the new value
+     * @return the value of the array position prior to any update
      */
     public final E set(int pos, E item) {
         int realPos = pos % modSize;
@@ -55,8 +57,8 @@ public class RingBufferStore<E> implements Store<E> {
 
 
     /**
-     * @param pos - the index to read from
-     * @return - the value of the array position
+     * @param pos the index to read from
+     * @return the value of the array position
      */
     public final E get(int pos) {
         return buffer.get(pos % modSize);
@@ -64,7 +66,7 @@ public class RingBufferStore<E> implements Store<E> {
 
 
     /**
-     * @return - the size of the array
+     * @return the size of the array
      */
     public final int size() {
         return buffer.length();

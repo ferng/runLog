@@ -38,7 +38,7 @@ public abstract class RingProcessor extends Processor implements Runnable {
         this.interrupt = interrupt;
     }
 
-    protected final ProcProperties getProcProperties(RingBufferStore ring, ProcessorID ringProcID) {
+    final ProcProperties getProcProperties(RingBufferStore ring, ProcessorID ringProcID) {
         this.ringProcID = ringProcID;
         ringLeadProcID = ProcessorWorkflow.getLeadProc(ringProcID);
 

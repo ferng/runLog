@@ -4,7 +4,8 @@ import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
 
 /**
- * Used to instantiate ProcProperties. Behaviour is undefined if ProcProperties is instantiated directly.
+ * Used to instantiate ProcProperties. Behaviour is undefined
+ * if ProcProperties is instantiated directly.
  */
 public class ProcPropertiesBuilder {
     private RingBufferStore buffer;
@@ -32,7 +33,8 @@ public class ProcPropertiesBuilder {
 
 
     /**
-     * Id of the processor we are following so we don't jump ahead of it to avoid reading stale data or loose our data somewhere
+     * Id of the processor we are following so we don't jump ahead
+     * of it to avoid reading stale data or loose our data somewhere
      * as it will be overwritte
      */
     public final ProcPropertiesBuilder setLeadProc(ProcessorID leadProc) {
@@ -42,7 +44,8 @@ public class ProcPropertiesBuilder {
 
 
     /**
-     * How far can we go to when we first start. In truth only the leading reader/writer will ever be non-zero in which case this value should
+     * How far can we go to when we first start. In truth only the
+     * leading reader/writer will ever be non-zero in which case this value should
      * be set to the size of the buffer
      */
     public final ProcPropertiesBuilder setInitialHead(int initialHead) {

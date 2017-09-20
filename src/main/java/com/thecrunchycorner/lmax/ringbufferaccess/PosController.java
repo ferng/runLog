@@ -9,18 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Readers can only read up to the position in the buffer where a write has placed a message specifically for them. Same goes for writers.
- * PosController is shared by all processors to keep track of where they can process up to.
+ * Readers can only read up to the position in the buffer where a write
+ * has placed a message specifically for them. Same goes for writers.
+ * PosController is shared by all processors to keep track of where they
+ * can process up to.
  *
- * Behaviour is undefined if PosController is instantiated directly, instead use PosControllerFactory.getController()
+ * Behaviour is undefined if PosController is instantiated directly,
+ * instead use PosControllerFactory.getController()
  */
 public class PosController {
     private static Logger logger = LogManager.getLogger(PosController.class);
 
-    private Map<ProcessorID, Integer> posMap = new HashMap<ProcessorID, Integer>(ProcessorID.values().length);
+    private Map<ProcessorID, Integer> posMap = new HashMap<>(ProcessorID.values().length);
 
     /**
-     * @throws IllegalArgumentException - If any parameter is null
+     * @throws IllegalArgumentException If any parameter is null
      */
     public final void setPos(ProcessorID procType, Integer pos) {
         if (procType == null || pos == null) {
@@ -33,7 +36,7 @@ public class PosController {
 
 
     /**
-     * @throws IllegalArgumentException - If any parameter is null
+     * @throws IllegalArgumentException If any parameter is null
      */
     public final void incrPos(ProcessorID procType) {
         if (procType == null) {
@@ -47,7 +50,7 @@ public class PosController {
 
 
     /**
-     * @throws IllegalArgumentException - If any parameter is null
+     * @throws IllegalArgumentException If any parameter is null
      */
     public final Integer getPos(ProcessorID procType) {
         if (procType == null) {

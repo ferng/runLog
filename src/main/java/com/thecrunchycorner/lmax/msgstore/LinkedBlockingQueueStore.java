@@ -7,24 +7,25 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
- * @param <E> - the type of the contents held by the queue.
+ * @param <E> the type of the contents held by the queue.
  *
- *              The queue carries out no checks on the data being inserted besides the type checks carried out by the generics framework.
+ * The queue carries out no checks on the data being inserted
+ * besides the type checks carried out by the generics framework.
  */
 public class LinkedBlockingQueueStore<E> implements Store<E>{
     private static Logger logger = LogManager.getLogger(LinkedBlockingQueueStore.class);
 
-    private ConcurrentLinkedQueue queue;
+    private ConcurrentLinkedQueue<E> queue;
 
     public LinkedBlockingQueueStore() {
-        queue = new ConcurrentLinkedQueue();
+        queue = new ConcurrentLinkedQueue<>();
     }
 
 
     /**
-     * @param item - item to add to the tail of the queue
-     * @return - true if successful
-     * @throws NullPointerException - if item is null
+     * @param item item to add to the tail of the queue
+     * @return true if successful
+     * @throws IllegalArgumentException- if item is null
      */
     public final boolean add(E item) {
         if (item == null) {
@@ -36,10 +37,10 @@ public class LinkedBlockingQueueStore<E> implements Store<E>{
     }
 
     /**
-     * @return - the head of of this queue or
+     * @return the head of of this queue or null if empty
      */
     public final E take() {
-        return (E) queue.poll();
+        return queue.poll();
     }
 
 }
