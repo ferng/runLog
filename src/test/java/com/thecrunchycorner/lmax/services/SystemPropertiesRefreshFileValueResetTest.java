@@ -21,13 +21,13 @@ public class SystemPropertiesRefreshFileValueResetTest {
     @After
     public void tearDown() throws Exception {
         SystemProperties.refreshProperties();
-        SystemProperties.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
+        SystemProperties.set("unit.test.value.systemdefault", "Pre-loaded test data");
     }
 
 
     @Test
     public void test() {
-        SystemProperties.setProperty(key, newValue);
+        SystemProperties.set(key, newValue);
 
         SystemProperties.refreshProperties();
         assertThat(SystemProperties.get(key), is(originalValue));

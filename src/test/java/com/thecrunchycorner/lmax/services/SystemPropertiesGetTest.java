@@ -37,7 +37,7 @@ public class SystemPropertiesGetTest {
     @Before
     public void setUp() throws Exception {
         SystemProperties.refreshProperties();
-        SystemProperties.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
+        SystemProperties.set("unit.test.value.systemdefault", "Pre-loaded test data");
     }
 
 

@@ -24,7 +24,7 @@ public class SystemPropertiesSetNewValueTest {
 
     @Test
     public void test() {
-        SystemProperties.setProperty(key, value);
+        SystemProperties.set(key, value);
         assertThat(SystemProperties.get(key), is(value));
     }
 }

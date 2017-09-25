@@ -12,7 +12,7 @@ class SystemPropertiesInitOnSetSpec extends Specification {
         def loadedValue = "Test data from properties file"
 
         when:
-        SystemProperties.setProperty(key, value)
+        SystemProperties.set(key, value)
 
         then:
         SystemProperties.get(loadedKey) == loadedValue

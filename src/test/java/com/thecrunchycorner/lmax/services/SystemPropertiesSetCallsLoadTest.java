@@ -26,7 +26,7 @@ public class SystemPropertiesSetCallsLoadTest {
 
     @Test
     public void test() {
-        SystemProperties.setProperty(newKey, newValue);
+        SystemProperties.set(newKey, newValue);
         assertThat(SystemProperties.get(defaultKey), is(defaultValue));
     }
 }

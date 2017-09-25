@@ -19,14 +19,14 @@ public class SystemPropertiesOverwriteFromFileTest {
     @After
     public void tearDown() throws Exception {
         SystemProperties.refreshProperties();
-        SystemProperties.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
+        SystemProperties.set("unit.test.value.systemdefault", "Pre-loaded test data");
     }
 
 
     @Test
     public void test() {
         value = "This value overwrites the one in the file";
-        SystemProperties.setProperty(key, value);
+        SystemProperties.set(key, value);
 
         assertThat(SystemProperties.get(key), is(value));
     }

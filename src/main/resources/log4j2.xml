@@ -7,7 +7,7 @@
             <PatternLayout pattern="%d %p - %t %c : %m%n"/>
         </Console>
 
-        <File name="FILE" fileName="runLog.log" append="true">
+        <File name="FILE" fileName="lmax.log" append="true">
             <PatternLayout pattern="%d %p - %t %c - %m%n"/>
         </File>
     </Appenders>

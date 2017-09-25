@@ -25,7 +25,7 @@ public class SystemPropertiesRemoveNewValueTest {
 
     @Test
     public void test() {
-        SystemProperties.setProperty(key, value);
+        SystemProperties.set(key, value);
         SystemProperties.remove(key);
         assertThat(SystemProperties.get(key), is(removedValue));
     }

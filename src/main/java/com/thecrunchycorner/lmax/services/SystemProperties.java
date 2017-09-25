@@ -3,156 +3,120 @@ package com.thecrunchycorner.lmax.services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.net.URL;
+import java.util.*;
 
 /**
- * System-wide properties this is normally something like: database
- * connectivity (if not using an app server), file locations/names, maximum/minimum values.
+ * System-wide properties this is normally something like: database connectivity, file locations/names, threshold
+ * values.
  */
 public final class SystemProperties {
-    private static Logger logger = LogManager.getLogger(SystemProperties.class);
-
-    private static ConcurrentHashMap<String, String> propMap = new ConcurrentHashMap<>();
-    private static String propsFileName = "runLog.properties";
+    private static final Logger logger = LogManager.getLogger(SystemProperties.class);
+    private static final String propsFileName = "lmax.properties";
     private static Properties systemProperties;
 
     private SystemProperties() {
     }
 
+    static {
+        loadSystemProperties();
+    }
+
 
     /**
-     * Retrieve property value using the property identifier given
+     * Retrieve property value using the property identifier given.
      */
-    public static synchronized String get(String id) {
-        if (! propertiesInitialized()) {
-            loadSystemProperties();
-        }
-
-        if (propMap.get(id) == null) {
+    public static String get(String id) {
+        String prop = systemProperties.getProperty(id);
+        if (prop == null) {
             logger.error("Undefined property: {}", id);
             return "Undefined property";
         } else {
-            return propMap.get(id);
+            return prop;
         }
     }
 
 
     /**
-     * Set the property identified by the given identifier to a value
+     * Set the property identified by the given identifier to a value.
      */
-    public static void setProperty(String id, String value) {
-        if (! propertiesInitialized()) {
-            loadSystemProperties();
-        }
-        propMap.put(id, value);
+    public static void set(String id, String value) {
+        systemProperties.setProperty(id, value);
     }
 
 
     /**
-     * Remove the property identified by the given identifier
+     * Remove the property identified by the given identifier if present, nothing happens otherwise.
      */
-    public static void remove(String id) {
-        propMap.remove(id);
+    static void remove(String id) {
+        systemProperties.remove(id);
     }
 
 
     /**
-     * Reload all properties from the properties file.
-     * <p>
-     * Only properties defined in the file wil be reset/refreshed.
-     * Any properties set programmatically and *not* specified in the
-     * properties file will retain their current values
+     * Refresh all properties to original values. Properties will be reset to their initial values, any properties
+     * added programmatically will be removed.
      */
-    public static void refreshProperties() {
+    static void refreshProperties() {
         loadSystemProperties();
     }
 
 
     private static void loadSystemProperties() {
-        if (! propertiesInitialized()) {
-            systemProperties = new Properties();
-            prepPop();
-        }
-        attemptLoadPropsFile();
-
-        populateSystemProperties(getStartupPropNames());
-    }
-
-
-    private static void attemptLoadPropsFile() {
-        FileInputStream stream = null;
+        setDefaults();
+        Optional<FileInputStream> stream = getPropsStream();
         try {
-            File propsFile = new File(SystemProperties.class.getClassLoader().getResource(propsFileName).getFile());
-            if (propsFile.exists()) {
-                logger.info("Loading properties file");
-                stream = new FileInputStream(propsFile);
-                systemProperties.load(stream);
+            if (stream.isPresent()) {
+                logger.info("Loading properties file: {}", propsFileName);
+                systemProperties.load(stream.get());
             } else {
-                logger.warn("Properties file not found: {}", propsFile.getAbsolutePath());
+                logger.warn("Properties file {} not found, using system defaults: ", propsFileName);
             }
         } catch (IOException ex) {
-            logger.error("Can't load the properties file: {}", propsFileName);
+            logger.error("Properties could not be loaded from : {}", propsFileName);
         } finally {
-            if (stream != null) {
+            if (stream.isPresent()) {
                 try {
-                    stream.close();
+                    stream.get().close();
                 } catch (Exception ex1) {
-                    logger.debug("Can't close file, could have been closed already or was never opened");
+                    logger.debug("Can't close file {}, could have been closed already or was never opened",
+                            propsFileName);
                 }
             }
         }
     }
 
 
-    private static Set<String> getStartupPropNames() {
-        Set<String> propNames = new HashSet<>();
-
-        for (Object sysPropName : systemProperties.keySet()) {
-            propNames.add((String) sysPropName);
+    private static Optional<FileInputStream> getPropsStream() {
+        URL fileUrl = SystemProperties.class.getClassLoader().getResource(propsFileName);
+        if (fileUrl == null) {
+            return Optional.empty();
         }
 
-        for (Object propName : propMap.keySet()) {
-            propNames.add((String) propName);
+        FileInputStream stream;
+        try {
+            stream = new FileInputStream(fileUrl.getFile());
+        } catch (FileNotFoundException ex) {
+            return Optional.empty();
         }
-        return propNames;
+        return Optional.of(stream);
     }
 
 
-    private static void populateSystemProperties(Set<String> propNames) {
-        String readPropVal;
-        for (String propName : propNames) {
-            readPropVal = systemProperties.getProperty(propName);
-            if (readPropVal == null) {
-                logger.warn("Property [{}] not found in {} file.  Using [{}] as a default.", propName, propsFileName, propMap.get(propName));
-            } else {
-                propMap.put(propName, readPropVal);
-            }
-        }
-    }
+    //clean up and pre-populate any vital data in case we don't find properties files or property
+    private static void setDefaults() {
+        Properties defaultProps = new Properties();
 
-
-    private static boolean propertiesInitialized() {
-        return propMap.size() != 0;
-    }
-
-
-    //pre-populate any vital data in case we don't find properties files or property
-    private static void prepPop() {
-        //used for unit tests
-        propMap.put("unit.test.value.systemdefault", "Pre-loaded test data");
-
-        //neo4j database location
-        propMap.put("data.store.path", "fernRunLog");
+        // used for unit testing only
+        defaultProps.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
 
         //these are minimum threshold values, by all means go above, but never below
-        propMap.put("threshold.buffer.minimum.size", "32");
-    }
+        defaultProps.setProperty("threshold.buffer.minimum.size", "32");
 
+        systemProperties = new Properties(defaultProps);
+    }
 
 }

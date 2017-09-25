@@ -25,7 +25,7 @@ public class SystemPropertiesRemoveTest {
 
     @Test
     public void test() {
-        SystemProperties.setProperty(newKey, newValue);
+        SystemProperties.set(newKey, newValue);
         SystemProperties.remove(newKey);
 
         assertThat(SystemProperties.get(newKey), is(undefValue));
