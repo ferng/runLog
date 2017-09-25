@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BufferSizeStaysConstantOnPutTest {
+public class RingBufferSizeStaysConstantOnPutTest {
 
     private RingBufferStore<Integer> buffer;
     private int bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
@@ -17,7 +17,7 @@ public class BufferSizeStaysConstantOnPutTest {
 
     @Before
     public void setup() {
-        buffer = new RingBufferStore(bufferSize);
+        buffer = new RingBufferStore<>(bufferSize);
     }
 
 
@@ -30,10 +30,10 @@ public class BufferSizeStaysConstantOnPutTest {
     @Test
     public void Test() {
         for (int i = 0; i < bufferSize; i++) {
-            buffer.set(i, new Integer(i));
+            buffer.set(i, i);
         }
 
-        buffer.set(9, new Integer(1));
+        buffer.set(9, 1);
 
         assertThat(buffer.size(), is(bufferSize));
     }

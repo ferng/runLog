@@ -1,6 +1,6 @@
 package com.thecrunchycorner.lmax.msgstore;
 
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
@@ -9,13 +9,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BufferPutNoWrappingTest {
+public class RingBufferMinimumSizeTest {
 
-    private RingBufferStore<Integer> buffer;
 
     @Before
     public void setup() {
-        buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
     }
 
 
@@ -24,12 +22,9 @@ public class BufferPutNoWrappingTest {
 
     }
 
-
     @Test
     public void Test() {
-        Integer testInt = 74;
-        buffer.set(0, testInt);
-
-        assertThat(buffer.get(0), is(testInt));
+        RingBufferStore<Integer> buffer = new RingBufferStore<>(4);
+        assertThat(buffer.size(), is(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))));
     }
 }

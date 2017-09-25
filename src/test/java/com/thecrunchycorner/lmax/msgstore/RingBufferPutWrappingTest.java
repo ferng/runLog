@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BufferPutWrappingTest {
+public class RingBufferPutWrappingTest {
 
     private RingBufferStore<Integer> buffer;
     private int bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
@@ -17,7 +17,7 @@ public class BufferPutWrappingTest {
 
     @Before
     public void setup() {
-        buffer = new RingBufferStore(bufferSize);
+        buffer = new RingBufferStore<>(bufferSize);
     }
 
 
@@ -32,10 +32,10 @@ public class BufferPutWrappingTest {
         Integer testInt1 = 23;
 
         for (int i = 0; i < bufferSize; i++) {
-            buffer.set(i, new Integer(i));
+            buffer.set(i, i);
         }
 
-        buffer.set(bufferSize + 1, testInt1);
+        buffer.set(bufferSize, testInt1);
 
         assertThat(buffer.get(bufferSize), is(testInt1));
         assertThat(buffer.get(0), is(testInt1));

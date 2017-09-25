@@ -114,7 +114,7 @@ public final class SystemProperties {
         defaultProps.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
 
         //these are minimum threshold values, by all means go above, but never below
-        defaultProps.setProperty("threshold.buffer.minimum.size", "32");
+        defaultProps.setProperty("threshold.buffer.minimum.size", "8");
 
         systemProperties = new Properties(defaultProps);
     }
