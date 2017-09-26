@@ -27,7 +27,7 @@ public class SystemPropertiesGetTest {
     @Parameterized.Parameters(name = "{index}: testGetUriParametersParameterized({0})={1}")
     public static Collection<Object[]> queryStrings() {
         return Arrays.asList(new Object[][]{
-                {"unit.test.value.systemdefault", "Pre-loaded test data"},
+                {"threshold.buffer.minimum.size", "8"},
                 {"unit.test.value.fromfile", "Test data from properties file"},
                 {"unit.test.value.undefined", "Undefined property"},
         });
@@ -37,7 +37,6 @@ public class SystemPropertiesGetTest {
     @Before
     public void setUp() throws Exception {
         SystemProperties.refreshProperties();
-        SystemProperties.set("unit.test.value.systemdefault", "Pre-loaded test data");
     }
 
 

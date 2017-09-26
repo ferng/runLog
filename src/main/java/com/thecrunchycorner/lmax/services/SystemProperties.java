@@ -6,17 +6,19 @@ import org.apache.logging.log4j.Logger;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * System-wide properties this is normally something like: database connectivity, file locations/names, threshold
  * values.
  */
 public final class SystemProperties {
-    private static final Logger logger = LogManager.getLogger(SystemProperties.class);
-    private static final String propsFileName = "lmax.properties";
-    private static Properties systemProperties;
+    private static final Logger LOGGER = LogManager.getLogger(SystemProperties.class);
+    private static final String PROPS_FILE_NAME = "lmax.properties";
+    private static Properties properties;
 
     private SystemProperties() {
     }
@@ -29,10 +31,10 @@ public final class SystemProperties {
     /**
      * Retrieve property value using the property identifier given.
      */
-    public static String get(String id) {
-        String prop = systemProperties.getProperty(id);
+    public static String get(final String id) {
+        final String prop = properties.getProperty(id);
         if (prop == null) {
-            logger.error("Undefined property: {}", id);
+            LOGGER.error("Undefined property: {}", id);
             return "Undefined property";
         } else {
             return prop;
@@ -43,16 +45,16 @@ public final class SystemProperties {
     /**
      * Set the property identified by the given identifier to a value.
      */
-    public static void set(String id, String value) {
-        systemProperties.setProperty(id, value);
+    public static void set(final String id, final String value) {
+        properties.setProperty(id, value);
     }
 
 
     /**
      * Remove the property identified by the given identifier if present, nothing happens otherwise.
      */
-    static void remove(String id) {
-        systemProperties.remove(id);
+    static void remove(final String id) {
+        properties.remove(id);
     }
 
 
@@ -67,48 +69,49 @@ public final class SystemProperties {
 
     private static void loadSystemProperties() {
         setDefaults();
-        Optional<FileInputStream> stream = getPropsStream();
+        final Optional<InputStreamReader> stream = getPropsStream();
         try {
             if (stream.isPresent()) {
-                logger.info("Loading properties file: {}", propsFileName);
-                systemProperties.load(stream.get());
+                LOGGER.info("Loading properties file: {}", PROPS_FILE_NAME);
+                properties.load(stream.get());
             } else {
-                logger.warn("Properties file {} not found, using system defaults: ", propsFileName);
+                LOGGER.warn("Properties file {} not found, using system defaults: ", PROPS_FILE_NAME);
             }
         } catch (IOException ex) {
-            logger.error("Properties could not be loaded from : {}", propsFileName);
+            LOGGER.error("Properties could not be loaded from : {}", PROPS_FILE_NAME);
         } finally {
-            if (stream.isPresent()) {
+            stream.ifPresent(fileInputStream -> {
                 try {
-                    stream.get().close();
-                } catch (Exception ex1) {
-                    logger.debug("Can't close file {}, could have been closed already or was never opened",
-                            propsFileName);
+                    fileInputStream.close();
+                } catch (IOException ex1) {
+                    LOGGER.debug("Can't close file {}, could have been closed already or was never opened",
+                            PROPS_FILE_NAME);
                 }
-            }
+            });
         }
     }
 
 
-    private static Optional<FileInputStream> getPropsStream() {
-        URL fileUrl = SystemProperties.class.getClassLoader().getResource(propsFileName);
+    private static Optional<InputStreamReader> getPropsStream() {
+        final URL fileUrl = Thread.currentThread().getContextClassLoader().getResource(PROPS_FILE_NAME);
         if (fileUrl == null) {
             return Optional.empty();
         }
 
-        FileInputStream stream;
+        InputStreamReader stream;
         try {
-            stream = new FileInputStream(fileUrl.getFile());
+            final FileInputStream file = new FileInputStream(fileUrl.getFile());
+            stream = new InputStreamReader(file, StandardCharsets.UTF_8);
+            return Optional.of(stream);
         } catch (FileNotFoundException ex) {
             return Optional.empty();
         }
-        return Optional.of(stream);
     }
 
 
     //clean up and pre-populate any vital data in case we don't find properties files or property
     private static void setDefaults() {
-        Properties defaultProps = new Properties();
+        final Properties defaultProps = new Properties();
 
         // used for unit testing only
         defaultProps.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
@@ -116,7 +119,7 @@ public final class SystemProperties {
         //these are minimum threshold values, by all means go above, but never below
         defaultProps.setProperty("threshold.buffer.minimum.size", "8");
 
-        systemProperties = new Properties(defaultProps);
+        properties = new Properties(defaultProps);
     }
 
 }

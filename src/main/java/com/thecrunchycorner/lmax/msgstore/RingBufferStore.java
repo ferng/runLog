@@ -17,25 +17,25 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * framework.
  */
 public class RingBufferStore<E> implements Store<E> {
-    private static Logger logger = LogManager.getLogger(RingBufferStore.class);
+    private static final Logger LOGGER = LogManager.getLogger(RingBufferStore.class);
 
-    private AtomicReferenceArray<E> buffer;
-    private int size;
+    private final transient AtomicReferenceArray<E> buffer;
+    private final transient int bufferSize;
 
 
     /**
      * @param size the size of the buffer. Once instantiated it cannot be changed. If the size requested is less than
      * that specified in threshold.buffer.minimum.size it will be increased to that threshold.
      */
-    public RingBufferStore(int size) {
+    public RingBufferStore(final int size) {
         int minSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
         if (size < minSize) {
-            logger.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
+            LOGGER.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
         } else {
             minSize = size;
         }
         buffer = new AtomicReferenceArray<>(minSize);
-        this.size = minSize;
+        this.bufferSize = minSize;
     }
 
 
@@ -44,10 +44,10 @@ public class RingBufferStore<E> implements Store<E> {
      * @param item the new value
      * @return the value of the index-ed position prior to any update
      */
-    public final E set(int pos, E item) {
-        int realPos = getRealPos(pos);
-        E prevVal = buffer.getAndSet(realPos, item);
-        logger.debug("value [{}] placed at index[{}] (real position [{}])", item, pos, realPos);
+    public final E set(final int pos, final E item) {
+        final int realPos = getRealPos(pos);
+        final E prevVal = buffer.getAndSet(realPos, item);
+        LOGGER.debug("value [{}] placed at index[{}] (real position [{}])", item, pos, realPos);
         return prevVal;
     }
 
@@ -57,7 +57,7 @@ public class RingBufferStore<E> implements Store<E> {
      * @param pos the index to read from
      * @return the value of the index-ed position
      */
-    public final E get(int pos) {
+    public final E get(final int pos) {
         return buffer.get(getRealPos(pos));
     }
 
@@ -70,11 +70,11 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
-    private int getRealPos(int pos) {
-        if (pos < size) {
+    private int getRealPos(final int pos) {
+        if (pos < bufferSize) {
             return pos;
         } else {
-            return pos % size;
+            return pos % bufferSize;
         }
     }
 

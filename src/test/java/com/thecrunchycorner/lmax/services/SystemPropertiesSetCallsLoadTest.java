@@ -10,8 +10,8 @@ import org.junit.Test;
 public class SystemPropertiesSetCallsLoadTest {
     private String newKey = "unit.test.value.newvalue";
     private String newValue = "New newKey value pair";
-    private String defaultKey = "unit.test.value.systemdefault";
-    private String defaultValue = "Pre-loaded test data";
+    private String defaultKey = "threshold.buffer.minimum.size";
+    private String defaultValue = "8";
 
     @Before
     public void setUp() throws Exception {

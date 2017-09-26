@@ -22,8 +22,8 @@ public class SystemPropertiesGetSystemDefaultTest {
 
     @Test
     public void test() {
-        String key = "unit.test.value.systemdefault";
-        String value = "Pre-loaded test data";
+        String key = "threshold.buffer.minimum.size";
+        String value = "8";
 
         assertThat(SystemProperties.get(key), is(value));
     }

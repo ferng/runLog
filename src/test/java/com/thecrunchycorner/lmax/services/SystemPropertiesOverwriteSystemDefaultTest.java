@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesOverwriteSystemDefaultTest {
-    private String key = "unit.test.value.systemdefault";
-    private String value = "Pre-loaded test data";
+    private String key = "threshold.buffer.minimum.size";
+    private String value = "8";
 
     @Before
     public void setUp() throws Exception {
