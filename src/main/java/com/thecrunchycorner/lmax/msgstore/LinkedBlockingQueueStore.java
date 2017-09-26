@@ -9,13 +9,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @param <E> the type of the contents held by the queue.
  *
- * The queue carries out no checks on the data being inserted
- * besides the type checks carried out by the generics framework.
+ * The queue carries out no checks on the data being inserted besides the type checks carried out by the generics
+ * framework.
  */
 public class LinkedBlockingQueueStore<E> implements Store<E>{
-    private static Logger logger = LogManager.getLogger(LinkedBlockingQueueStore.class);
+    private static final Logger LOGGER = LogManager.getLogger(LinkedBlockingQueueStore.class);
 
-    private ConcurrentLinkedQueue<E> queue;
+    private final transient ConcurrentLinkedQueue<E> queue;
 
     public LinkedBlockingQueueStore() {
         queue = new ConcurrentLinkedQueue<>();
@@ -27,14 +27,15 @@ public class LinkedBlockingQueueStore<E> implements Store<E>{
      * @return true if successful
      * @throws IllegalArgumentException- if item is null
      */
-    public final boolean add(E item) {
+    public final boolean add(final E item) {
         if (item == null) {
-            logger.error("Argument cannot be null, message commit abandoned");
+            LOGGER.error("Argument cannot be null, message commit failed");
             throw new IllegalArgumentException("Argument cannot be null");
         } else {
             return queue.add(item);
         }
     }
+
 
     /**
      * @return the head of of this queue or null if empty
