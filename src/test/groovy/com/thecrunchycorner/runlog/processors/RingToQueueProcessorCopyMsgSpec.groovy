@@ -4,7 +4,6 @@ import com.thecrunchycorner.lmax.msgstore.LinkedBlockingQueueStore
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.ringbufferaccess.Message
 import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.MsgType
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
 import com.thecrunchycorner.lmax.services.SystemProperties
 
@@ -16,7 +15,7 @@ class RingToQueueProcessorCopyMsgSpec extends Specification {
         given:
         def random = new Random()
         def newValue = random.nextInt()
-        def newMsg = new Message(MsgType.DB_REQUEST, newValue)
+        def newMsg = new Message(newValue)
 
         def leadProcID = ProcessorID.OUT_MARSHALER
         def posCtrlr = PosControllerFactory.getController()

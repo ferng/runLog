@@ -1,7 +1,6 @@
 package com.thecrunchycorner.lmax.msgstore
 
 import com.thecrunchycorner.lmax.ringbufferaccess.Message
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.MsgType
 
 import spock.lang.Specification
 
@@ -12,7 +11,7 @@ class ConcurrentLinkedQueueStoreAddNullExceptionSpec extends Specification{
         def random = new Random()
         def store = new LinkedBlockingQueueStore()
         def newValue = random.nextInt()
-        def msg = new Message(MsgType.QUEUE_PAYLOAD, newValue)
+        def msg = new Message(newValue)
 
         when:
         store.add(null)

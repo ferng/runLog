@@ -3,7 +3,6 @@ import com.thecrunchycorner.lmax.msgstore.LinkedBlockingQueueStore
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.ringbufferaccess.Message
 import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.MsgType
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
 import com.thecrunchycorner.lmax.services.SystemProperties
 
@@ -15,7 +14,7 @@ class QueueToRingProcessorCopyMsgSpec extends Specification {
         given:
         def random = new Random()
         def newValue = random.nextInt()
-        def newMsg = new Message(MsgType.VIEW_ACTION, newValue)
+        def newMsg = new Message(newValue)
 
         def posCtrlr = PosControllerFactory.getController()
         posCtrlr.setPos(ProcessorID.IN_BUSINESS_PROCESSOR, 10);
