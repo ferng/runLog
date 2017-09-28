@@ -1,19 +1,19 @@
 package com.thecrunchycorner.lmax.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * System-wide properties this is normally something like: database connectivity, file locations/names, threshold
- * values.
+ * System-wide properties this is normally something like: database connectivity, file
+ * locations/names, threshold values.
  */
 public final class SystemProperties {
     private static final Logger LOGGER = LogManager.getLogger(SystemProperties.class);
@@ -59,8 +59,8 @@ public final class SystemProperties {
 
 
     /**
-     * Refresh all properties to original values. Properties will be reset to their initial values, any properties
-     * added programmatically will be removed.
+     * Refresh all properties to original values. Properties will be reset to their initial
+     * values, any properties added programmatically will be removed.
      */
     static void refreshProperties() {
         loadSystemProperties();
@@ -75,7 +75,8 @@ public final class SystemProperties {
                 LOGGER.info("Loading properties file: {}", PROPS_FILE_NAME);
                 properties.load(stream.get());
             } else {
-                LOGGER.warn("Properties file {} not found, using system defaults: ", PROPS_FILE_NAME);
+                LOGGER.warn("Properties file {} not found, using system defaults: ",
+                    PROPS_FILE_NAME);
             }
         } catch (IOException ex) {
             LOGGER.error("Properties could not be loaded from : {}", PROPS_FILE_NAME);
@@ -84,8 +85,9 @@ public final class SystemProperties {
                 try {
                     fileInputStream.close();
                 } catch (IOException ex1) {
-                    LOGGER.debug("Can't close file {}, could have been closed already or was never opened",
-                            PROPS_FILE_NAME);
+                    LOGGER.debug("Can't close file {}, could have been closed already or was "
+                            + "never opened",
+                        PROPS_FILE_NAME);
                 }
             });
         }
@@ -93,7 +95,8 @@ public final class SystemProperties {
 
 
     private static Optional<InputStreamReader> getPropsStream() {
-        final URL fileUrl = Thread.currentThread().getContextClassLoader().getResource(PROPS_FILE_NAME);
+        final URL fileUrl = Thread.currentThread().getContextClassLoader()
+            .getResource(PROPS_FILE_NAME);
         if (fileUrl == null) {
             return Optional.empty();
         }

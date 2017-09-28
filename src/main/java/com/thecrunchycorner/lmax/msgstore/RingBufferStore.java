@@ -1,11 +1,9 @@
 package com.thecrunchycorner.lmax.msgstore;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
-
+import java.util.concurrent.atomic.AtomicReferenceArray;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.concurrent.atomic.AtomicReferenceArray;
 
 
 /**
@@ -13,8 +11,8 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  *
  * @param <E> the type of the contents held by the buffer.
  *
- * The buffer carries out no checks on the data being inserted besides the type checks carried out by the generics
- * framework.
+ * <p>The buffer carries out no checks on the data being inserted besides the type checks carried
+ * out by the generics framework.</p>
  */
 public class RingBufferStore<E> implements Store<E> {
     private static final Logger LOGGER = LogManager.getLogger(RingBufferStore.class);
@@ -23,9 +21,11 @@ public class RingBufferStore<E> implements Store<E> {
     private final transient int bufferSize;
 
 
-    /**
-     * @param size the size of the buffer. Once instantiated it cannot be changed. If the size requested is less than
-     * that specified in threshold.buffer.minimum.size it will be increased to that threshold.
+    /** Constructor for RingBufferStore.
+     *
+     * @param size the size of the buffer. Once instantiated it cannot be changed. If the size
+     *      requested is less than that specified in threshold.buffer.minimum.size it will be
+     *      increased to that threshold.
      */
     public RingBufferStore(final int size) {
         int minSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
@@ -39,7 +39,8 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
-    /**
+    /** Inserts the item into the given buffer position.
+     *
      * @param pos the index-ed buffer position to write to
      * @param item the new value
      * @return the value of the index-ed position prior to any update
@@ -52,8 +53,7 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
-
-    /**
+    /** Gets the item from the given position.
      * @param pos the index to read from
      * @return the value of the index-ed position
      */
@@ -62,7 +62,8 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
-    /**
+    /** Gets the size of the buffer which will either teh default or the value passed to the
+     * constructor, whichever is larger.
      * @return the size of the buffer
      */
     public final int size() {
