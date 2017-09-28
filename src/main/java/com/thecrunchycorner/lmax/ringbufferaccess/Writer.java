@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.ringbufferaccess;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,8 +21,8 @@ public class Writer {
     private PosController posController = PosControllerFactory.getController();
 
     private RingBufferStore buffer;
-    private ProcessorID processor;
-    private ProcessorID myLead;
+    private ProcessorId processor;
+    private ProcessorId myLead;
     private int head;
 
 

@@ -1,7 +1,6 @@
 package com.thecrunchycorner.lmax.ringbufferaccess
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
-
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
 import spock.lang.Specification
 
 class PosControllerSetPosNullPosExceptionSpec extends Specification {
@@ -11,7 +10,7 @@ class PosControllerSetPosNullPosExceptionSpec extends Specification {
         def PosController proc = PosControllerFactory.getController()
 
         when:
-        proc.setPos ProcessorID.IN_BUSINESS_PROCESSOR, null
+        proc.setPos ProcessorId.IN_BUSINESS_PROCESSOR, null
 
         then:
         def exception = thrown(IllegalArgumentException)

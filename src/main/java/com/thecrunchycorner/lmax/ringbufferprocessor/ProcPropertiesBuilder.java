@@ -1,7 +1,7 @@
 package com.thecrunchycorner.lmax.ringbufferprocessor;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 
 /**
  * Used to instantiate ProcProperties. Behaviour is undefined
@@ -9,8 +9,8 @@ import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
  */
 public class ProcPropertiesBuilder {
     private RingBufferStore buffer;
-    private ProcessorID proc;
-    private ProcessorID leadProc;
+    private ProcessorId proc;
+    private ProcessorId leadProc;
     private int initialHead;
 
 
@@ -26,7 +26,7 @@ public class ProcPropertiesBuilder {
     /**
      * ID of the processor accessing the buffer.
      */
-    public final ProcPropertiesBuilder setProcessor(ProcessorID proc) {
+    public final ProcPropertiesBuilder setProcessor(ProcessorId proc) {
         this.proc = proc;
         return this;
     }
@@ -37,7 +37,7 @@ public class ProcPropertiesBuilder {
      * of it to avoid reading stale data or loose our data somewhere
      * as it will be overwritte
      */
-    public final ProcPropertiesBuilder setLeadProc(ProcessorID leadProc) {
+    public final ProcPropertiesBuilder setLeadProc(ProcessorId leadProc) {
         this.leadProc = leadProc;
         return this;
     }

@@ -5,28 +5,28 @@ import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
 import com.thecrunchycorner.lmax.ringbufferaccess.Message;
 import com.thecrunchycorner.lmax.ringbufferaccess.Reader;
 import com.thecrunchycorner.lmax.ringbufferaccess.Writer;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
 
 public abstract class RingProcessor extends Processor implements Runnable {
-    private ProcessorID ringProcID;
-    private ProcessorID ringLeadProcID;
+    private ProcessorId ringProcID;
+    private ProcessorId ringLeadProcID;
     private volatile boolean interrupt = false;
 
-    public final ProcessorID getRingProcID() {
+    public final ProcessorId getRingProcID() {
         return ringProcID;
     }
 
-    public final void setRingProcID(ProcessorID ringProcID) {
+    public final void setRingProcID(ProcessorId ringProcID) {
         this.ringProcID = ringProcID;
     }
 
-    public final ProcessorID getRingLeadProcID() {
+    public final ProcessorId getRingLeadProcID() {
         return ringLeadProcID;
     }
 
-    public final void setRingLeadProcID(ProcessorID ringLeadProcID) {
+    public final void setRingLeadProcID(ProcessorId ringLeadProcID) {
         this.ringLeadProcID = ringLeadProcID;
     }
 
@@ -38,7 +38,7 @@ public abstract class RingProcessor extends Processor implements Runnable {
         this.interrupt = interrupt;
     }
 
-    final ProcProperties getProcProperties(RingBufferStore ring, ProcessorID ringProcID) {
+    final ProcProperties getProcProperties(RingBufferStore ring, ProcessorId ringProcID) {
         this.ringProcID = ringProcID;
         ringLeadProcID = ProcessorWorkflow.getLeadProc(ringProcID);
 

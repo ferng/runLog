@@ -3,7 +3,7 @@ package com.thecrunchycorner.lmax.ringbufferaccess;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,10 +31,10 @@ public class PosControllerMultipleInsertTest {
         int unMarshallerIndex = 84;
         int businessProcIndex = 72;
 
-        posController.setPos(ProcessorID.IN_Q_RECEIVER, inputIndex);
-        posController.setPos(ProcessorID.IN_UNMARSHALER, unMarshallerIndex);
-        posController.setPos(ProcessorID.IN_BUSINESS_PROCESSOR, businessProcIndex);
-        assertThat(posController.getPos(ProcessorID.IN_Q_RECEIVER), is(inputIndex));
+        posController.setPos(ProcessorId.IN_Q_RECEIVE, inputIndex);
+        posController.setPos(ProcessorId.IN_UNMARSHALL, unMarshallerIndex);
+        posController.setPos(ProcessorId.IN_BUSINESS_PROCESSOR, businessProcIndex);
+        assertThat(posController.getPos(ProcessorId.IN_Q_RECEIVE), is(inputIndex));
 
 
     }

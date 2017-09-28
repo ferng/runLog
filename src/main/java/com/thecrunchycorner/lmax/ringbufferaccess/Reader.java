@@ -1,7 +1,7 @@
 package com.thecrunchycorner.lmax.ringbufferaccess;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
 
 /**
@@ -15,8 +15,8 @@ public class Reader {
     private PosController posController = PosControllerFactory.getController();
 
     private RingBufferStore buffer;
-    private ProcessorID processor;
-    private ProcessorID myLead;
+    private ProcessorId processor;
+    private ProcessorId myLead;
     private int head;
 
 

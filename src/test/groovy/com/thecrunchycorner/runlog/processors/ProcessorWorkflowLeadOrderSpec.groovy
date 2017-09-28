@@ -1,14 +1,13 @@
 package com.thecrunchycorner.lmax.processors
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
-
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
 import spock.lang.Specification
 
 class ProcessorWorkflowLeadOrderSpec extends Specification {
 
     def 'test'() {
-        ProcessorID qryTrailProc
-        ProcessorID returnedLeadProc
+        ProcessorId qryTrailProc
+        ProcessorId returnedLeadProc
 
         given:
         qryTrailProc = trailProc
@@ -20,13 +19,13 @@ class ProcessorWorkflowLeadOrderSpec extends Specification {
         returnedLeadProc == leadProc
 
         where:
-        trailProc                         | leadProc
-        ProcessorID.IN_Q_RECEIVER | ProcessorID.IN_BUSINESS_PROCESSOR
-        ProcessorID.IN_BUSINESS_PROCESSOR | ProcessorID.IN_UNMARSHALER
-        ProcessorID.IN_UNMARSHALER | ProcessorID.IN_Q_RECEIVER
-        ProcessorID.OUT_BUSINESS_PROCESSOR | ProcessorID.OUT_Q_SENDER
-        ProcessorID.OUT_Q_SENDER| ProcessorID.OUT_MARSHALER
-        ProcessorID.OUT_MARSHALER | ProcessorID.OUT_BUSINESS_PROCESSOR
+        trailProc                          | leadProc
+        ProcessorId.IN_Q_RECEIVER          | ProcessorId.IN_BUSINESS_PROCESSOR
+        ProcessorId.IN_BUSINESS_PROCESSOR  | ProcessorId.IN_UNMARSHALER
+        ProcessorId.IN_UNMARSHALER         | ProcessorId.IN_Q_RECEIVER
+        ProcessorId.OUT_BUSINESS_PROCESSOR | ProcessorId.OUT_Q_SENDER
+        ProcessorId.OUT_Q_SENDER           | ProcessorId.OUT_MARSHALER
+        ProcessorId.OUT_MARSHALER          | ProcessorId.OUT_BUSINESS_PROCESSOR
     }
 
 

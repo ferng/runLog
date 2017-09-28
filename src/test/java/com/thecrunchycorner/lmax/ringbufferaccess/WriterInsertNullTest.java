@@ -29,7 +29,7 @@
 //        buffer = new RingBufferStore(bufferSize);
 //        busProcHead = 10;
 //
-//        ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
+//        ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR;
 //        ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 //
 //        PosController proc = PosControllerFactory.getController();

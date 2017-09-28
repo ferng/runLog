@@ -23,7 +23,7 @@
 //    private int bufferSize;
 //    private int busProcHead;
 //    private PosController proc;
-//    private ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
+//    private ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR;
 //    private ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 //
 //

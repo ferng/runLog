@@ -3,7 +3,7 @@ package com.thecrunchycorner.lmax.processors
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.ringbufferaccess.Message
 import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
@@ -16,7 +16,7 @@ class RingMarshalerProcessorCopyMsgSpec extends Specification {
         def newValue = random.nextInt()
         def newMsg = new Message(newValue)
 
-        def leadProcID = ProcessorID.OUT_BUSINESS_PROCESSOR
+        def leadProcID = ProcessorId.OUT_BUSINESS_PROCESSOR
         def posCtrlr = PosControllerFactory.getController()
         posCtrlr.setPos(leadProcID, 0);
 

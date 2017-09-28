@@ -5,7 +5,7 @@ import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
 import com.thecrunchycorner.lmax.ringbufferaccess.Message;
 import com.thecrunchycorner.lmax.ringbufferaccess.Reader;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
 
@@ -15,11 +15,11 @@ public class RingToQueueProcessor extends Processor implements Runnable {
 
 
     public RingToQueueProcessor(RingBufferStore ring, LinkedBlockingQueueStore<Message> queue) {
-        ProcessorID readProcID;
-        ProcessorID readLeadProcID;
+        ProcessorId readProcID;
+        ProcessorId readLeadProcID;
         this.queue = queue;
 
-        readProcID = ProcessorID.OUT_Q_SENDER;
+        readProcID = ProcessorId.OUT_Q_SEND;
         readLeadProcID = ProcessorWorkflow.getLeadProc(readProcID);
 
         ProcProperties procProps;

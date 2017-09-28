@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.ringbufferaccess
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.processors.ProcessorWorkflow
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
 import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder
 import com.thecrunchycorner.lmax.services.SystemProperties
 
@@ -16,8 +16,8 @@ class ReaderMultipleSpec extends Specification {
         def buffer = new RingBufferStore(bufferSize)
         def inputProcHead = bufferSize
         def busProcHead = 10
-        def ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR
-        def ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc)
+        def ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR
+        def ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc)
 
         def PosController proc = PosControllerFactory.getController()
         proc.setPos(leadProc, 0)

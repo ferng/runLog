@@ -11,7 +11,7 @@ public enum OpStatus {
     /** No more messages left in the store to process. */
     HEADER_REACHED,
     /** Error accessing store This will be fatal. */
-    ERROR,
+    ERROR
 
 }
 

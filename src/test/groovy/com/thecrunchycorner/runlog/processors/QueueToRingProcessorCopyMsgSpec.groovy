@@ -3,7 +3,7 @@ import com.thecrunchycorner.lmax.msgstore.LinkedBlockingQueueStore
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.ringbufferaccess.Message
 import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
@@ -17,7 +17,7 @@ class QueueToRingProcessorCopyMsgSpec extends Specification {
         def newMsg = new Message(newValue)
 
         def posCtrlr = PosControllerFactory.getController()
-        posCtrlr.setPos(ProcessorID.IN_BUSINESS_PROCESSOR, 10);
+        posCtrlr.setPos(ProcessorId.IN_BUSINESS_PROCESSOR, 10);
 
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
         def ringStore = new RingBufferStore(bufferSize)

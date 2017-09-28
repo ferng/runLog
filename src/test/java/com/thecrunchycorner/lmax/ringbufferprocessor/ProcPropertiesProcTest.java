@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.processors.ProcessorWorkflow;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
+import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 
 import org.junit.After;
@@ -21,8 +21,8 @@ public class ProcPropertiesProcTest {
     @Before
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
-        ProcessorID trailProc = ProcessorID.IN_BUSINESS_PROCESSOR;
-        ProcessorID leadProc = ProcessorWorkflow.getLeadProc(trailProc);
+        ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR;
+        ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         procProps = new ProcProperties(buffer, trailProc, leadProc, initialHead);
     }
@@ -36,7 +36,7 @@ public class ProcPropertiesProcTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getProc(), is(ProcessorID.IN_BUSINESS_PROCESSOR));
+        assertThat(procProps.getProc(), is(ProcessorId.IN_BUSINESS_PROCESSOR));
     }
 
 }
