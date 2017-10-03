@@ -2,13 +2,13 @@ package com.thecrunchycorner.lmax.ringbufferaccess
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
 
-class ReaderMultipleSpec extends Specification {
+class BufferReaderSingleGetsNewObjectSpec extends Specification {
 
     def 'test'() {
         given:
@@ -29,7 +29,7 @@ class ReaderMultipleSpec extends Specification {
                 .setInitialHead(busProcHead)
                 .createProcProperties()
 
-        def writer = new Writer(busProcProps)
+        def writer = new BufferWriter(busProcProps)
 
         def inputProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
@@ -38,20 +38,17 @@ class ReaderMultipleSpec extends Specification {
                 .setInitialHead(inputProcHead)
                 .createProcProperties()
 
-        def reader = new Reader(inputProcProps)
+        def reader = new BufferReader(inputProcProps)
 
         Object testObj1 = new Integer(3)
-        Object testObj2 = new Integer(4)
 
 
         when:
         writer.write(testObj1)
-        writer.write(testObj2)
-        reader.read()
 
 
         then:
-        reader.read() == testObj2
+        reader.read() == testObj1
     }
 
 }

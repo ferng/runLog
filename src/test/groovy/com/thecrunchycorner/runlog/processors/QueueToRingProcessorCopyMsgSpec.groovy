@@ -1,9 +1,10 @@
 package com.thecrunchycorner.lmax.processors
-import com.thecrunchycorner.lmax.msgstore.LinkedBlockingQueueStore
+
+import com.thecrunchycorner.lmax.msgstore.QueueStore
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
-import com.thecrunchycorner.lmax.ringbufferaccess.Message
+import com.thecrunchycorner.lmax.msgstore.Message
 import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
@@ -21,7 +22,7 @@ class QueueToRingProcessorCopyMsgSpec extends Specification {
 
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
         def ringStore = new RingBufferStore(bufferSize)
-        def qStore = new LinkedBlockingQueueStore()
+        def qStore = new QueueStore()
 
         def proc = new QueueToRingProcessor(qStore, ringStore)
 

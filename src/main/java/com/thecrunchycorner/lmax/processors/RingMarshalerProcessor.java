@@ -1,8 +1,8 @@
 package com.thecrunchycorner.lmax.processors;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.ringbufferaccess.Message;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.msgstore.Message;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 public class RingMarshalerProcessor extends RingProcessor implements Runnable {

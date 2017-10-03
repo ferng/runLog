@@ -17,7 +17,7 @@
 //public class WriterInsertUpToHeadTest {
 //
 //    private RingBufferStore<Integer> buffer;
-//    private Writer writer;
+//    private BufferWriter writer;
 //    private ProcProperties procProps;
 //    private int bufferSize;
 //    private int busProcHead;
@@ -41,7 +41,7 @@
 //                .setHead(busProcHead)
 //                .createProcProperties();
 //
-//        writer = new Writer(procProps);
+//        writer = new BufferWriter(procProps);
 //
 //        proc.setPos(trailProc, busProcHead);
 //    }

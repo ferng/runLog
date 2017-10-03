@@ -1,13 +1,14 @@
-package com.thecrunchycorner.lmax.ringbufferaccess.enums;
+package com.thecrunchycorner.lmax.workflow;
 
-/** Identifies the types a disruptor consists of. Each processor is assigned a priority with 1
+/**
+ * Identifies the types a disruptor consists of. Each processor is assigned a priority with 1
  * being the highest.
  *
  * <p>Each producer must have a unique priority as no two processors can write to the the same
  * queue simultaneously. Consumers on the other hand can share priorities as reading from a store
  * can be done concurrently, this allows concurrent journaling, and marshalling for example.</p>
  *
- * <p>You may choose not touse a specific processor, maybe journalling provides all the
+ * <p>You may choose not to use a specific processor, maybe journalling provides all the
  * resilience you need. Or maybe you don't nee auditing.
  * </p>*/
 public enum ProcessorId {

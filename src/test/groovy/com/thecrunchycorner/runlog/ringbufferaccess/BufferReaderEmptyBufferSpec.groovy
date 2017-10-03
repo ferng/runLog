@@ -2,19 +2,19 @@ package com.thecrunchycorner.lmax.ringbufferaccess
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
 
-class ReaderSingleGetsNewObjectSpec extends Specification {
+class BufferReaderEmptyBufferSpec extends Specification {
 
     def 'test'() {
         given:
         def bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))
         def buffer = new RingBufferStore(bufferSize)
-        def inputProcHead = bufferSize
+        def inputProcHead = 0
         def busProcHead = 10
         def ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR
         def ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc)
@@ -29,7 +29,7 @@ class ReaderSingleGetsNewObjectSpec extends Specification {
                 .setInitialHead(busProcHead)
                 .createProcProperties()
 
-        def writer = new Writer(busProcProps)
+        def writer = new BufferWriter(busProcProps)
 
         def inputProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
@@ -38,17 +38,18 @@ class ReaderSingleGetsNewObjectSpec extends Specification {
                 .setInitialHead(inputProcHead)
                 .createProcProperties()
 
-        def reader = new Reader(inputProcProps)
+        def reader = new BufferReader(inputProcProps)
 
         Object testObj1 = new Integer(3)
 
 
         when:
         writer.write(testObj1)
+        reader.read()
 
 
         then:
-        reader.read() == testObj1
+        reader.read() == null
     }
 
 }

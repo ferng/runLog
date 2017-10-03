@@ -4,7 +4,7 @@
 //import static org.junit.Assert.assertThat;
 //
 //import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-//import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
+//import com.thecrunchycorner.lmax.msgstore.OpStatus;
 //import com.thecrunchycorner.lmax.processors.ProcessorWorkflow;
 //import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
 //import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
@@ -18,7 +18,7 @@
 //public class WriterInsertNullTest {
 //
 //    private RingBufferStore<Integer> buffer;
-//    private Writer writer;
+//    private BufferWriter writer;
 //    private ProcProperties procProps;
 //    private int bufferSize;
 //    private int busProcHead;
@@ -42,7 +42,7 @@
 //                .setHead(busProcHead)
 //                .createProcProperties();
 //
-//        writer = new Writer(procProps);
+//        writer = new BufferWriter(procProps);
 //    }
 //
 //

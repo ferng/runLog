@@ -1,4 +1,4 @@
-package com.thecrunchycorner.lmax.msgstore.enums;
+package com.thecrunchycorner.lmax.msgstore;
 
 /**
  * The outcome of the operation carried out on a store.

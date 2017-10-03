@@ -1,8 +1,7 @@
 package com.thecrunchycorner.lmax.processors;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.ringbufferaccess.Message;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.msgstore.Message;
 
 public class RingBusinessProcessor extends RingProcessor implements Runnable {
 

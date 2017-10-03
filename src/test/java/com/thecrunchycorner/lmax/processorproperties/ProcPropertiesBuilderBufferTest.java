@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 
 import org.junit.After;

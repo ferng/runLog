@@ -63,11 +63,12 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
-    /** Gets the size of the buffer which will either teh default or the value passed to then
+    /** Gets the size of the buffer which will either the default or the value passed to then
      * constructor, whichever is larger.
      *
      * @return the size of the buffer
      */
+    @Override
     public final int size() {
         return buffer.length();
     }

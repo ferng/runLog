@@ -1,4 +1,4 @@
-package com.thecrunchycorner.lmax.ringbufferaccess.enums;
+package com.thecrunchycorner.lmax.processors;
 
 /** Defines the current status for each processor.
  */

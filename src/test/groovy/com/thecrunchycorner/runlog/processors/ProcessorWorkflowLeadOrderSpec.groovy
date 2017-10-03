@@ -1,6 +1,6 @@
 package com.thecrunchycorner.lmax.processors
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
 import spock.lang.Specification
 

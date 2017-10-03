@@ -1,11 +1,11 @@
 package com.thecrunchycorner.lmax.processors;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
-import com.thecrunchycorner.lmax.ringbufferaccess.Message;
-import com.thecrunchycorner.lmax.ringbufferaccess.Reader;
-import com.thecrunchycorner.lmax.ringbufferaccess.Writer;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.msgstore.OpStatus;
+import com.thecrunchycorner.lmax.msgstore.Message;
+import com.thecrunchycorner.lmax.ringbufferaccess.BufferReader;
+import com.thecrunchycorner.lmax.ringbufferaccess.BufferWriter;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 
@@ -58,13 +58,13 @@ public abstract class RingProcessor extends Processor implements Runnable {
 
     @Override
     protected final void initRingReader(ProcProperties procProps) {
-        setReader(new Reader(procProps));
+        setReader(new BufferReader(procProps));
     }
 
 
     @Override
     protected final void initRingWriter(ProcProperties procProps) {
-        setWriter(new Writer(procProps));
+        setWriter(new BufferWriter(procProps));
     }
 
 

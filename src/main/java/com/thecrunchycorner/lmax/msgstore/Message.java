@@ -1,9 +1,9 @@
-package com.thecrunchycorner.lmax.ringbufferaccess;
+package com.thecrunchycorner.lmax.msgstore;
 
 import java.util.UUID;
 
 /**
- * lmax communication is based on messages, although the stores are unconcerned about the type of
+ * Lmax communication is based on messages, although the stores are unconcerned about the type of
  * data being inserted the rest of the application does care.
  */
 public class Message {

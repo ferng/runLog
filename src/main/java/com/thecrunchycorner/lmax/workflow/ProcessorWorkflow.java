@@ -1,7 +1,5 @@
 package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProcessorWorkflow {

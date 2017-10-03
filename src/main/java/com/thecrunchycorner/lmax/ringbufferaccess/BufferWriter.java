@@ -1,8 +1,9 @@
 package com.thecrunchycorner.lmax.ringbufferaccess;
 
+import com.thecrunchycorner.lmax.msgstore.Message;
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.msgstore.OpStatus;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,8 +16,8 @@ import org.apache.logging.log4j.Logger;
  * 2) where it has written up to
  * 3) where it can write up to
  */
-public class Writer {
-    private static Logger logger = LogManager.getLogger(Writer.class);
+public class BufferWriter {
+    private static Logger logger = LogManager.getLogger(BufferWriter.class);
 
     private PosController posController = PosControllerFactory.getController();
 
@@ -27,7 +28,7 @@ public class Writer {
 
 
     /**
-     * Each Writer is unique to a processor (although a processor can have multiple
+     * Each BufferWriter is unique to a processor (although a processor can have multiple
      * readers / writers)
      *
      * @param props - details for this wtriter:
@@ -35,7 +36,7 @@ public class Writer {
      * 2) ID for the processor that owns us and
      * 3) ID for the processor we follow
      */
-    public Writer(ProcProperties props) {
+    public BufferWriter(ProcProperties props) {
         buffer = props.getBuffer();
         processor = props.getProc();
         myLead = props.getLeadProc();

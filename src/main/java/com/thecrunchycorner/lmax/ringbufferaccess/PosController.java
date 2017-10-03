@@ -1,12 +1,10 @@
 package com.thecrunchycorner.lmax.ringbufferaccess;
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Readers can only read up to the position in the buffer where a write
@@ -14,20 +12,24 @@ import java.util.Map;
  * PosController is shared by all processors to keep track of where they
  * can process up to.
  *
- * Behaviour is undefined if PosController is instantiated directly,
- * instead use PosControllerFactory.getController()
+ * <p> Behaviour is undefined if PosController is instantiated directly,
+ * instead use PosControllerFactory.getController()</p>
  */
 public class PosController {
-    private static Logger logger = LogManager.getLogger(PosController.class);
+    private static final Logger LOGGER = LogManager.getLogger(PosController.class);
 
-    private Map<ProcessorId, Integer> posMap = new HashMap<>(ProcessorId.values().length);
+    private Map<ProcessorId, Integer> posMap = new ConcurrentHashMap<>(ProcessorId.values().length);
 
     /**
+     * Set the next position index in buffer we are working on, this will be the position where the
+     * next read or write will take place. Used following bulk update operations.
+     *
+     * @param pos
      * @throws IllegalArgumentException If any parameter is null
      */
     public final void setPos(ProcessorId procType, Integer pos) {
         if (procType == null || pos == null) {
-            logger.error("Arguments cannot be null: proctype[{}] pos[{}]", procType, pos);
+            LOGGER.error("Arguments cannot be null: proctype[{}] pos[{}]", procType, pos);
             throw new IllegalArgumentException("Arguments cannot be null");
         } else {
             posMap.put(procType, pos);
@@ -36,11 +38,12 @@ public class PosController {
 
 
     /**
+     * Moves the buffer position index along one.
      * @throws IllegalArgumentException If any parameter is null
      */
     public final void incrPos(ProcessorId procType) {
         if (procType == null) {
-            logger.error("Arguments cannot be null: proctype");
+            LOGGER.error("Arguments cannot be null: proctype");
             throw new IllegalArgumentException("Arguments cannot be null");
         } else {
             int pos = posMap.get(procType);
@@ -54,7 +57,7 @@ public class PosController {
      */
     public final Integer getPos(ProcessorId procType) {
         if (procType == null) {
-            logger.error("Arguments cannot be null: proctype");
+            LOGGER.error("Arguments cannot be null: proctype");
             throw new IllegalArgumentException("Arguments cannot be null");
         } else {
             return posMap.get(procType);

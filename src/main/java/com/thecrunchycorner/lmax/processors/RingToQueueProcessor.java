@@ -1,20 +1,20 @@
 //package com.thecrunchycorner.lmax.processors;
 //
-//import com.thecrunchycorner.lmax.msgstore.LinkedBlockingQueueStore;
+//import com.thecrunchycorner.lmax.msgstore.QueueStore;
 //import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-//import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
-//import com.thecrunchycorner.lmax.ringbufferaccess.Message;
-//import com.thecrunchycorner.lmax.ringbufferaccess.Reader;
-//import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+//import com.thecrunchycorner.lmax.msgstore.OpStatus;
+//import com.thecrunchycorner.lmax.msgstore.Message;
+//import com.thecrunchycorner.lmax.ringbufferaccess.BufferReader;
+//import com.thecrunchycorner.lmax.workflow.ProcessorId;
 //import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 //import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 //
 //public class RingToQueueProcessor extends Processor implements Runnable {
-//    private LinkedBlockingQueueStore<Message> queue;
+//    private QueueStore<Message> queue;
 //    private volatile boolean interrupt = false;
 //
 //
-//    public RingToQueueProcessor(RingBufferStore ring, LinkedBlockingQueueStore<Message> queue) {
+//    public RingToQueueProcessor(RingBufferStore ring, QueueStore<Message> queue) {
 //        ProcessorId readProcID;
 //        ProcessorId readLeadProcID;
 //        this.queue = queue;
@@ -44,7 +44,7 @@
 //
 //    @Override
 //    protected final void initRingReader(ProcProperties procProps) {
-//        setReader(new Reader(procProps));
+//        setReader(new BufferReader(procProps));
 //    }
 //
 //

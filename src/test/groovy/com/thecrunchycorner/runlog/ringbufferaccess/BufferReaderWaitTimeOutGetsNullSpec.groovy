@@ -2,13 +2,13 @@ package com.thecrunchycorner.lmax.ringbufferaccess
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
 
-class ReaderRetryOutGetsNullSpec extends Specification {
+class BufferReaderWaitTimeOutGetsNullSpec extends Specification {
 
     def 'test'() {
         given:
@@ -30,7 +30,7 @@ class ReaderRetryOutGetsNullSpec extends Specification {
                 .setInitialHead(busProcHead)
                 .createProcProperties()
 
-        def writer = new Writer(busProcProps)
+        def writer = new BufferWriter(busProcProps)
 
         def inputProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
@@ -39,10 +39,10 @@ class ReaderRetryOutGetsNullSpec extends Specification {
                 .setInitialHead(inputProcHead)
                 .createProcProperties()
 
-        def reader = new Reader(inputProcProps)
+        def reader = new BufferReader(inputProcProps)
 
         Object testObj1 = new Integer(3)
-        Object testObj2 = new Integer(4)
+
 
         when:
         writer.write(testObj1)
@@ -50,7 +50,7 @@ class ReaderRetryOutGetsNullSpec extends Specification {
 
 
         then:
-        reader.read(50, 3) == null
+        reader.read(100) == null
     }
 
 }

@@ -7,19 +7,19 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * This queue is used by disruptors to read from prior to passing onto the buffer for processing
- * or once the processing is complete and ready to be picked/ sent to external resources.
+ * or once the processing is complete and ready to be picked up / sent to external resources.
  *
  * @param <E> the type of the contents held by the queue
  *
  * <p>The queue carries out no checks on the data being inserted besides the type checks carried out
  *      by the generics framework.</p>
  */
-public class LinkedBlockingQueueStore<E> implements Store<E> {
-    private static final Logger LOGGER = LogManager.getLogger(LinkedBlockingQueueStore.class);
+public class QueueStore<E> implements Store<E> {
+    private static final Logger LOGGER = LogManager.getLogger(QueueStore.class);
 
     private final transient ConcurrentLinkedQueue<E> queue;
 
-    public LinkedBlockingQueueStore() {
+    public QueueStore() {
         queue = new ConcurrentLinkedQueue<>();
     }
 
@@ -50,4 +50,13 @@ public class LinkedBlockingQueueStore<E> implements Store<E> {
         return queue.poll();
     }
 
+
+    /** Gets the size of the buffer.
+     *
+     * @return the size of the buffer
+     */
+    @Override
+    public final int size() {
+        return queue.size();
+    }
 }

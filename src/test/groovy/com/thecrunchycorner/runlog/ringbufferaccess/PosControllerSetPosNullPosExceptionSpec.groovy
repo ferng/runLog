@@ -1,6 +1,6 @@
 package com.thecrunchycorner.lmax.ringbufferaccess
 
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 import spock.lang.Specification
 
 class PosControllerSetPosNullPosExceptionSpec extends Specification {

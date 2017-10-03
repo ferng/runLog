@@ -1,7 +1,5 @@
 package com.thecrunchycorner.lmax.msgstore
 
-import com.thecrunchycorner.lmax.ringbufferaccess.Message
-
 import spock.lang.Specification
 
 class ConcurrentLinkedQueueStoreTakeNullSpec extends Specification{
@@ -9,7 +7,7 @@ class ConcurrentLinkedQueueStoreTakeNullSpec extends Specification{
     def 'test'() {
         given:
         def random = new Random()
-        def store = new LinkedBlockingQueueStore()
+        def store = new QueueStore()
         def oldValue = random.nextInt()
         def newValue = random.nextInt()
         def oldMsg = new Message(oldValue)

@@ -1,7 +1,7 @@
 package com.thecrunchycorner.lmax.processorproperties;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
 
 
 /**

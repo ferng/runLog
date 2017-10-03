@@ -2,13 +2,13 @@ package com.thecrunchycorner.lmax.ringbufferaccess
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
+import com.thecrunchycorner.lmax.workflow.ProcessorId
 
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification
 
-class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
+class BufferReaderRetryOutGetsNewObjectSpec extends Specification {
 
     def 'test'() {
         given:
@@ -16,7 +16,6 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
         def buffer = new RingBufferStore(bufferSize)
         def busProcHead = 10
         def inputProcHead = 0
-
         def ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR
         def ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc)
 
@@ -30,7 +29,7 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
                 .setInitialHead(busProcHead)
                 .createProcProperties()
 
-        def writer = new Writer(busProcProps)
+        def writer = new BufferWriter(busProcProps)
 
         def inputProcProps = new ProcPropertiesBuilder()
                 .setBuffer(buffer)
@@ -39,7 +38,7 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
                 .setInitialHead(inputProcHead)
                 .createProcProperties()
 
-        def reader = new Reader(inputProcProps)
+        def reader = new BufferReader(inputProcProps)
 
         Object testObj1 = new Integer(3)
         Object testObj2 = new Integer(4)
@@ -62,7 +61,7 @@ class ReaderWaitTimeOutGetsNewObjectSpec extends Specification {
 
 
         then:
-        reader.read(100) == testObj2
+        reader.read(200, 5) == testObj2
     }
 
 }

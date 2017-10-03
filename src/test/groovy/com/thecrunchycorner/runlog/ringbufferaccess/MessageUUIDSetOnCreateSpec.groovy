@@ -1,5 +1,6 @@
 package com.thecrunchycorner.lmax.ringbufferaccess
 
+import com.thecrunchycorner.lmax.msgstore.Message
 import spock.lang.Specification
 
 class MessageUUIDSetOnCreateSpec extends Specification {

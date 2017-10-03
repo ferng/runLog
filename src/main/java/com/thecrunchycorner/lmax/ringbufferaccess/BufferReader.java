@@ -1,7 +1,7 @@
 package com.thecrunchycorner.lmax.ringbufferaccess;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 /**
@@ -11,7 +11,7 @@ import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
  * 2) where it has read to
  * 3) where it can read up to
  */
-public class Reader {
+public class BufferReader {
     private PosController posController = PosControllerFactory.getController();
 
     private RingBufferStore buffer;
@@ -21,7 +21,7 @@ public class Reader {
 
 
     /**
-     * Each Reader is unique to a processor (although a processor can
+     * Each BufferReader is unique to a processor (although a processor can
      * have multiple readers / writers)
      *
      * @param props details for this reader:
@@ -31,7 +31,7 @@ public class Reader {
      * 4) Initial head position, should be buffer size for lead processor,
      * 0 for all others
      */
-    public Reader(ProcProperties props) {
+    public BufferReader(ProcProperties props) {
         buffer = props.getBuffer();
         processor = props.getProc();
         myLead = props.getLeadProc();
