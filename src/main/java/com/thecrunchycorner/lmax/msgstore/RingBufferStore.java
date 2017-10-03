@@ -25,7 +25,7 @@ public class RingBufferStore<E> implements Store<E> {
      *
      * @param size the size of the buffer. Once instantiated it cannot be changed. If the size
      *      requested is less than that specified in threshold.buffer.minimum.size it will be
-     *      increased to that threshold.
+     *      increased to that threshold
      */
     public RingBufferStore(final int size) {
         int minSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
@@ -54,6 +54,7 @@ public class RingBufferStore<E> implements Store<E> {
 
 
     /** Gets the item from the given position.
+     *
      * @param pos the index to read from
      * @return the value of the index-ed position
      */
@@ -62,8 +63,9 @@ public class RingBufferStore<E> implements Store<E> {
     }
 
 
-    /** Gets the size of the buffer which will either teh default or the value passed to the
+    /** Gets the size of the buffer which will either teh default or the value passed to then
      * constructor, whichever is larger.
+     *
      * @return the size of the buffer
      */
     public final int size() {

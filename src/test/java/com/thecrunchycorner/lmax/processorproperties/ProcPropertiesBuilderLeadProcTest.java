@@ -1,10 +1,10 @@
-package com.thecrunchycorner.lmax.ringbufferprocessor;
+package com.thecrunchycorner.lmax.processorproperties;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.processors.ProcessorWorkflow;
+import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 
@@ -21,7 +21,7 @@ public class ProcPropertiesBuilderLeadProcTest {
     @Before
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
-        ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR;
+        ProcessorId trailProc = ProcessorId.BUSINESS_PROCESSOR;
         ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
         procProps = new ProcPropertiesBuilder()

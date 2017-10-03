@@ -6,8 +6,8 @@ import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
 import com.thecrunchycorner.lmax.ringbufferaccess.Message;
 import com.thecrunchycorner.lmax.ringbufferaccess.Writer;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
+import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 
 public class QueueToRingProcessor extends Processor implements Runnable {
     private LinkedBlockingQueueStore<Message> queue;

@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.ringbufferaccess;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 /**
  * Provides client classes with the means to read from a buffer.
@@ -35,7 +35,7 @@ public class Reader {
         buffer = props.getBuffer();
         processor = props.getProc();
         myLead = props.getLeadProc();
-        head = props.getInitialHead();
+        head = props.getHead();
 
         posController.setPos(processor, 0);
     }

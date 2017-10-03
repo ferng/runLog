@@ -7,8 +7,8 @@
 //import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
 //import com.thecrunchycorner.lmax.processors.ProcessorWorkflow;
 //import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorID;
-//import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
-//import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
+//import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
+//import com.thecrunchycorner.lmax.processorproperties.ProcPropertiesBuilder;
 //import com.thecrunchycorner.lmax.services.SystemProperties;
 //
 //import org.junit.After;
@@ -40,7 +40,7 @@
 //                .setBuffer(buffer)
 //                .setProcessor(trailProc)
 //                .setLeadProc(leadProc)
-//                .setInitialHead(busProcHead)
+//                .setHead(busProcHead)
 //                .createProcProperties();
 //
 //        proc.setPos(leadProc, busProcHead);

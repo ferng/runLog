@@ -69,34 +69,25 @@ public final class SystemProperties {
 
     private static void loadSystemProperties() {
         setDefaults();
-        final Optional<InputStreamReader> stream = getPropsStream();
-        try {
-            if (stream.isPresent()) {
-                LOGGER.info("Loading properties file: {}", PROPS_FILE_NAME);
-                properties.load(stream.get());
-            } else {
-                LOGGER.warn("Properties file {} not found, using system defaults: ",
-                    PROPS_FILE_NAME);
+        final Optional<InputStreamReader> optionalStream = getPropsStream();
+
+        if (optionalStream.isPresent()) {
+            LOGGER.info("Loading properties file: {}", PROPS_FILE_NAME);
+            try (final InputStreamReader stream = optionalStream.get()){
+                properties.load(stream);
+            } catch (IOException ex) {
+                LOGGER.error("Properties could not be loaded from : {}", PROPS_FILE_NAME);
             }
-        } catch (IOException ex) {
-            LOGGER.error("Properties could not be loaded from : {}", PROPS_FILE_NAME);
-        } finally {
-            stream.ifPresent(fileInputStream -> {
-                try {
-                    fileInputStream.close();
-                } catch (IOException ex1) {
-                    LOGGER.debug("Can't close file {}, could have been closed already or was "
-                            + "never opened",
-                        PROPS_FILE_NAME);
-                }
-            });
+        } else {
+            LOGGER.warn("Properties file {} not found, using system defaults: ",
+                    PROPS_FILE_NAME);
         }
     }
 
 
     private static Optional<InputStreamReader> getPropsStream() {
         final URL fileUrl = Thread.currentThread().getContextClassLoader()
-            .getResource(PROPS_FILE_NAME);
+                .getResource(PROPS_FILE_NAME);
         if (fileUrl == null) {
             return Optional.empty();
         }

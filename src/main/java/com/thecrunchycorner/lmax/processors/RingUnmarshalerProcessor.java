@@ -3,7 +3,7 @@ package com.thecrunchycorner.lmax.processors;
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.ringbufferaccess.Message;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 public class RingUnmarshalerProcessor extends RingProcessor implements Runnable {
 

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
  * This queue is used by disruptors to read from prior to passing onto the buffer for processing
  * or once the processing is complete and ready to be picked/ sent to external resources.
  *
- * @param <E> the type of the contents held by the queue.
+ * @param <E> the type of the contents held by the queue
  *
  * <p>The queue carries out no checks on the data being inserted besides the type checks carried out
  *      by the generics framework.</p>

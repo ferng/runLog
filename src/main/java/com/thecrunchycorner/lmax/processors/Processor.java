@@ -6,7 +6,7 @@ import com.thecrunchycorner.lmax.ringbufferaccess.PosController;
 import com.thecrunchycorner.lmax.ringbufferaccess.PosControllerFactory;
 import com.thecrunchycorner.lmax.ringbufferaccess.Reader;
 import com.thecrunchycorner.lmax.ringbufferaccess.Writer;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 public abstract class Processor {
     private PosController posCtrlr = PosControllerFactory.getController();

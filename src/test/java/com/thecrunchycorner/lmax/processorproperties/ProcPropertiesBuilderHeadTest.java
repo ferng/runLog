@@ -1,10 +1,10 @@
-package com.thecrunchycorner.lmax.ringbufferprocessor;
+package com.thecrunchycorner.lmax.processorproperties;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-import com.thecrunchycorner.lmax.processors.ProcessorWorkflow;
+import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 
@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ProcPropertiesLeadProcTest {
+public class ProcPropertiesBuilderHeadTest {
 
     private RingBufferStore<Integer> buffer;
     private ProcProperties procProps;
@@ -21,11 +21,15 @@ public class ProcPropertiesLeadProcTest {
     @Before
     public void setup() {
         buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
-
-        ProcessorId trailProc = ProcessorId.IN_BUSINESS_PROCESSOR;
+        ProcessorId trailProc = ProcessorId.BUSINESS_PROCESSOR;
         ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
-        procProps = new ProcProperties(buffer, trailProc, leadProc, initialHead);
+        procProps = new ProcPropertiesBuilder()
+                .setBuffer(buffer)
+                .setProcessor(trailProc)
+                .setLeadProc(leadProc)
+                .setInitialHead(initialHead)
+                .createProcProperties();
     }
 
 
@@ -37,7 +41,7 @@ public class ProcPropertiesLeadProcTest {
 
     @Test
     public void Test() {
-        assertThat(procProps.getLeadProc(), is(ProcessorId.IN_UNMARSHALL));
+        assertThat(procProps.getHead(), is(initialHead));
     }
 
 }

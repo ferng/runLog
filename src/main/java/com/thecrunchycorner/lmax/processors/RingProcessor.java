@@ -6,8 +6,8 @@ import com.thecrunchycorner.lmax.ringbufferaccess.Message;
 import com.thecrunchycorner.lmax.ringbufferaccess.Reader;
 import com.thecrunchycorner.lmax.ringbufferaccess.Writer;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
+import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 
 public abstract class RingProcessor extends Processor implements Runnable {
     private ProcessorId ringProcID;

@@ -3,7 +3,7 @@ package com.thecrunchycorner.lmax.ringbufferaccess;
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.msgstore.enums.OpStatus;
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId;
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcProperties;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +39,7 @@ public class Writer {
         buffer = props.getBuffer();
         processor = props.getProc();
         myLead = props.getLeadProc();
-        head = props.getInitialHead();
+        head = props.getHead();
 
         posController.setPos(processor, 0);
     }

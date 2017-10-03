@@ -1,9 +1,9 @@
 package com.thecrunchycorner.lmax.ringbufferaccess
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore
-import com.thecrunchycorner.lmax.processors.ProcessorWorkflow
+import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
 import com.thecrunchycorner.lmax.ringbufferaccess.enums.ProcessorId
-import com.thecrunchycorner.lmax.ringbufferprocessor.ProcPropertiesBuilder
+
 import com.thecrunchycorner.lmax.services.SystemProperties
 
 import spock.lang.Specification

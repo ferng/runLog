@@ -33,7 +33,7 @@ public class PosControllerMultipleInsertTest {
 
         posController.setPos(ProcessorId.IN_Q_RECEIVE, inputIndex);
         posController.setPos(ProcessorId.IN_UNMARSHALL, unMarshallerIndex);
-        posController.setPos(ProcessorId.IN_BUSINESS_PROCESSOR, businessProcIndex);
+//        posController.setPos(ProcessorId.IN_BUSINESS_PROCESSOR, businessProcIndex);
         assertThat(posController.getPos(ProcessorId.IN_Q_RECEIVE), is(inputIndex));
 
 
