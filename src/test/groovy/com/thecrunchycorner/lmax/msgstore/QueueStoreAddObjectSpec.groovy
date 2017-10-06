@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.msgstore
 
 import spock.lang.Specification
 
-class ConcurrentLinkedQueueStoreAddObjectSpec extends Specification{
+class QueueStoreAddObjectSpec extends Specification{
 
     def 'test'() {
         given:
@@ -17,7 +17,5 @@ class ConcurrentLinkedQueueStoreAddObjectSpec extends Specification{
         then:
         returnVal
     }
-
-
 
 }

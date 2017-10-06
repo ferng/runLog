@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.msgstore
 
 import spock.lang.Specification
 
-class ConcurrentLinkedQueueStoreAddNullExceptionSpec extends Specification{
+class QueueStoreAddNullExceptionSpec extends Specification{
 
     def 'test'() {
         given:
@@ -15,7 +15,5 @@ class ConcurrentLinkedQueueStoreAddNullExceptionSpec extends Specification{
         def exception = thrown(IllegalArgumentException)
         exception.message == "Argument cannot be null"
     }
-
-
 
 }

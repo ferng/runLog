@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.msgstore
 
 import spock.lang.Specification
 
-class ConcurrentLinkedQueueStoreTakeNewValueSpec extends Specification{
+class QueueStoreTakeOldValueSpec extends Specification{
 
     def 'test'() {
         given:
@@ -17,12 +17,9 @@ class ConcurrentLinkedQueueStoreTakeNewValueSpec extends Specification{
         store.add(oldMsg)
         store.add(newMsg)
         def returnVal = store.take()
-        returnVal = store.take()
 
         then:
-        returnVal == newMsg
+        returnVal == oldMsg
     }
-
-
 
 }

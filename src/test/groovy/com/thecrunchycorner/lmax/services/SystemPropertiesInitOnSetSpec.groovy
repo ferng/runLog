@@ -6,16 +6,16 @@ class SystemPropertiesInitOnSetSpec extends Specification {
 
     def 'test'() {
         given:
-        def key = "unit.test.value.inittrigger"
-        def value = "74"
-        def loadedKey = "unit.test.value.fromfile"
-        def loadedValue = "Test data from properties file"
+        def key = "threshold.buffer.minimum.size"
+        def value = "16"
+        def loadedKey = "unit.test.value.systemdefault"
+        def loadedValue = "Pre-loaded test data"
 
         when:
         SystemProperties.set(key, value)
 
         then:
-        SystemProperties.get(loadedKey) == loadedValue
+        SystemProperties.get(loadedKey) == Optional.of(loadedValue)
     }
 
 }
