@@ -1,6 +1,9 @@
 package com.thecrunchycorner.lmax.msgstore;
 
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.services.SystemProperties;
+import java.util.MissingResourceException;
+import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +31,12 @@ public class RingBufferStore<E> implements Store<E> {
      *      increased to that threshold
      */
     public RingBufferStore(final int size) {
-        int minSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
+        OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
+        if (! opt.isPresent()) {
+            throw new MissingResourceException("Mandatory default system propery missing: "
+                    + "threshold.buffer.minimum.size", getClass().getName(),"");
+        }
+        int minSize = opt.getAsInt();
         if (size < minSize) {
             LOGGER.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
         } else {

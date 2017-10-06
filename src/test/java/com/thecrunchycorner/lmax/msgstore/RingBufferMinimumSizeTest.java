@@ -5,7 +5,9 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
 
+import java.util.OptionalInt;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,18 +15,22 @@ public class RingBufferMinimumSizeTest {
 
 
     @Before
-    public void setup() {
+    public void setUp() {
     }
 
 
     @After
-    public void tearDOWN() {
-
+    public void tearDown() {
     }
 
     @Test
-    public void Test() {
+    public void test() {
         RingBufferStore<Integer> buffer = new RingBufferStore<>(4);
-        assertThat(buffer.size(), is(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"))));
+        OptionalInt value = SystemProperties.getAsInt("threshold.buffer.minimum.size");
+        if (value.isPresent()) {
+            assertThat(buffer.size(), is(value.getAsInt()));
+        } else {
+            Assert.fail();
+        }
     }
 }

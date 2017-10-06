@@ -3,30 +3,25 @@ package com.thecrunchycorner.lmax.services;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesSetCallsLoadTest {
-    private String newKey = "unit.test.value.newvalue";
-    private String newValue = "New newKey value pair";
-    private String defaultKey = "threshold.buffer.minimum.size";
-    private String defaultValue = "8";
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
+    private final static String NEW_KEY = "unit.test.value.newvalue";
+    private final static String DEFAULT_VALUE = "16";
 
     @After
     public void tearDown() throws Exception {
-        SystemProperties.remove(newKey);
+        SystemProperties.remove(NEW_KEY);
     }
 
 
     @Test
     public void test() {
-        SystemProperties.set(newKey, newValue);
-        assertThat(SystemProperties.get(defaultKey), is(defaultValue));
+        final String newValue = "New NEW_KEY value pair";
+        SystemProperties.set(NEW_KEY, newValue);
+        final String defaultKey = "threshold.buffer.minimum.size";
+        assertThat(SystemProperties.get(defaultKey), is(Optional.of(DEFAULT_VALUE)));
     }
 }

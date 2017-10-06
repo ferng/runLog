@@ -3,19 +3,11 @@ package com.thecrunchycorner.lmax.services;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesOverwriteFromFileTest {
-    private String key = "unit.test.value.fromfile";
-    private String value = "Test data from properties file";
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-
     @After
     public void tearDown() throws Exception {
         SystemProperties.refreshProperties();
@@ -24,9 +16,10 @@ public class SystemPropertiesOverwriteFromFileTest {
 
     @Test
     public void test() {
-        value = "This value overwrites the one in the file";
-        SystemProperties.set(key, value);
+        final String newValue = "This value overwrites the one in the file";
+        final String key = "threshold.buffer.minimum.size";
+        SystemProperties.set(key, newValue);
 
-        assertThat(SystemProperties.get(key), is(value));
+        assertThat(SystemProperties.get(key), is(Optional.of(newValue)));
     }
 }

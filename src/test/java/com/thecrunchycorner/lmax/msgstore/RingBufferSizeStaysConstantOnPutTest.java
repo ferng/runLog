@@ -23,7 +23,6 @@ public class RingBufferSizeStaysConstantOnPutTest {
 
     @After
     public void tearDOWN() {
-
     }
 
 

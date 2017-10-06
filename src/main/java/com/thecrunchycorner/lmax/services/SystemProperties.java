@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,15 +30,45 @@ public final class SystemProperties {
 
 
     /**
-     * Retrieve property value using the property identifier given.
+     * Retrieve the property value using the property identifier given.
+     *
+     * @param id the name of the property to retrieve.
+     * @return optional with a string representation of whatever value is held by the property if
+     * present or an empty Optional id it doesn't exist
      */
-    public static String get(final String id) {
+    public static Optional<String> get(final String id) {
         final String prop = properties.getProperty(id);
         if (prop == null) {
             LOGGER.error("Undefined property: {}", id);
-            return "Undefined property";
+            return Optional.empty();
         } else {
-            return prop;
+            return Optional.of(prop);
+        }
+    }
+
+
+    /**
+     * Retrieve and convert to an int the property value using the property identifier given.
+     *
+     * @param id the name of the property to retrieve.
+     * @return optional with an integer representation of whatever value is held by the property if
+     * present or an empty Optional id it doesn't exist or the value is not an int
+     */
+    public static OptionalInt getAsInt(final String id) {
+        final String prop = properties.getProperty(id);
+
+        if (prop == null) {
+            LOGGER.error("Undefined property: {}", id);
+            return OptionalInt.empty();
+        } else {
+            int value;
+            try {
+                value = Integer.parseInt(prop);
+            } catch (NumberFormatException ex) {
+                LOGGER.error("Property {} is not Integer as expected", id);
+                return OptionalInt.empty();
+            }
+            return OptionalInt.of(value);
         }
     }
 
@@ -69,11 +100,12 @@ public final class SystemProperties {
 
     private static void loadSystemProperties() {
         setDefaults();
+
         final Optional<InputStreamReader> optionalStream = getPropsStream();
 
         if (optionalStream.isPresent()) {
             LOGGER.info("Loading properties file: {}", PROPS_FILE_NAME);
-            try (final InputStreamReader stream = optionalStream.get()){
+            try (final InputStreamReader stream = optionalStream.get()) {
                 properties.load(stream);
             } catch (IOException ex) {
                 LOGGER.error("Properties could not be loaded from : {}", PROPS_FILE_NAME);
@@ -103,17 +135,15 @@ public final class SystemProperties {
     }
 
 
-    //clean up and pre-populate any vital data in case we don't find properties files or property
+    //clean up and pre-populate any vital data in case we don't find properties files or property.
+    //using default property constructor doesn't work so we're setting them here
     private static void setDefaults() {
-        final Properties defaultProps = new Properties();
-
         // used for unit testing only
-        defaultProps.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
+        properties = new Properties();
+        properties.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
 
         //these are minimum threshold values, by all means go above, but never below
-        defaultProps.setProperty("threshold.buffer.minimum.size", "8");
-
-        properties = new Properties(defaultProps);
+        properties.setProperty("threshold.buffer.minimum.size", "8");
     }
 
 }

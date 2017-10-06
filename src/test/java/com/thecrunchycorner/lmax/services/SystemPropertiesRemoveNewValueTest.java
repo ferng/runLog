@@ -3,30 +3,26 @@ package com.thecrunchycorner.lmax.services;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesRemoveNewValueTest {
-    private String key = "unit.test.value.newvalue";
-    private String value = "New key value pair";
-    private String removedValue = "Undefined property";
-
-    @Before
-    public void setUp() throws Exception {
-    }
+    private final static String KEY = "unit.test.value.newvalue";
 
 
     @After
     public void tearDown() throws Exception {
-        SystemProperties.remove(key);
+        SystemProperties.remove(KEY);
     }
 
 
     @Test
     public void test() {
-        SystemProperties.set(key, value);
-        SystemProperties.remove(key);
-        assertThat(SystemProperties.get(key), is(removedValue));
+        final String value = "New KEY value pair";
+        SystemProperties.set(KEY, value);
+        assertThat(SystemProperties.get(KEY), is(Optional.of(value)));
+        SystemProperties.remove(KEY);
+        assertThat(SystemProperties.get(KEY), is(Optional.empty()));
     }
 }

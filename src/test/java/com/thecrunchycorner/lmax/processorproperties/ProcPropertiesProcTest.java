@@ -14,17 +14,17 @@ import org.junit.Test;
 
 public class ProcPropertiesProcTest {
 
-    private RingBufferStore<Integer> buffer;
     private ProcProperties procProps;
     private int initialHead = 20;
 
     @Before
     public void setup() {
-        buffer = new RingBufferStore(Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size")));
+        RingBufferStore<Integer> buffer = new RingBufferStore<>(SystemProperties.getAsInt
+                ("threshold.buffer.minimum.size").getAsInt());
         ProcessorId trailProc = ProcessorId.BUSINESS_PROCESSOR;
         ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc);
 
-        procProps = new ProcProperties(buffer, trailProc, leadProc, initialHead);
+        procProps = new ProcProperties.Builder(buffer, trailProc, leadProc, initialHead);
     }
 
 

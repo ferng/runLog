@@ -3,28 +3,24 @@ package com.thecrunchycorner.lmax.services;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SystemPropertiesSetNewValueTest {
-    private String key = "unit.test.value.newvalue";
-    private String value = "New key value pair";
-
-    @Before
-    public void setUp() throws Exception {
-    }
+    private final static String KEY = "unit.test.value.newvalue";
 
 
     @After
     public void tearDown() throws Exception {
-        SystemProperties.remove(key);
+        SystemProperties.remove(KEY);
     }
 
 
     @Test
     public void test() {
-        SystemProperties.set(key, value);
-        assertThat(SystemProperties.get(key), is(value));
+        final String value = "New KEY value pair";
+        SystemProperties.set(KEY, value);
+        assertThat(SystemProperties.get(KEY), is(Optional.of(value)));
     }
 }

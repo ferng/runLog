@@ -15,7 +15,7 @@ class ConcurrentLinkedQueueStoreAddObjectSpec extends Specification{
         def returnVal = store.add(msg)
 
         then:
-        returnVal == true
+        returnVal
     }
 
 

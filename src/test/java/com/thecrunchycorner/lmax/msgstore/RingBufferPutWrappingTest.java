@@ -12,7 +12,8 @@ import org.junit.Test;
 public class RingBufferPutWrappingTest {
 
     private RingBufferStore<Integer> buffer;
-    private int bufferSize = Integer.parseInt(SystemProperties.get("threshold.buffer.minimum.size"));
+    //if the test crashes because there is no int then it's a failure I'm happy to highlight
+    private int bufferSize = SystemProperties.getAsInt("threshold.buffer.minimum.size").getAsInt();
 
 
     @Before
@@ -23,7 +24,6 @@ public class RingBufferPutWrappingTest {
 
     @After
     public void tearDOWN() {
-
     }
 
 

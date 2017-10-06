@@ -21,7 +21,6 @@ public class RingBufferPutNoWrappingTest {
 
     @After
     public void tearDOWN() {
-
     }
 
 
