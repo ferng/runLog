@@ -5,30 +5,38 @@ import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
 
+import java.util.OptionalInt;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class RingBufferSizeStaysConstantOnPutTest {
 
     private RingBufferStore<Integer> buffer;
-    private final int BUFFER_SIZE = SystemProperties.getAsInt("threshold.buffer.minimum.size")
-            .getAsInt();
+    private int bufferSize;
 
 
     @Before
     public void setUp() {
-        buffer = new RingBufferStore<>(BUFFER_SIZE);
+        final OptionalInt bufferSizeOpt = SystemProperties.getAsInt("threshold.buffer.minimum" +
+                ".size");
+        if (bufferSizeOpt.isPresent()) {
+            bufferSize = bufferSizeOpt.getAsInt();
+            buffer = new RingBufferStore<>(bufferSizeOpt.getAsInt());
+        } else {
+            Assert.fail();
+        }
     }
 
 
     @Test
     public void test() {
-        for (int i = 0; i < BUFFER_SIZE; i++) {
+        for (int i = 0; i < bufferSize; i++) {
             buffer.set(i, i);
         }
 
-        buffer.set(9, 1);
+        buffer.set(bufferSize+1, 1);
 
-        assertThat(buffer.size(), is(BUFFER_SIZE));
+        assertThat(buffer.size(), is(bufferSize));
     }
 }

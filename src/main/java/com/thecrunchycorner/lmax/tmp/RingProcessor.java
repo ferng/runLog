@@ -1,4 +1,4 @@
-package com.thecrunchycorner.lmax.processors;
+package com.thecrunchycorner.lmax.tmp;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
 import com.thecrunchycorner.lmax.msgstore.OpStatus;

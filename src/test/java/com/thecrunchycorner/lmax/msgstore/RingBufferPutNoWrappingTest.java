@@ -4,6 +4,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
+import java.util.OptionalInt;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,8 +14,12 @@ public class RingBufferPutNoWrappingTest {
 
     @Before
     public void setUp() {
-        buffer = new RingBufferStore<>(SystemProperties.getAsInt("threshold.buffer.minimum.size")
-                .getAsInt());
+        final OptionalInt bufferSize = SystemProperties.getAsInt("threshold.buffer.minimum.size");
+        if (bufferSize.isPresent()) {
+            buffer = new RingBufferStore<>(bufferSize.getAsInt());
+        } else {
+            Assert.fail();
+        }
     }
 
 

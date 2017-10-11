@@ -1,19 +1,14 @@
-package com.thecrunchycorner.lmax.ringbufferaccess;
+package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Readers can only read up to the position in the buffer where a write
- * has placed a message specifically for them. Same goes for writers.
- * PosController is shared by all processors to keep track of where they
- * can process up to.
- *
- * <p> Behaviour is undefined if PosController is instantiated directly,
- * instead use PosControllerFactory.getController()</p>
+ * Readers can only read up to the position in the buffer where a write has placed a message
+ * specifically for them. Writers cannot write to positions which have not yet been read from.
+ * PosController is shared by all processors to keep track of where they can process up to.
  */
 public class PosController {
     private static final Logger LOGGER = LogManager.getLogger(PosController.class);

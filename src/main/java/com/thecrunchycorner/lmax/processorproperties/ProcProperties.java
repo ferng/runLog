@@ -10,16 +10,14 @@ import com.thecrunchycorner.lmax.workflow.ProcessorId;
  */
 public class ProcProperties {
     private final RingBufferStore buffer;
-    private final ProcessorId procType;
-    private final ProcessorId leadProcType;
-    private final int head;
+    private final ProcessorId processorId;
+    private final int initialHead;
 
     private ProcProperties(final RingBufferStore buffer, final ProcessorId procType,
-                             final ProcessorId leadProcType, final int initialHead) {
+                             final int initialHead) {
         this.buffer = buffer;
-        this.procType = procType;
-        this.leadProcType = leadProcType;
-        this.head = initialHead;
+        this.processorId = procType;
+        this.initialHead = initialHead;
     }
 
 
@@ -37,26 +35,16 @@ public class ProcProperties {
      * @return ProcessorId
      */
     public final ProcessorId getProc() {
-        return procType;
+        return processorId;
     }
 
 
-    /** Get the ID for the processor this processor has to wait on, to make sure we don't read
-     * push data onto the BufferStore ahead of it being generated or read by the lead processor.
+    /** The position of the buffer initialHead we can read/write to.
      *
-     * @return ProcessorId
+     * @return initialHead position
      */
-    public final ProcessorId getLeadProc() {
-        return leadProcType;
-    }
-
-
-    /** The position of the buffer head we can read/write to.
-     *
-     * @return head position
-     */
-    public final int getHead() {
-        return head;
+    public final int getInitialHead() {
+        return initialHead;
     }
 
 
@@ -64,9 +52,8 @@ public class ProcProperties {
      */
     public static class Builder {
         private RingBufferStore buffer;
-        private ProcessorId proc;
-        private ProcessorId leadProc;
-        private int head;
+        private ProcessorId processorId;
+        private int initialHead;
 
 
         /** Sets the buffer.
@@ -84,18 +71,7 @@ public class ProcProperties {
          * @param proc the Processor's ID
          */
         public final Builder setProcessor(final ProcessorId proc) {
-            this.proc = proc;
-            return this;
-        }
-
-
-        /** Id of the processor we are following so we don't jump ahead of it to avoid reading
-         * stale data or loose our data somewhere as it will be overwrite.
-         *
-         * @param leadProc the Processor's ID
-         */
-        public final Builder setLeadProc(final ProcessorId leadProc) {
-            this.leadProc = leadProc;
+            this.processorId = proc;
             return this;
         }
 
@@ -104,10 +80,10 @@ public class ProcProperties {
          * leading reader/writer will ever be non-zero in which case this value should
          * be set to the size of the buffer
          *
-         * @param head the highest buffer position we can read/write to
+         * @param initialHead the highest buffer position we can read/write to
          */
-        public final Builder setHead(final int head) {
-            this.head = head;
+        public final Builder setInitialHead(final int initialHead) {
+            this.initialHead = initialHead;
             return this;
         }
 
@@ -117,7 +93,7 @@ public class ProcProperties {
          * @return newly created properties object
          */
         public final ProcProperties createProcProperties() {
-            return new ProcProperties(buffer, proc, leadProc, head);
+            return new ProcProperties(buffer, processorId, initialHead);
         }
     }
 
