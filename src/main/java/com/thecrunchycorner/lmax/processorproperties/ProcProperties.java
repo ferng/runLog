@@ -1,6 +1,7 @@
 package com.thecrunchycorner.lmax.processorproperties;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
+import com.thecrunchycorner.lmax.storeaccessor.BufferAccessor;
 import com.thecrunchycorner.lmax.workflow.ProcessorId;
 
 
@@ -9,15 +10,19 @@ import com.thecrunchycorner.lmax.workflow.ProcessorId;
  * builder.
  */
 public class ProcProperties {
-    private final RingBufferStore buffer;
     private final ProcessorId processorId;
-    private final int initialHead;
+    private final RingBufferStore buffer;
+    private final BufferAccessor accessor;
+    private int head;
+    private int pos;
 
-    private ProcProperties(final RingBufferStore buffer, final ProcessorId procType,
-                             final int initialHead) {
-        this.buffer = buffer;
+    private ProcProperties(final ProcessorId procType, final RingBufferStore buffer,
+                             final BufferAccessor accessor, final int head, int pos) {
         this.processorId = procType;
-        this.initialHead = initialHead;
+        this.buffer = buffer;
+        this.accessor = accessor;
+        this.head = head;
+        this.pos = pos;
     }
 
 
@@ -39,31 +44,42 @@ public class ProcProperties {
     }
 
 
-    /** The position of the buffer initialHead we can read/write to.
+    /** The position of the buffer head we can read/write to.
      *
-     * @return initialHead position
+     * @return head position
      */
-    public final int getInitialHead() {
-        return initialHead;
+    public final int getHead() {
+        return head;
     }
 
+
+    /** Update the position of the buffer head we can read/write to.
+     *
+     * @param head position
+     */
+    public final void setHead(int head) {
+        this.head = head;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public BufferAccessor getAccessor() {
+        return accessor;
+    }
 
     /** Builder used to instantiate ProcProperties.
      */
     public static class Builder {
-        private RingBufferStore buffer;
         private ProcessorId processorId;
+        private RingBufferStore buffer;
+        private BufferAccessor accessor;
         private int initialHead;
-
-
-        /** Sets the buffer.
-         *
-         * @param buffer The buffer to be accessed
-         */
-        public final Builder setBuffer(final RingBufferStore buffer) {
-            this.buffer = buffer;
-            return this;
-        }
 
 
         /** set ID of the processor accessing the buffer.
@@ -75,6 +91,19 @@ public class ProcProperties {
             return this;
         }
 
+        /** Sets the buffer.
+         *
+         * @param buffer The buffer to be accessed
+         */
+        public final Builder setBuffer(final RingBufferStore buffer) {
+            this.buffer = buffer;
+            return this;
+        }
+
+        public final Builder setAccessor(final BufferAccessor accessor) {
+            this.accessor = accessor;
+            return this;
+        }
 
         /** How far can we go to when we first start. In truth only the
          * leading reader/writer will ever be non-zero in which case this value should
@@ -93,7 +122,7 @@ public class ProcProperties {
          * @return newly created properties object
          */
         public final ProcProperties createProcProperties() {
-            return new ProcProperties(buffer, processorId, initialHead);
+            return new ProcProperties(processorId, buffer, accessor, initialHead, 0);
         }
     }
 

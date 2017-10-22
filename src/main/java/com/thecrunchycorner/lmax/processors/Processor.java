@@ -1,14 +1,38 @@
 package com.thecrunchycorner.lmax.processors;
 
-public class Processor {
+import com.thecrunchycorner.lmax.msgstore.Message;
+import com.thecrunchycorner.lmax.msgstore.OpStatus;
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
-    private final int pos;
+public abstract class Processor {
+    ProcProperties props;
+    ProcessorStatus status;
 
-    public Processor(int pos) {
-        this.pos = pos;
+
+    protected Processor() {
     }
 
-    public int getPos() {
-        return pos;
+    void setProps(ProcProperties props) {
+        this.props = props;
     }
+
+    void updatePos(int pos) {
+        props.setPos(pos);
+    }
+
+    ProcessorStatus getStatus() {
+        return status;
+    }
+
+    void setStatus(ProcessorStatus status) {
+        this.status = status;
+    }
+
+    abstract void updateHead();
+
+    protected abstract Message getMessage();
+
+    protected abstract Message processMessage(Message msg);
+
+    protected abstract OpStatus putMessage(Message msg);
 }

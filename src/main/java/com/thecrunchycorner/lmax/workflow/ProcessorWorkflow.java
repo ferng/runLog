@@ -34,8 +34,8 @@ public final class ProcessorWorkflow {
         if (leadProcPos.isPresent()) {
             return leadProcPos.get();
         } else {
-            throw new MissingResourceException("Mandatory default system propery missing: "
-                    + "threshold.buffer.minimum.size", ProcessorWorkflow.class.getName(), "");
+            throw new MissingResourceException("Mandatory workflow definition missing, pleas    e "
+                    + "check ProcessorId", ProcessorWorkflow.class.getName(), "");
         }
     }
 
@@ -53,7 +53,7 @@ public final class ProcessorWorkflow {
                 });
     }
 
-
+    //using a bit of bitwise logic here
     private static int getLeadingProcPriority(int currentProcPriority) {
         return (currentProcPriority - 1) & lastProcPriority;
     }

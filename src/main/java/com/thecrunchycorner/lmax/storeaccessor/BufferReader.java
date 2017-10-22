@@ -12,7 +12,7 @@
 // * 2) where it has read to
 // * 3) where it can read up to
 // */
-//public class BufferReader<E> implements BufferAccess {
+//public class BufferReader<E> implements BufferAccessor {
 //    private PosController posController = PosControllerFactory.getController();
 //
 //    private RingBufferStore buffer;
@@ -36,7 +36,7 @@
 //        buffer = props.getBuffer();
 //        processor = props.getProc();
 //        myLead = props.getLeadProc();
-//        head = props.getInitialHead();
+//        head = props.getHead();
 //
 //        posController.setPos(processor, 0);
 //    }

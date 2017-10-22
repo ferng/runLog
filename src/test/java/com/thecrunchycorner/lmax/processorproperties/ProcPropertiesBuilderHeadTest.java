@@ -41,7 +41,7 @@
 //
 //    @Test
 //    public void Test() {
-//        assertThat(procProps.getInitialHead(), is(initialHead));
+//        assertThat(procProps.getHead(), is(initialHead));
 //    }
 //
 //}

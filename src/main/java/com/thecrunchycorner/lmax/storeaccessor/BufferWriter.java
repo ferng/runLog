@@ -40,7 +40,7 @@
 //        buffer = props.getBuffer();
 //        processor = props.getProc();
 //        myLead = props.getLeadProc();
-//        head = props.getInitialHead();
+//        head = props.getHead();
 //
 //        posController.setPos(processor, 0);
 //    }
