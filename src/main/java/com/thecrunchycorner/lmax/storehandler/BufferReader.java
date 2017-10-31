@@ -12,7 +12,7 @@
 // * 2) where it has read to
 // * 3) where it can read up to
 // */
-//public class BufferReader<E> implements BufferAccessor {
+//public class BufferReader<E> implements BufferHandler {
 //    private PosController posController = PosControllerFactory.getController();
 //
 //    private RingBufferStore buffer;

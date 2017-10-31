@@ -2,24 +2,14 @@ package com.thecrunchycorner.lmax.processors;
 
 import com.thecrunchycorner.lmax.msgstore.Message;
 import com.thecrunchycorner.lmax.msgstore.OpStatus;
-import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 
 public abstract class RingProcessor extends Processor implements Runnable {
-    private ProcessorId procId;
     private volatile boolean interrupt = false;
-
-    ProcessorId getProcId() {
-        return procId;
-    }
-
-    void setProcId(ProcessorId procId) {
-        this.procId = procId;
-    }
 
     @Override
     void updateHead() {
-        int leadPos = ProcessorWorkflow.getLeadPos(procId);
+        int leadPos = ProcessorWorkflow.getLeadPos(props.getProcId());
         updatePos(leadPos);
     }
 

@@ -136,7 +136,7 @@ public final class SystemProperties {
 
 
     //clean up and pre-populate any vital data in case we don't find properties files or property.
-    //using defaults in  property constructor doesn't work so we're setting them here
+    //using defaults in property constructor doesn't work so we're setting them here
     private static void setDefaults() {
         // used for unit testing only
         properties = new Properties();

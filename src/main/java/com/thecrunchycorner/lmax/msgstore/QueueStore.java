@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
  * <p>The queue carries out no checks on the data being inserted besides the type checks carried out
  *      by the generics framework.</p>
  */
-public class QueueStore<E> implements Store<E> {
+public class QueueStore<E> {
     private static final Logger LOGGER = LogManager.getLogger(QueueStore.class);
 
     private final transient ConcurrentLinkedQueue<E> queue;
@@ -55,7 +55,6 @@ public class QueueStore<E> implements Store<E> {
      *
      * @return the size of the buffer
      */
-    @Override
     public final int size() {
         return queue.size();
     }

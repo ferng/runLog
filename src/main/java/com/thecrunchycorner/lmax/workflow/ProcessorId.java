@@ -1,6 +1,8 @@
 package com.thecrunchycorner.lmax.workflow;
 
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.processors.Processor;
+import com.thecrunchycorner.lmax.processors.RingProcessor;
 
 /**
  * Identifies the types a buffer processor consists of.
@@ -23,44 +25,39 @@ public enum ProcessorId {
     /**
      * Unmarshall data from the queue, prep and place it on a RingBufferStore.
      */
-    IN_UNMARSHALL(0, new Processor(110)),
-    /**
-     * Replicates data placed on a RingBufferStore to another RingBufferStore (for HA).
-     */
-    IN_REPLICATE(1, new Processor(21)),
-    /**
-     * Journal write to RingBufferStore in case of fatal crash to reply data.
-     */
-    IN_JOURNAL(1, new Processor(22)),
-    /**
-     * Audit a subset of data from each record.
-     */
-    IN_AUDIT(1, new Processor(23)),
-    /**
-     * Read, process and Write data on a RingBufferStore.
-     */
-    BUSINESS_PROCESSOR(2, new Processor(15)),
+    IN_UNMARSHALL(0),
+//    /**
+//     * Replicates data placed on a RingBufferStore to another RingBufferStore (for HA).
+//     */
+//    IN_REPLICATE(1, new Processor(21)),
+//    /**
+//     * Journal write to RingBufferStore in case of fatal crash to reply data.
+//     */
+//    IN_JOURNAL(1, new Processor(22)),
+//    /**
+//     * Audit a subset of data from each record.
+//     */
+//    IN_AUDIT(1, new Processor(23)),
+//    /**
+//     * Read, process and Write data on a RingBufferStore.
+//     */
+    BUSINESS_PROCESSOR(1);
     /**
      * Read data from a RingBufferStore, Marshall it and place it on an outbound queue.
      */
-    OUT_MARSHALL(3, new Processor(7));
-//    /** Read data from the queue and send it to the outside world. */
-//    OUT_Q_SEND(4);
+//    OUT_MARSHALL(3, new Processor(7));
+////    /** Read data from the queue and send it to the outside world. */
+////    OUT_Q_SEND(4);
+
 
     private final int priority;
-    private final Processor processor;
 
-    ProcessorId(final int priority, final Processor processor) {
+    ProcessorId(final int priority) {
         this.priority = priority;
-        this.processor = processor;
     }
 
     public int getPriority() {
         return priority;
-    }
-
-    public Processor getProcessor() {
-        return processor;
     }
 
 }
