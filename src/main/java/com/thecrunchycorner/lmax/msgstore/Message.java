@@ -12,16 +12,28 @@ public class Message {
 
     /**
      * Create a new message.
-     * @param payload what will we be processing?
+     *
+     * @param payload what will the message hold? what will we be processing?
      */
     public Message(final Object payload) {
         this.payload = payload;
     }
 
+
+    /**
+     * Get this message's ID
+     *
+     * @return a UUID which is used to identify this message
+     */
     public final UUID getId() {
         return id;
     }
 
+    /**
+     * Get the payload the message holds. It's all about the payload man.
+     *
+     * @return the payload, well it could be anything at all.
+     */
     public final Object getPayload() {
         return payload;
     }

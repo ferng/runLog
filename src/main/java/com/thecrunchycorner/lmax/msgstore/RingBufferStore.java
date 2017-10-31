@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
  * A circular buffer used to exchange data between a disruptor and a processor.
  *
  * @param <E> the type of the contents held by the buffer.
- * <p>
+ *
  * <p>The buffer carries out no checks on the data being inserted besides the type checks carried
  * out by the generics framework.</p>
  */
@@ -28,8 +28,8 @@ public class RingBufferStore<E> {
      *
      * @param size the size of the buffer. Once instantiated it cannot be changed. If the size
      * requested is less than that specified in threshold.buffer.minimum.size it will be
-     * increased to that threshold, so passing 0 will result in a buffer with the default
-     * threshold buffer size.
+     * increased to that threshold, so, essentially, passing 0 will result in a buffer with the
+     * default threshold buffer size.
      */
     public RingBufferStore(final int size) {
         OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
@@ -64,7 +64,11 @@ public class RingBufferStore<E> {
 
 
     /**
-     * Gets the item from the given position.
+     * Gets the item from the given position. This operation does not remove any data being held
+     * by the buffer, nor does it affect the buffer in any way. This means thedata is available
+     * for any other processor that may need it as long as the leading processor's head hasn't
+     * overwritten it, this should not happen as the current processor's position will still keep
+     * control of the data until it no longer needs it
      *
      * @param pos the index to read from
      * @return the value of the index-ed position
