@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.msgstore
 
 import spock.lang.Specification
 
-class QueueStoreSize extends Specification{
+class QueueStoreSizeSpec extends Specification{
 
     def 'test'() {
         given:

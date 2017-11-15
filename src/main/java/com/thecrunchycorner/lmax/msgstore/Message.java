@@ -29,6 +29,7 @@ public class Message {
         return id;
     }
 
+
     /**
      * Get the payload the message holds. It's all about the payload man.
      *

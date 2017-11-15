@@ -9,7 +9,7 @@ public abstract class RingProcessor extends Processor implements Runnable {
 
     @Override
     void updateHead() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getProcId());
+        int leadPos = ProcessorWorkflow.getLeadPos(props.getProcessorId());
         updatePos(leadPos);
     }
 

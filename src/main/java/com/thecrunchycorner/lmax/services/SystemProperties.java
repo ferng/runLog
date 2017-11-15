@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.MissingResourceException;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Properties;
@@ -32,7 +33,7 @@ public final class SystemProperties {
     /**
      * Retrieve the property value using the property identifier given.
      *
-     * @param id the name of the property to retrieve.
+     * @param id the name of the property to retrieve
      * @return optional with a string representation of whatever value is held by the property if
      * present or an empty Optional id it doesn't exist
      */
@@ -50,25 +51,56 @@ public final class SystemProperties {
     /**
      * Retrieve and convert to an int the property value using the property identifier given.
      *
-     * @param id the name of the property to retrieve.
+     * @param id the name of the property to retrieve
      * @return optional with an integer representation of whatever value is held by the property if
      * present or an empty Optional id it doesn't exist or the value is not an int
      */
     public static OptionalInt getAsInt(final String id) {
+        try {
+            return OptionalInt.of(getPropertyAsInt(id));
+        } catch (NumberFormatException | MissingResourceException ex) {
+            return OptionalInt.empty();
+        }
+    }
+
+
+    /**
+     * Convenience method to get the system default buffer size.
+     *
+     * @return the default buffersize
+     * @throws NumberFormatException the property wasn't a numeric value, the buffer size can
+     * only be a number
+     * @throws MissingResourceException the code is broken a default should always be available as
+     * one is declared in the properties file and one is declared directly in this class
+     */
+    public static int getThresholdBufferSize() throws NumberFormatException {
+        return getPropertyAsInt("threshold.buffer.minimum.size");
+    }
+
+
+    /**
+     * Convenience method to retrieve the given property having converted it to an int if possible.
+     *
+     * @param id what system property do you want
+     * @return the value of that property as an int
+     * @throws NumberFormatException it wasn't an int
+     * @throws MissingResourceException it wasn't there to begin with
+     */
+    private static int getPropertyAsInt(final String id) throws NumberFormatException {
         final String prop = properties.getProperty(id);
 
         if (prop == null) {
             LOGGER.error("Undefined property: {}", id);
-            return OptionalInt.empty();
+            throw new MissingResourceException("System property missing: " + id,
+                    SystemProperties.class.getName(), "");
         } else {
-            int value;
             try {
-                value = Integer.parseInt(prop);
+                return Integer.parseInt(prop);
             } catch (NumberFormatException ex) {
                 LOGGER.error("Property {} is not Integer as expected", id);
-                return OptionalInt.empty();
+                throw new NumberFormatException("System property is not a number: " + id);
             }
-            return OptionalInt.of(value);
+
         }
     }
 

@@ -1,5 +1,6 @@
 package com.thecrunchycorner.lmax.workflow;
 
+import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.processors.Processor;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,36 +20,39 @@ import java.util.Optional;
  */
 public final class ProcessorWorkflow {
     private static Map<Integer, ArrayList<ProcessorId>> processors = new HashMap<>();
+    private static HashMap<ProcessorId, ProcProperties> propsById = ProcessorConfig
+            .getPropertiesById();
+    private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = ProcessorConfig
+            .getPropertiesByPriority();
     private static int lastProcessor;
 
     private ProcessorWorkflow() {
     }
 
 
-    public static int getLeadPos(ProcessorId procId) {
-        if (processors.isEmpty()) {
-            loadProcs();
-        }
+    static {
+        loadProcs();
+    }
 
+
+    public static int getLeadPos(ProcessorId procId) {
         int leadProcessorPriority = getLeadingProcPriority(procId.getPriority());
-        ArrayList<ProcessorId> proc = processors.get(leadProcessorPriority);
+        ArrayList<ProcProperties> proc = propsByPriority.get(leadProcessorPriority);
 
         Optional<Integer> leadProcPos =
                 proc
                         .stream()
-                        .map(ProcessorId::getProcessor)
-                        .map(Processor::getPos)
+                        .map(ProcProperties::getPos)
                         .reduce(Integer::min);
 
         if (leadProcPos.isPresent()) {
             return leadProcPos.get();
         } else {
-            throw new MissingResourceException("Mandatory workflow definition missing, pleas    e "
+            throw new MissingResourceException("Mandatory workflow definition missing, please "
                     + "check ProcessorId", ProcessorWorkflow.class.getName(), "");
         }
     }
-don't need to find leadprocessor ID everytime this can be set up on processor creation and used
-    every time as it never changes - what i had before'
+
 
     private static void loadProcs() {
         Arrays.stream(ProcessorId.values())
@@ -64,10 +68,10 @@ don't need to find leadprocessor ID everytime this can be set up on processor cr
     }
 
 
-    //using a bit of bitwise logic here to take care of any negative values (0-1) the & ignores
-    //the sign and we end up with the value we want 11111 & 0010 == 2 which is the priority
-    //belonging to the last processor, et voila
     private static int getLeadingProcPriority(int currentProcPriority) {
+        //using a bit of bitwise logic here to take care of any negative values (0-1) the & ignores
+        //the sign and we end up with the value we want 11111 & 0010 == 2 which is the priority
+        //belonging to the last processor, et voila
         return (currentProcPriority - 1) & lastProcessor;
     }
 }

@@ -6,8 +6,9 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * This queue is used by disruptors to read from prior to passing onto the buffer for processing
- * or once the processing is complete and ready to be picked up / sent to external resources.
+ * This queue is used by disruptors to retrieve data from the outside world prior to placing onto
+ * the buffer for processing or once the processing is complete and ready to be picked up / sent
+ * to external resources.
  *
  * @param <E> the type of the contents held by the queue
  *
@@ -51,7 +52,8 @@ public class QueueStore<E> {
     }
 
 
-    /** Gets the size of the buffer.
+    /**
+     * Gets the size of the buffer.
      *
      * @return the size of the buffer
      */
