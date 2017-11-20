@@ -9,8 +9,8 @@ class QueueStoreTakeNewValueSpec extends Specification{
         def random = new Random()
         def store = new QueueStore()
         def oldValue = random.nextInt()
-        def newValue = random.nextInt()
         def oldMsg = new Message(oldValue)
+        def newValue = random.nextInt()
         def newMsg = new Message(newValue)
 
         when:
