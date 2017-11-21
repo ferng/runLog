@@ -39,7 +39,8 @@ public class RingBufferStore<E> {
         }
         int minSize = opt.getAsInt();
         if (size < minSize) {
-            LOGGER.warn("Suggested buffer size is too small, defaulting to minimum {}.", minSize);
+            LOGGER.warn("Suggested buffer size {} is too small, defaulting to minimum {}.",
+                    size, minSize);
         } else {
             minSize = size;
         }
@@ -65,7 +66,7 @@ public class RingBufferStore<E> {
 
     /**
      * Gets the item from the given position. This operation does not remove any data being held
-     * by the buffer, nor does it affect the buffer in any way. This means thedata is available
+     * by the buffer, nor does it affect the buffer in any way. This means the data is available
      * for any other processor that may need it as long as the leading processor's head hasn't
      * overwritten it, this should not happen as the current processor's position will still keep
      * control of the data until it no longer needs it
