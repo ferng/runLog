@@ -25,7 +25,7 @@ public class ProcessorConfig {
         ProcProperties inUnMarshall =
                 builder.setProcessorId(ProcessorId.IN_UNMARSHALL)
                         .setBuffer(ring)
-                        .setAccessor(new BufferReaderWriter())
+                        .setHandler(new BufferReaderWriter())
                         .setInitialHead(0)
                         .createProcProperties();
 
@@ -39,7 +39,7 @@ public class ProcessorConfig {
         ProcProperties businessProc =
                 builder.setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
                         .setBuffer(ring)
-                        .setAccessor(new BufferReaderWriter())
+                        .setHandler(new BufferReaderWriter())
                         .setInitialHead(inputBufferSize)
                         .createProcProperties();
 

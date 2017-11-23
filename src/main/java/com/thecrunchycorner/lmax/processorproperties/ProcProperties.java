@@ -1,8 +1,11 @@
 package com.thecrunchycorner.lmax.processorproperties;
 
 import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
+import com.thecrunchycorner.lmax.services.SystemProperties;
 import com.thecrunchycorner.lmax.storehandler.BufferHandler;
 import com.thecrunchycorner.lmax.workflow.ProcessorId;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -49,6 +52,7 @@ public class ProcProperties {
         return bufferHandler;
     }
 
+
     /**
      * The position of the buffer head we can read/write to.
      *
@@ -57,6 +61,7 @@ public class ProcProperties {
     public final int getHead() {
         return head;
     }
+
 
 
     /**
@@ -68,6 +73,7 @@ public class ProcProperties {
         this.head = head;
     }
 
+
     /**
      * Get the current position this processor is working on, not other processor with a higher
      * sequence processorId (which denotes lower priority) may go past this position.
@@ -77,6 +83,7 @@ public class ProcProperties {
     public int getPos() {
         return pos;
     }
+
 
     /**
      * Update this processor's position, we have finished working with this cell and can release
@@ -94,21 +101,28 @@ public class ProcProperties {
      * Builder used to instantiate ProcProperties.
      */
     public static class Builder {
+        private static final Logger LOGGER = LogManager.getLogger(SystemProperties.class);
         private ProcessorId processorId;
         private RingBufferStore buffer;
-        private BufferHandler accessor;
+        private BufferHandler handler;
         private int initialHead;
 
 
         /**
-         * Set the ID of the processor accessing the buffer.
+         * Sets the ID of the processor accessing the buffer.
          *
          * @param procId the Processor's ID
          * @return a builder to carry on building
          */
         public final Builder setProcessorId(final ProcessorId procId) {
-            this.processorId = procId;
-            return this;
+            if (procId == null) {
+                LOGGER.error("Argument cannot be null: procId");
+                throw new IllegalArgumentException("Argument cannot be null");
+            } else {
+                this.processorId = procId;
+                return this;
+            }
+
         }
 
 
@@ -119,33 +133,48 @@ public class ProcProperties {
          * @return a builder to carry on building
          */
         public final Builder setBuffer(final RingBufferStore buffer) {
-            this.buffer = buffer;
-            return this;
+            if (buffer == null) {
+                LOGGER.error("Argument cannot be null: buffer");
+                throw new IllegalArgumentException("Argument cannot be null");
+            } else {
+                this.buffer = buffer;
+                return this;
+            }
         }
 
+
         /**
-         * Sets the Accessor (reader / writer)
+         * Sets the Handler (reader / writer).
          *
-         * @param accessor the Accessor
+         * @param handler the handler
          * @return a builder to carry on building
          */
-        public final Builder setAccessor(final BufferHandler accessor) {
-            this.accessor = accessor;
-            return this;
+        public final Builder setHandler(final BufferHandler handler) {
+            if (handler == null) {
+                LOGGER.error("Argument cannot be null: handler");
+                throw new IllegalArgumentException("Argument cannot be null");
+            } else {
+                this.handler = handler;
+                return this;
+            }
         }
 
 
         /**
-         * How far can we go to when we first start. In truth only the
-         * leading reader/writer will ever be non-zero in which case this value should
-         * be set to the size of the buffer
+         * How far can we go to when we first start. In truth, only the leading reader/writer
+         * will be non-zero in which case its value should be set to the size of the buffer.
          *
          * @param initialHead the highest buffer position we can read/write to
          * @return a builder to carry on building
          */
         public final Builder setInitialHead(final int initialHead) {
-            this.initialHead = initialHead;
-            return this;
+            if (initialHead < 0) {
+                LOGGER.error("Argument cannot less than zero: initialHead");
+                throw new IllegalArgumentException("Argument cannot be < 0");
+            } else {
+                this.initialHead = initialHead;
+                return this;
+            }
         }
 
 
@@ -155,8 +184,7 @@ public class ProcProperties {
          * @return newly created properties object
          */
         public final ProcProperties createProcProperties() {
-            return new ProcProperties(processorId, buffer, accessor, initialHead,
-                    0);
+            return new ProcProperties(processorId, buffer, handler, initialHead, 0);
         }
     }
 

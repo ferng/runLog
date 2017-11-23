@@ -1,49 +1,70 @@
-//package com.thecrunchycorner.lmax.processorproperties;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertTrue;
-//
-//import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
-//import com.thecrunchycorner.lmax.services.SystemProperties;
-//import com.thecrunchycorner.lmax.workflow.ProcessorId;
-//import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
-//import java.util.OptionalInt;
-//import org.junit.Assert;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//public class ProcPropertiesBuilderBufferTest {
-//
-//    private RingBufferStore<Integer> buffer;
-//    private ProcProperties procProps;
-//
-//    @Before
-//    public void setUp() {
-//        final OptionalInt bufferSize = SystemProperties.getAsInt("threshold.buffer.minimum.size");
-//        if (bufferSize.isPresent()) {
-//            buffer = new RingBufferStore<>(bufferSize.getAsInt());
-//        } else {
-//            Assert.fail();
-//        }
-//
-//        final ProcessorId trailProc = ProcessorId.BUSINESS_PROCESSOR;
-//        final ProcessorId leadProc = ProcessorWorkflow.getLeadProc(trailProc);
-//
-//        final int initialHead = 20;
-//        procProps = new ProcProperties.Builder()
-//                .setBuffer(buffer)
-//                .setProcessor(trailProc)
-//                .setLeadProc(leadProc)
-//                .setInitialHead(initialHead)
-//                .createProcProperties();
-//    }
-//
-//
-//    @Test
-//    public void test() {
-//        final RingBufferStore actualBuffer = procProps.getBuffer();
-//        assertTrue(actualBuffer instanceof RingBufferStore);
-//        assertEquals(actualBuffer.size(), 16);
-//    }
-//
-//}
+package com.thecrunchycorner.lmax.processorproperties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
+import com.thecrunchycorner.lmax.services.SystemProperties;
+import com.thecrunchycorner.lmax.storehandler.BufferHandler;
+import com.thecrunchycorner.lmax.storehandler.BufferReaderWriter;
+import com.thecrunchycorner.lmax.workflow.ProcessorId;
+import org.junit.Before;
+import org.junit.Test;
+
+public class ProcPropertiesBuilderBufferTest {
+    private ProcProperties procProps;
+    private int initialBufferSize = SystemProperties.getThresholdBufferSize();
+    private int initialHead = SystemProperties.getThresholdBufferSize() - 2;
+
+    @Before
+    public void setUp() {
+        final RingBufferStore<Integer> buffer = new RingBufferStore<>(initialBufferSize);
+        final BufferReaderWriter<Object> handler = new BufferReaderWriter<>();
+
+        procProps = new ProcProperties.Builder()
+                .setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
+                .setBuffer(buffer)
+                .setHandler(handler)
+                .setInitialHead(initialHead)
+                .createProcProperties();
+    }
+
+
+    @Test
+    public void testProcessorId() {
+        final ProcessorId procId = procProps.getProcessorId();
+        assertTrue(procId != null);
+        assertEquals(ProcessorId.BUSINESS_PROCESSOR, procId);
+    }
+
+
+    @Test
+    public void testBuffer() {
+        final RingBufferStore actualBuffer = procProps.getBuffer();
+        assertTrue(actualBuffer != null);
+        assertEquals(initialBufferSize, actualBuffer.size());
+    }
+
+
+    @Test
+    public void testHandler() {
+        final BufferHandler actualHandler = procProps.getBufferHandler();
+        assertTrue(actualHandler != null);
+        assertTrue(actualHandler instanceof BufferReaderWriter);
+    }
+
+
+    @Test
+    public void testHead() {
+        final int head = procProps.getHead();
+        assertEquals(initialHead, head);
+    }
+
+
+    @Test
+    public void testPos() {
+        final int pos = procProps.getPos();
+        assertEquals(0, pos);
+    }
+
+}

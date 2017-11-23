@@ -53,7 +53,7 @@ public class PosController {
     public final Integer getPos(ProcessorId procType) {
         if (procType == null) {
             LOGGER.error("Arguments cannot be null: proctype");
-            throw new IllegalArgumentException("Arguments cannot be null");
+            throw new IllegalArgumentException("Argument cannot be null");
         } else {
             return posMap.get(procType);
         }
