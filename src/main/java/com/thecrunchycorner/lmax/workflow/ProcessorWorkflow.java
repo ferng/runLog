@@ -1,7 +1,6 @@
 package com.thecrunchycorner.lmax.workflow;
 
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
-import com.thecrunchycorner.lmax.processors.Processor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,9 +9,8 @@ import java.util.MissingResourceException;
 import java.util.Optional;
 
 /**
- * Initially sets up, initiates and then manages the processor workflow for all processors
- * accessing a single RingBuferStore.
- *
+ * Initially sets up, initiates and then manages the processor workflow for all processors.
+ * <p>
  * <p>This is necessary as processors should not be able to access any buffer cells the leading
  * processor has not yet released. This is further complicated as several processors can process
  * the same released chunk of the buffer, eg. Journaller and Auditer
@@ -20,8 +18,6 @@ import java.util.Optional;
  */
 public final class ProcessorWorkflow {
     private static Map<Integer, ArrayList<ProcessorId>> processors = new HashMap<>();
-    private static HashMap<ProcessorId, ProcProperties> propsById = ProcessorConfig
-            .getPropertiesById();
     private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = ProcessorConfig
             .getPropertiesByPriority();
     private static int lastProcessor;
@@ -29,7 +25,8 @@ public final class ProcessorWorkflow {
     private ProcessorWorkflow() {
     }
 
-
+    //this and processor id should be "fed" the processors somehow to allow the client to define
+// their own processors and processing order extends? or better as a helper class of some sort
     static {
         loadProcs();
     }
@@ -39,11 +36,10 @@ public final class ProcessorWorkflow {
         int leadProcessorPriority = getLeadingProcPriority(procId.getPriority());
         ArrayList<ProcProperties> proc = propsByPriority.get(leadProcessorPriority);
 
-        Optional<Integer> leadProcPos =
-                proc
-                        .stream()
-                        .map(ProcProperties::getPos)
-                        .reduce(Integer::min);
+        Optional<Integer> leadProcPos = proc
+                .stream()
+                .map(ProcProperties::getPos)
+                .reduce(Integer::min);
 
         if (leadProcPos.isPresent()) {
             return leadProcPos.get();

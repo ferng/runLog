@@ -11,16 +11,16 @@ import org.apache.logging.log4j.Logger;
  * to external resources.
  *
  * @param <E> the type of the contents held by the queue
- *
+ * <p>
  * <p>The queue carries out no checks on the data being inserted besides the type checks carried out
- *      by the generics framework.</p>
+ * by the generics framework.</p>
  */
-public class QueueStore<E> {
-    private static final Logger LOGGER = LogManager.getLogger(QueueStore.class);
+public class Queue<E> {
+    private static final Logger LOGGER = LogManager.getLogger(Queue.class);
 
     private final transient ConcurrentLinkedQueue<E> queue;
 
-    public QueueStore() {
+    public Queue() {
         queue = new ConcurrentLinkedQueue<>();
     }
 
@@ -34,11 +34,10 @@ public class QueueStore<E> {
      */
     public final boolean add(final E item) {
         if (item == null) {
-            LOGGER.error("Argument cannot be null, message commit failed");
-            throw new IllegalArgumentException("Argument cannot be null");
-        } else {
-            return queue.add(item);
+            LOGGER.error("Cannot add null to queue, message commit failed");
+            throw new IllegalArgumentException("Cannot add null to queue");
         }
+        return queue.add(item);
     }
 
 

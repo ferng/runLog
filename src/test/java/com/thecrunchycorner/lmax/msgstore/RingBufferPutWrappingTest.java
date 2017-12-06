@@ -9,12 +9,12 @@ import org.junit.Test;
 
 public class RingBufferPutWrappingTest {
     private static final int THRESHOLD_SIZE = SystemProperties.getThresholdBufferSize();
-    private RingBufferStore<Integer> buffer;
+    private RingBuffer<Integer> buffer;
 
 
     @Before
     public void setUp() {
-        buffer = new RingBufferStore<>(THRESHOLD_SIZE);
+        buffer = new RingBuffer<>(THRESHOLD_SIZE);
     }
 
 

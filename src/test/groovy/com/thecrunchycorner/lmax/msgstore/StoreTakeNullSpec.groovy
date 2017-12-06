@@ -7,7 +7,7 @@ class StoreTakeNullSpec extends Specification{
     def 'test'() {
         given:
         def random = new Random()
-        def store = new QueueStore()
+        def store = new Queue()
         def oldValue = random.nextInt()
         def newValue = random.nextInt()
         def oldMsg = new Message(oldValue)

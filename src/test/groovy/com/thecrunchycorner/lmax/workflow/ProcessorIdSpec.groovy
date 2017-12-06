@@ -8,11 +8,10 @@ class ProcessorIdSpec extends Specification {
         ProcessorId procId = ProcessorId.BUSINESS_PROCESSOR
 
         when:
-        def priority = ProcessorId.getPriority(procId);
-        def proc = ProcessorId.values()[2]
+        def priority = procId.getPriority()
 
         then:
-        priority == 3
+        priority == 1
 
     }
 

@@ -2,12 +2,12 @@ package com.thecrunchycorner.lmax.msgstore
 
 import spock.lang.Specification
 
-class QueueStoreTakeOldValueSpec extends Specification{
+class QueueTakeNewValueSpec extends Specification{
 
     def 'test'() {
         given:
         def random = new Random()
-        def store = new QueueStore()
+        def store = new Queue()
         def oldValue = random.nextInt()
         def oldMsg = new Message(oldValue)
         def newValue = random.nextInt()
@@ -16,10 +16,11 @@ class QueueStoreTakeOldValueSpec extends Specification{
         when:
         store.add(oldMsg)
         store.add(newMsg)
+        store.take()
         def returnVal = store.take()
 
         then:
-        returnVal == oldMsg
+        returnVal == newMsg
     }
 
 }

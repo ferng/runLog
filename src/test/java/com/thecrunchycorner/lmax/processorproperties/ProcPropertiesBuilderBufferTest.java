@@ -3,10 +3,8 @@ package com.thecrunchycorner.lmax.processorproperties;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
+import com.thecrunchycorner.lmax.msgstore.RingBuffer;
 import com.thecrunchycorner.lmax.services.SystemProperties;
-import com.thecrunchycorner.lmax.storehandler.BufferHandler;
-import com.thecrunchycorner.lmax.storehandler.BufferReaderWriter;
 import com.thecrunchycorner.lmax.workflow.ProcessorId;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +16,7 @@ public class ProcPropertiesBuilderBufferTest {
 
     @Before
     public void setUp() {
-        final RingBufferStore<Integer> buffer = new RingBufferStore<>(initialBufferSize);
+        final RingBuffer<Integer> buffer = new RingBuffer<>(initialBufferSize);
         final BufferReaderWriter<Object> handler = new BufferReaderWriter<>();
 
         procProps = new ProcProperties.Builder()
@@ -40,7 +38,7 @@ public class ProcPropertiesBuilderBufferTest {
 
     @Test
     public void testBuffer() {
-        final RingBufferStore actualBuffer = procProps.getBuffer();
+        final RingBuffer actualBuffer = procProps.getBuffer();
         assertTrue(actualBuffer != null);
         assertEquals(initialBufferSize, actualBuffer.size());
     }

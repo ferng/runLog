@@ -2,11 +2,11 @@ package com.thecrunchycorner.lmax.msgstore
 
 import spock.lang.Specification
 
-class QueueStoreSizeSpec extends Specification{
+class QueueSizeSpec extends Specification{
 
     def 'test'() {
         given:
-        def store = new QueueStore()
+        def store = new Queue()
         def msg = "hello"
 
         when:

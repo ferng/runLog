@@ -1,9 +1,11 @@
 package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.msgstore.RingBufferStore;
+import com.thecrunchycorner.lmax.msgstore.Message;
+import com.thecrunchycorner.lmax.msgstore.RingBuffer;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.services.SystemProperties;
-import com.thecrunchycorner.lmax.storehandler.BufferReaderWriter;
+import com.thecrunchycorner.lmax.storehandler.BufferReader;
+import com.thecrunchycorner.lmax.storehandler.BufferWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.OptionalInt;
@@ -18,15 +20,16 @@ public class ProcessorConfig {
 
         int thresholdBufferSize = SystemProperties.getThresholdBufferSize();
         int inputBufferSize = inputSizeOpt.orElse(thresholdBufferSize);
-        RingBufferStore ring = new RingBufferStore(inputBufferSize);
+        RingBuffer<Message> ring = new RingBuffer<>(inputBufferSize);
+        BufferWriter<Message> writer = new BufferWriter<>(ring);
+        BufferReader<Message> reader = new BufferReader<>(ring);
 
         ProcProperties.Builder builder = new ProcProperties.Builder();
 
         ProcProperties inUnMarshall =
                 builder.setProcessorId(ProcessorId.IN_UNMARSHALL)
-                        .setBuffer(ring)
-                        .setHandler(new BufferReaderWriter())
-                        .setInitialHead(0)
+                        .setWriter(writer)
+                        .setInitialHead(inputBufferSize)
                         .createProcProperties();
 
         propsById.put(ProcessorId.IN_UNMARSHALL, inUnMarshall);
@@ -38,9 +41,8 @@ public class ProcessorConfig {
 
         ProcProperties businessProc =
                 builder.setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
-                        .setBuffer(ring)
-                        .setHandler(new BufferReaderWriter())
-                        .setInitialHead(inputBufferSize)
+                        .setReader(reader)
+                        .setInitialHead(0)
                         .createProcProperties();
 
         propsById.put(ProcessorId.BUSINESS_PROCESSOR, businessProc);
@@ -53,14 +55,14 @@ public class ProcessorConfig {
     }
 
 
-    public static HashMap<Integer, ArrayList<ProcProperties>> getPropertiesByPriority() {
+    static HashMap<Integer, ArrayList<ProcProperties>> getPropertiesByPriority() {
         return propsByPriority;
     }
 
 
     private static void addToPropsArray(ProcProperties props) {
         int priority = props.getProcessorId().getPriority();
-        ArrayList priorityProcs = propsByPriority.getOrDefault(priority, new
+        ArrayList<ProcProperties> priorityProcs = propsByPriority.getOrDefault(priority, new
                 ArrayList<>());
 
         priorityProcs.add(props);

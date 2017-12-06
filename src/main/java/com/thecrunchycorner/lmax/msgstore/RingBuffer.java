@@ -16,22 +16,22 @@ import org.apache.logging.log4j.Logger;
  * <p>The buffer carries out no checks on the data being inserted besides the type checks carried
  * out by the generics framework.</p>
  */
-public class RingBufferStore<E> {
-    private static final Logger LOGGER = LogManager.getLogger(RingBufferStore.class);
+public class RingBuffer<E> {
+    private static final Logger LOGGER = LogManager.getLogger(RingBuffer.class);
 
     private final transient AtomicReferenceArray<E> buffer;
     private final transient int bufferSize;
 
 
     /**
-     * Constructor for RingBufferStore.
+     * Constructor for RingBuffer.
      *
      * @param size the size of the buffer. Once instantiated it cannot be changed. If the size
      * requested is less than that specified in threshold.buffer.minimum.size it will be
      * increased to that threshold, so, essentially, passing 0 will result in a buffer with the
      * default threshold buffer size.
      */
-    public RingBufferStore(final int size) {
+    public RingBuffer(final int size) {
         OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
         if (!opt.isPresent()) {
             throw new MissingResourceException("Mandatory default system propery missing: "

@@ -5,12 +5,12 @@ import com.thecrunchycorner.lmax.msgstore.OpStatus;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 
 public abstract class Processor {
-    ProcProperties props;
-    ProcessorStatus status;
+    private ProcProperties props;
+    private ProcessorStatus status;
 
 
-    protected Processor() {
-    }
+//    private Processor() {
+//    }
 
     void setProps(ProcProperties props) {
         this.props = props;
@@ -32,7 +32,7 @@ public abstract class Processor {
 
     protected abstract Message getMessage();
 
-    protected abstract Message processMessage(Message msg);
+    abstract Message processMessage(Message msg);
 
-    protected abstract OpStatus putMessage(Message msg);
+    abstract OpStatus putMessage(Message msg);
 }

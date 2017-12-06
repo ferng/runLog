@@ -1,9 +1,5 @@
 package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
-import com.thecrunchycorner.lmax.processors.Processor;
-import com.thecrunchycorner.lmax.processors.RingProcessor;
-
 /**
  * Identifies the types a buffer processor consists of.
  *
@@ -23,15 +19,15 @@ public enum ProcessorId {
 //    /** Read data from the outside world and place it on an internal queue. */
 //    IN_Q_RECEIVE(0),
     /**
-     * Unmarshall data from the queue, prep and place it on a RingBufferStore.
+     * Unmarshall data from the queue, prep and place it on a RingBuffer.
      */
     IN_UNMARSHALL(0),
 //    /**
-//     * Replicates data placed on a RingBufferStore to another RingBufferStore (for HA).
+//     * Replicates data placed on a RingBuffer to another RingBuffer (for HA).
 //     */
 //    IN_REPLICATE(1, new Processor(21)),
 //    /**
-//     * Journal write to RingBufferStore in case of fatal crash to reply data.
+//     * Journal write to RingBuffer in case of fatal crash to reply data.
 //     */
 //    IN_JOURNAL(1, new Processor(22)),
 //    /**
@@ -39,11 +35,11 @@ public enum ProcessorId {
 //     */
 //    IN_AUDIT(1, new Processor(23)),
 //    /**
-//     * Read, process and Write data on a RingBufferStore.
+//     * Read, process and Write data on a RingBuffer.
 //     */
     BUSINESS_PROCESSOR(1);
     /**
-     * Read data from a RingBufferStore, Marshall it and place it on an outbound queue.
+     * Read data from a RingBuffer, Marshall it and place it on an outbound queue.
      */
 //    OUT_MARSHALL(3, new Processor(7));
 ////    /** Read data from the queue and send it to the outside world. */

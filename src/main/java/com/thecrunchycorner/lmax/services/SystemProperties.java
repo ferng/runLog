@@ -93,14 +93,12 @@ public final class SystemProperties {
             LOGGER.error("Undefined property: {}", id);
             throw new MissingResourceException("System property missing: " + id,
                     SystemProperties.class.getName(), "");
-        } else {
-            try {
-                return Integer.parseInt(prop);
-            } catch (NumberFormatException ex) {
-                LOGGER.error("Property {} is not Integer as expected", id);
-                throw new NumberFormatException("System property is not a number: " + id);
-            }
-
+        }
+        try {
+            return Integer.parseInt(prop);
+        } catch (NumberFormatException ex) {
+            LOGGER.error("Property {} is not Integer as expected", id);
+            throw new NumberFormatException("System property is not a number: " + id);
         }
     }
 
