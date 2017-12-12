@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.thecrunchycorner.lmax.msgstore.RingBuffer;
 import com.thecrunchycorner.lmax.services.SystemProperties;
-import com.thecrunchycorner.lmax.workflow.ProcessorId;
+import com.thecrunchycorner.lmax.workflow.ProcessorPriorities;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class ProcPropertiesBuilderBufferTest {
         final BufferReaderWriter<Object> handler = new BufferReaderWriter<>();
 
         procProps = new ProcProperties.Builder()
-                .setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
+                .setProcessorPriorities(ProcessorPriorities.BUSINESS_PROCESSOR)
                 .setBuffer(buffer)
                 .setHandler(handler)
                 .setInitialHead(initialHead)
@@ -30,9 +30,9 @@ public class ProcPropertiesBuilderBufferTest {
 
     @Test
     public void testProcessorId() {
-        final ProcessorId procId = procProps.getProcessorId();
+        final ProcessorPriorities procId = procProps.getProcessorPriorities();
         assertTrue(procId != null);
-        assertEquals(ProcessorId.BUSINESS_PROCESSOR, procId);
+        assertEquals(ProcessorPriorities.BUSINESS_PROCESSOR, procId);
     }
 
 

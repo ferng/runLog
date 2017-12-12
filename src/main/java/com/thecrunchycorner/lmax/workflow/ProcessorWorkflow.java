@@ -17,10 +17,13 @@ import java.util.Optional;
  * </p>
  */
 public final class ProcessorWorkflow {
-    private static Map<Integer, ArrayList<ProcessorId>> processors = new HashMap<>();
-    private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = ProcessorConfig
-            .getPropertiesByPriority();
+    private static Map<Integer, ArrayList<ProcessorPriorities>> prioritiesByEnum = new HashMap<>();
     private static int lastProcessor;
+
+    private static ProcessorPriorities processorPriorities;
+    private static ProcessorConfig processorConfig;
+    private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = processorConfig
+            .getPropertiesByPriority();
 
     private ProcessorWorkflow() {
     }
@@ -31,9 +34,16 @@ public final class ProcessorWorkflow {
         loadProcs();
     }
 
+    public static void setProcessorPriorities(ProcessorPriorities processorPriorities) {
+        ProcessorWorkflow.processorPriorities = processorPriorities;
+    }
 
-    public static int getLeadPos(ProcessorId procId) {
-        int leadProcessorPriority = getLeadingProcPriority(procId.getPriority());
+    public static void setProcessorConfig(ProcessorConfig processorConfig) {
+        ProcessorWorkflow.processorConfig = processorConfig;
+    }
+
+    public static int getLeadPos(ProcessorPriorities priority) {
+        int leadProcessorPriority = getLeadingProcPriority(priority.getPriority());
         ArrayList<ProcProperties> proc = propsByPriority.get(leadProcessorPriority);
 
         Optional<Integer> leadProcPos = proc
@@ -45,21 +55,21 @@ public final class ProcessorWorkflow {
             return leadProcPos.get();
         } else {
             throw new MissingResourceException("Mandatory workflow definition missing, please "
-                    + "check ProcessorId", ProcessorWorkflow.class.getName(), "");
+                    + "check ProcessorPriorities", ProcessorWorkflow.class.getName(), "");
         }
     }
 
 
     private static void loadProcs() {
-        Arrays.stream(ProcessorId.values())
+        Arrays.stream(processorPriorities.values())
                 .forEach(id -> {
                     lastProcessor = id.getPriority();
-                    ArrayList<ProcessorId> procList = processors.get(lastProcessor);
+                    ArrayList<ProcessorPriorities> procList = prioritiesByEnum.get(lastProcessor);
                     if (procList == null) {
                         procList = new ArrayList<>();
                     }
                     procList.add(id);
-                    processors.put(id.getPriority(), procList);
+                    prioritiesByEnum.put(id.getPriority(), procList);
                 });
     }
 

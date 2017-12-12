@@ -21,7 +21,7 @@ public abstract class RingProcessor {
     }
 
     void updateHead() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getProcessorId());
+        int leadPos = ProcessorWorkflow.getLeadPos(props.getProcessorPriorities());
         updatePos(leadPos);
     }
 

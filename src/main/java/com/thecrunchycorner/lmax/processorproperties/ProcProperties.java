@@ -3,7 +3,7 @@ package com.thecrunchycorner.lmax.processorproperties;
 import com.thecrunchycorner.lmax.msgstore.Message;
 import com.thecrunchycorner.lmax.storehandler.BufferReader;
 import com.thecrunchycorner.lmax.storehandler.BufferWriter;
-import com.thecrunchycorner.lmax.workflow.ProcessorId;
+import com.thecrunchycorner.lmax.workflow.ProcessorPriorities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,15 +12,15 @@ import org.apache.logging.log4j.Logger;
  * Details about each the processor. This can only be instantiated through the builder.
  */
 public class ProcProperties {
-    private final ProcessorId processorId;
+    private final ProcessorPriorities processorPriorities;
     private final BufferReader<Message> reader;
     private final BufferWriter<Message> writer;
     private int head;
     private int pos;
 
-    private ProcProperties(final ProcessorId processorId, final BufferReader<Message> reader,
+    private ProcProperties(final ProcessorPriorities processorPriorities, final BufferReader<Message> reader,
                            final BufferWriter<Message> writer, final int head, int pos) {
-        this.processorId = processorId;
+        this.processorPriorities = processorPriorities;
         this.reader = reader;
         this.writer = writer;
         this.head = head;
@@ -31,10 +31,10 @@ public class ProcProperties {
     /**
      * Get the ID for this processor.
      *
-     * @return ProcessorId
+     * @return ProcessorPriorities
      */
-    public ProcessorId getProcessorId() {
-        return processorId;
+    public ProcessorPriorities getProcessorPriorities() {
+        return processorPriorities;
     }
 
 
@@ -68,7 +68,7 @@ public class ProcProperties {
 
     /**
      * Get the current position this processor is working on, not other processor with a higher
-     * sequence processorId (which denotes lower priority) may go past this position.
+     * sequence processorPriorities (which denotes lower priority) may go past this position.
      *
      * @return the position
      */
@@ -94,7 +94,7 @@ public class ProcProperties {
      */
     public static class Builder {
         private static final Logger LOGGER = LogManager.getLogger(Builder.class);
-        private ProcessorId processorId = null;
+        private ProcessorPriorities processorPriorities = null;
         private BufferReader<Message> reader = null;
         private BufferWriter<Message> writer = null;
         private int initialHead = -1;
@@ -106,12 +106,12 @@ public class ProcProperties {
          * @param procId the Processor's ID
          * @return a builder to carry on building
          */
-        public final Builder setProcessorId(final ProcessorId procId) {
+        public final Builder setProcessorPriorities(final ProcessorPriorities procId) {
             if (procId == null) {
                 LOGGER.error("Argument cannot be null: procId");
                 throw new IllegalArgumentException("Argument cannot be null");
             }
-            this.processorId = procId;
+            this.processorPriorities = procId;
             return this;
 
         }
@@ -171,13 +171,13 @@ public class ProcProperties {
          *
          * @return newly created properties object
          * @throws IllegalStateException If the builder is called before the minimum required
-         * configuration has been set this consists of: ProcessorId, Buffer, Reader or Writer or
+         * configuration has been set this consists of: ProcessorPriorities, Buffer, Reader or Writer or
          * both, an initial head value to process up to
          */
         public final ProcProperties createProcProperties() {
-            if (processorId == null) {
-                LOGGER.error("ProcessorId must be specified");
-                throw new IllegalStateException("ProcessorId must be specified");
+            if (processorPriorities == null) {
+                LOGGER.error("ProcessorPriorities must be specified");
+                throw new IllegalStateException("ProcessorPriorities must be specified");
             }
             if (reader == null && writer == null) {
                 LOGGER.error("Reader or writer or both must be specified");
@@ -189,7 +189,7 @@ public class ProcProperties {
             }
 
 
-            return new ProcProperties(processorId, reader, writer, initialHead, 0);
+            return new ProcProperties(processorPriorities, reader, writer, initialHead, 0);
         }
     }
 

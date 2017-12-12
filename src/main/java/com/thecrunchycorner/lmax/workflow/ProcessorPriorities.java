@@ -15,9 +15,7 @@ package com.thecrunchycorner.lmax.workflow;
  * resilience you need. Or maybe you don't nee auditing.
  * </p>
  */
-public enum ProcessorId {
-//    /** Read data from the outside world and place it on an internal queue. */
-//    IN_Q_RECEIVE(0),
+public enum ProcessorPriorities {
     /**
      * Unmarshall data from the queue, prep and place it on a RingBuffer.
      */
@@ -43,12 +41,11 @@ public enum ProcessorId {
      */
 //    OUT_MARSHALL(3, new Processor(7));
 ////    /** Read data from the queue and send it to the outside world. */
-////    OUT_Q_SEND(4);
 
 
     private final int priority;
 
-    ProcessorId(final int priority) {
+    ProcessorPriorities(final int priority) {
         this.priority = priority;
     }
 

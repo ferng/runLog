@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.OptionalInt;
 
 public class ProcessorConfig {
-    private static HashMap<ProcessorId, ProcProperties> propsById = new HashMap<>();
+    private static HashMap<ProcessorPriorities, ProcProperties> propsById = new HashMap<>();
     private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = new HashMap<>();
 
 
@@ -27,12 +27,12 @@ public class ProcessorConfig {
         ProcProperties.Builder builder = new ProcProperties.Builder();
 
         ProcProperties inUnMarshall =
-                builder.setProcessorId(ProcessorId.IN_UNMARSHALL)
+                builder.setProcessorPriorities(ProcessorPriorities.IN_UNMARSHALL)
                         .setWriter(writer)
                         .setInitialHead(inputBufferSize)
                         .createProcProperties();
 
-        propsById.put(ProcessorId.IN_UNMARSHALL, inUnMarshall);
+        propsById.put(ProcessorPriorities.IN_UNMARSHALL, inUnMarshall);
         addToPropsArray(inUnMarshall);
         // if the only properties that differ are the head and the accessor, that could be set in
         // processorId via some sort of identifier and this could be parameterised and made a
@@ -40,17 +40,17 @@ public class ProcessorConfig {
         // specific to what this lmax is doing and working with
 
         ProcProperties businessProc =
-                builder.setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
+                builder.setProcessorPriorities(ProcessorPriorities.BUSINESS_PROCESSOR)
                         .setReader(reader)
                         .setInitialHead(0)
                         .createProcProperties();
 
-        propsById.put(ProcessorId.BUSINESS_PROCESSOR, businessProc);
+        propsById.put(ProcessorPriorities.BUSINESS_PROCESSOR, businessProc);
         addToPropsArray(businessProc);
     }
 
 
-    public static HashMap<ProcessorId, ProcProperties> getPropertiesById() {
+    public static HashMap<ProcessorPriorities, ProcProperties> getPropertiesById() {
         return propsById;
     }
 
@@ -61,7 +61,7 @@ public class ProcessorConfig {
 
 
     private static void addToPropsArray(ProcProperties props) {
-        int priority = props.getProcessorId().getPriority();
+        int priority = props.getProcessorPriorities().getPriority();
         ArrayList<ProcProperties> priorityProcs = propsByPriority.getOrDefault(priority, new
                 ArrayList<>());
 

@@ -2,10 +2,10 @@ package com.thecrunchycorner.lmax.workflow
 
 import spock.lang.Specification
 
-class ProcessorIdSpec extends Specification {
+class ProcessorPrioritiesSpec extends Specification {
 
     def 'test'() {
-        ProcessorId procId = ProcessorId.BUSINESS_PROCESSOR
+        ProcessorPriorities procId = ProcessorPriorities.BUSINESS_PROCESSOR
 
         when:
         def priority = procId.getPriority()

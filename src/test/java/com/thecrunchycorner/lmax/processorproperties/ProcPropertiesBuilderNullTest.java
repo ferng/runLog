@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.thecrunchycorner.lmax.msgstore.RingBuffer;
 import com.thecrunchycorner.lmax.services.SystemProperties;
-import com.thecrunchycorner.lmax.workflow.ProcessorId;
+import com.thecrunchycorner.lmax.workflow.ProcessorPriorities;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ProcPropertiesBuilderNullTest {
     public void testNullProcId() {
         thrown.expectMessage("Argument cannot be null");
         procProps = new ProcProperties.Builder()
-                .setProcessorId(null)
+                .setProcessorPriorities(null)
                 .setBuffer(buffer)
                 .setHandler(handler)
                 .setInitialHead(initialHead)
@@ -41,7 +41,7 @@ public class ProcPropertiesBuilderNullTest {
     public void TestNullBuffer() {
         thrown.expectMessage("Argument cannot be null");
         procProps = new ProcProperties.Builder()
-                .setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
+                .setProcessorPriorities(ProcessorPriorities.BUSINESS_PROCESSOR)
                 .setBuffer(null)
                 .setHandler(handler)
                 .setInitialHead(initialHead)
@@ -53,7 +53,7 @@ public class ProcPropertiesBuilderNullTest {
     public void TestNullHandler() {
         thrown.expectMessage("Argument cannot be null");
         procProps = new ProcProperties.Builder()
-                .setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
+                .setProcessorPriorities(ProcessorPriorities.BUSINESS_PROCESSOR)
                 .setBuffer(buffer)
                 .setHandler(null)
                 .setInitialHead(initialHead)
@@ -65,7 +65,7 @@ public class ProcPropertiesBuilderNullTest {
     public void TestNegativeInitialHead() {
         thrown.expectMessage("Argument cannot be < 0");
         procProps = new ProcProperties.Builder()
-                .setProcessorId(ProcessorId.BUSINESS_PROCESSOR)
+                .setProcessorPriorities(ProcessorPriorities.BUSINESS_PROCESSOR)
                 .setBuffer(buffer)
                 .setHandler(handler)
                 .setInitialHead(-1)

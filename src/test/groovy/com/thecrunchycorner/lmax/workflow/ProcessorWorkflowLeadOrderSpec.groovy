@@ -5,8 +5,8 @@ import spock.lang.Specification
 class ProcessorWorkflowLeadOrderSpec extends Specification {
 
     def 'test'() {
-        ProcessorId qryTrailProc
-        ProcessorId returnedLeadProc
+        ProcessorPriorities qryTrailProc
+        ProcessorPriorities returnedLeadProc
 
         given:
         qryTrailProc = trailProc
@@ -18,13 +18,13 @@ class ProcessorWorkflowLeadOrderSpec extends Specification {
         returnedLeadProc == leadProc
 
         where:
-        trailProc                          | leadProc
-        ProcessorId.IN_Q_RECEIVER          | ProcessorId.IN_BUSINESS_PROCESSOR
-        ProcessorId.IN_BUSINESS_PROCESSOR  | ProcessorId.IN_UNMARSHALER
-        ProcessorId.IN_UNMARSHALER         | ProcessorId.IN_Q_RECEIVER
-        ProcessorId.OUT_BUSINESS_PROCESSOR | ProcessorId.OUT_Q_SENDER
-        ProcessorId.OUT_Q_SENDER           | ProcessorId.OUT_MARSHALER
-        ProcessorId.OUT_MARSHALER          | ProcessorId.OUT_BUSINESS_PROCESSOR
+        trailProc                                  | leadProc
+        ProcessorPriorities.IN_Q_RECEIVER          | ProcessorPriorities.IN_BUSINESS_PROCESSOR
+        ProcessorPriorities.IN_BUSINESS_PROCESSOR  | ProcessorPriorities.IN_UNMARSHALER
+        ProcessorPriorities.IN_UNMARSHALER         | ProcessorPriorities.IN_Q_RECEIVER
+        ProcessorPriorities.OUT_BUSINESS_PROCESSOR | ProcessorPriorities.OUT_Q_SENDER
+        ProcessorPriorities.OUT_Q_SENDER           | ProcessorPriorities.OUT_MARSHALER
+        ProcessorPriorities.OUT_MARSHALER          | ProcessorPriorities.OUT_BUSINESS_PROCESSOR
     }
 
 

@@ -8,7 +8,7 @@ class ProcessorWorkflowSpec extends Specification {
         def leadPos
 
         when:
-        leadPos = ProcessorWorkflow.getLeadPos(ProcessorId.IN_UNMARSHALL)
+        leadPos = ProcessorWorkflow.getLeadPos(ProcessorPriorities.IN_UNMARSHALL)
 
         then:
         leadPos == 5
