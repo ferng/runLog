@@ -1,72 +1,16 @@
 package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.msgstore.Message;
-import com.thecrunchycorner.lmax.msgstore.RingBuffer;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
-import com.thecrunchycorner.lmax.services.SystemProperties;
-import com.thecrunchycorner.lmax.storehandler.BufferReader;
-import com.thecrunchycorner.lmax.storehandler.BufferWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.OptionalInt;
+import java.util.List;
 
 public class ProcessorConfig {
-    private static HashMap<ProcessorPriorities, ProcProperties> propsById = new HashMap<>();
-    private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = new HashMap<>();
+    private static List<ProcProperties> properties;
 
-
-    static {
-        OptionalInt inputSizeOpt = SystemProperties.getAsInt("input.buffer.size");
-
-        int thresholdBufferSize = SystemProperties.getThresholdBufferSize();
-        int inputBufferSize = inputSizeOpt.orElse(thresholdBufferSize);
-        RingBuffer<Message> ring = new RingBuffer<>(inputBufferSize);
-        BufferWriter<Message> writer = new BufferWriter<>(ring);
-        BufferReader<Message> reader = new BufferReader<>(ring);
-
-        ProcProperties.Builder builder = new ProcProperties.Builder();
-
-        ProcProperties inUnMarshall =
-                builder.setProcessorPriorities(ProcessorPriorities.IN_UNMARSHALL)
-                        .setWriter(writer)
-                        .setInitialHead(inputBufferSize)
-                        .createProcProperties();
-
-        propsById.put(ProcessorPriorities.IN_UNMARSHALL, inUnMarshall);
-        addToPropsArray(inUnMarshall);
-        // if the only properties that differ are the head and the accessor, that could be set in
-        // processorId via some sort of identifier and this could be parameterised and made a
-        // tool of some sort, mind you the processor implementation and unmarsheller will be
-        // specific to what this lmax is doing and working with
-
-        ProcProperties businessProc =
-                builder.setProcessorPriorities(ProcessorPriorities.BUSINESS_PROCESSOR)
-                        .setReader(reader)
-                        .setInitialHead(0)
-                        .createProcProperties();
-
-        propsById.put(ProcessorPriorities.BUSINESS_PROCESSOR, businessProc);
-        addToPropsArray(businessProc);
+    public static List<ProcProperties> getProperties() {
+        return properties;
     }
 
-
-    public static HashMap<ProcessorPriorities, ProcProperties> getPropertiesById() {
-        return propsById;
+    public static void setProperties(List<ProcProperties> properties) {
+        ProcessorConfig.properties = properties;
     }
-
-
-    static HashMap<Integer, ArrayList<ProcProperties>> getPropertiesByPriority() {
-        return propsByPriority;
-    }
-
-
-    private static void addToPropsArray(ProcProperties props) {
-        int priority = props.getProcessorPriorities().getPriority();
-        ArrayList<ProcProperties> priorityProcs = propsByPriority.getOrDefault(priority, new
-                ArrayList<>());
-
-        priorityProcs.add(props);
-        propsByPriority.put(priority, priorityProcs);
-    }
-
 }

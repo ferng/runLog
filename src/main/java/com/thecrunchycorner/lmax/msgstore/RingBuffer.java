@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
  * A circular buffer used to exchange data between a disruptor and a processor.
  *
  * @param <E> the type of the contents held by the buffer.
- *
+ * <p>
  * <p>The buffer carries out no checks on the data being inserted besides the type checks carried
  * out by the generics framework.</p>
  */
@@ -31,7 +31,8 @@ public class RingBuffer<E> {
      * increased to that threshold, so, essentially, passing 0 will result in a buffer with the
      * default threshold buffer size.
      */
-    public RingBuffer(final int size) {
+    public RingBuffer(final int size)
+            throws MissingResourceException, IllegalStateException {
         OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
         if (!opt.isPresent()) {
             throw new MissingResourceException("Mandatory default system propery missing: "
@@ -55,8 +56,18 @@ public class RingBuffer<E> {
      * @param pos the index-ed buffer position to write to
      * @param item the new value
      * @return the value of the index-ed position prior to any update
+     * @throws IllegalArgumentException if the position is negative or the message is null
      */
     public final E set(final int pos, final E item) {
+        if (pos < 0) {
+            LOGGER.error("Position cannot be negative, message write failed");
+            throw new IllegalArgumentException("Position cannot be negative");
+        }
+        if (item == null) {
+            LOGGER.error("Cannot write null to the buffer, message write failed");
+            throw new IllegalArgumentException("Cannot write null to the buffer");
+        }
+
         final int realPos = getRealPos(pos);
         final E prevVal = buffer.getAndSet(realPos, item);
         LOGGER.debug("value [{}] placed at index[{}] (real position [{}])", item, pos, realPos);
@@ -73,8 +84,14 @@ public class RingBuffer<E> {
      *
      * @param pos the index to read from
      * @return the value of the index-ed position
+     * @throws IllegalArgumentException if the position is negative
+     *
      */
     public final E get(final int pos) {
+        if (pos < 0) {
+            LOGGER.error("Position cannot be negative, message read failed");
+            throw new IllegalArgumentException("Position cannot be negative");
+        }
         return buffer.get(getRealPos(pos));
     }
 

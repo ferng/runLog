@@ -1,12 +1,14 @@
 package com.thecrunchycorner.lmax.workflow;
 
+import com.thecrunchycorner.lmax.msgstore.Message;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import com.thecrunchycorner.lmax.processors.Processor;
+import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Initially sets up, initiates and then manages the processor workflow for all processors.
@@ -17,36 +19,38 @@ import java.util.Optional;
  * </p>
  */
 public final class ProcessorWorkflow {
-    private static Map<Integer, ArrayList<ProcessorPriorities>> prioritiesByEnum = new HashMap<>();
-    private static int lastProcessor;
+    private static int lastPriority;
 
-    private static ProcessorPriorities processorPriorities;
-    private static ProcessorConfig processorConfig;
-    private static HashMap<Integer, ArrayList<ProcProperties>> propsByPriority = processorConfig
-            .getPropertiesByPriority();
+    private static Map<Integer, Processor> processorById;
+    private static Map<Integer, List<ProcProperties>> propertiesByPriority;
 
     private ProcessorWorkflow() {
     }
 
-    //this and processor id should be "fed" the processors somehow to allow the client to define
-// their own processors and processing order extends? or better as a helper class of some sort
-    static {
-        loadProcs();
+
+    private static void init() {
+        processorById = ProcessorConfig.getProperties().stream()
+                .collect(Collectors.toConcurrentMap(
+                        ProcProperties::getId, initProcessor
+                ));
+
+        propertiesByPriority = ProcessorConfig.getProperties().stream()
+                .collect(Collectors.groupingBy(ProcProperties::getPriority));
+
+        lastPriority = ProcessorConfig.getProperties().stream()
+                .map(ProcProperties::getPriority)
+                .reduce(0, Integer::compare);
+
     }
 
-    public static void setProcessorPriorities(ProcessorPriorities processorPriorities) {
-        ProcessorWorkflow.processorPriorities = processorPriorities;
-    }
+    private static Function<ProcProperties, Processor<Message>> initProcessor = Processor::new;
 
-    public static void setProcessorConfig(ProcessorConfig processorConfig) {
-        ProcessorWorkflow.processorConfig = processorConfig;
-    }
 
-    public static int getLeadPos(ProcessorPriorities priority) {
-        int leadProcessorPriority = getLeadingProcPriority(priority.getPriority());
-        ArrayList<ProcProperties> proc = propsByPriority.get(leadProcessorPriority);
+    public static int getLeadPos(int priority) {
+        int leadProcessorPriority = getLeadingProcPriority(priority);
+        List<ProcProperties> props = propertiesByPriority.get(leadProcessorPriority);
 
-        Optional<Integer> leadProcPos = proc
+        Optional<Integer> leadProcPos = props
                 .stream()
                 .map(ProcProperties::getPos)
                 .reduce(Integer::min);
@@ -60,24 +64,10 @@ public final class ProcessorWorkflow {
     }
 
 
-    private static void loadProcs() {
-        Arrays.stream(processorPriorities.values())
-                .forEach(id -> {
-                    lastProcessor = id.getPriority();
-                    ArrayList<ProcessorPriorities> procList = prioritiesByEnum.get(lastProcessor);
-                    if (procList == null) {
-                        procList = new ArrayList<>();
-                    }
-                    procList.add(id);
-                    prioritiesByEnum.put(id.getPriority(), procList);
-                });
-    }
-
-
     private static int getLeadingProcPriority(int currentProcPriority) {
         //using a bit of bitwise logic here to take care of any negative values (0-1) the & ignores
         //the sign and we end up with the value we want 11111 & 0010 == 2 which is the priority
         //belonging to the last processor, et voila
-        return (currentProcPriority - 1) & lastProcessor;
+        return (currentProcPriority - 1) & lastPriority;
     }
 }

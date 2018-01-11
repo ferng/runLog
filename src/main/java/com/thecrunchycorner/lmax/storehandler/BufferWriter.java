@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
  * Provides client classes with the means to write to a buffer.
  * Each writer is unique to the processor using it.
  */
-public class BufferWriter<E>{
+public class BufferWriter<E> implements Writer<E>{
     private static Logger LOGGER = LogManager.getLogger(BufferWriter.class);
 
     private RingBuffer<E> buffer;

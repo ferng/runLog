@@ -5,13 +5,13 @@ import com.thecrunchycorner.lmax.msgstore.OpStatus;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 
-public abstract class RingProcessor {
+public class Processor<T> {
     private ProcessorStatus status;
     private volatile boolean interrupt = false;
     private ProcProperties props;
 
 
-    public RingProcessor(ProcProperties procProperties) {
+    public Processor(ProcProperties procProperties) {
         this.props = props;
     }
 
@@ -21,21 +21,35 @@ public abstract class RingProcessor {
     }
 
     void updateHead() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getProcessorPriorities());
+        int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
         updatePos(leadPos);
     }
 
-    private void getAndProcessMsg() {
-        Message msg = processMessage(getMessage());
+    private void readAndProcessMsg() {
+        Message msg = processMessage(readMessage());
         while (writeMessage(msg) == OpStatus.HEADER_REACHED) {
         }
     }
 
-    protected abstract Message getMessage();
+    private void batchReadAndProcessMsg() {
+        Message msg = processMessage(readMessage());
+        while (writeMessage(msg) == OpStatus.HEADER_REACHED) {
+        }
+    }
 
-    abstract Message processMessage(Message msg);
+    private Message readMessage() {
+        return props.getReader().read(props.getPos());
+    }
 
-    abstract OpStatus writeMessage(Message msg);
+
+    private Message processMessage(Message msg) {
+        return props.getProcess().apply(msg);
+    }
+
+    OpStatus writeMessage(Message msg) {
+        props.getWriter().write(props.getPos(), msg);
+        return OpStatus.WRITE_SUCCESS;
+    };
 
 
     ProcessorStatus getStatus() {
@@ -60,7 +74,7 @@ public abstract class RingProcessor {
 
     public final void run() {
         while (!interrupt) {
-            getAndProcessMsg();
+            readAndProcessMsg();
         }
     }
 }

@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
  * Provides client classes with the means to read from a buffer. Each reader is uniquely owned by
  * the processor using it.
  */
-public class BufferReader<E> {
+public class BufferReader<E> implements Reader<E>{
     private static Logger LOGGER = LogManager.getLogger(BufferWriter.class);
 
     private RingBuffer<E> buffer;
