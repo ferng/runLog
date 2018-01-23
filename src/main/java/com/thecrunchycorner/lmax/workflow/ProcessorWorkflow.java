@@ -1,6 +1,6 @@
 package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.msgstore.Message;
+import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.processors.Processor;
 import java.util.List;

@@ -1,38 +1,33 @@
 package com.thecrunchycorner.lmax.processorproperties;
 
-import com.thecrunchycorner.lmax.msgstore.Message;
-import com.thecrunchycorner.lmax.storehandler.BufferReader;
-import com.thecrunchycorner.lmax.storehandler.BufferWriter;
-import com.thecrunchycorner.lmax.storehandler.Reader;
-import com.thecrunchycorner.lmax.storehandler.Writer;
+import com.thecrunchycorner.lmax.buffer.Message;
+import com.thecrunchycorner.lmax.buffer.BufferReader;
+import com.thecrunchycorner.lmax.buffer.BufferWriter;
 import java.util.HashSet;
-import java.util.function.Function;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 
 /**
- * Details about each the processor. This can only be instantiated through the builder.
+ * Details about each the processor. These can only be instantiated through the builder.
  */
 public class ProcProperties {
     private final int id;
     private final int priority;
-    private final Reader<Message> reader;
-    private final Writer<Message> writer;
+    private final BufferReader<Message> reader;
+    private final BufferWriter<Message> writer;
     private int head;
     private int pos;
     private UnaryOperator<Message> process;
 
-    private ProcProperties(final int id, final int priority,
-                           final Reader<Message> reader, final Writer<Message> writer,
-                           final int head, int pos, UnaryOperator<Message> process) {
-        this.id = id;
-        this.priority = priority;
-        this.reader = reader;
-        this.writer = writer;
-        this.pos = pos;
-        this.head = head;
-        this.process = process;
-
+    private ProcProperties(Builder builder) {
+        this.id = builder.id;
+        this.priority = builder.priority;
+        this.reader = builder.reader;
+        this.writer = builder.writer;
+        this.pos = 0;
+        this.head = builder.initialHead;
+        this.process = builder.process;
     }
 
     public int getId() {
@@ -43,11 +38,11 @@ public class ProcProperties {
         return priority;
     }
 
-    public Reader<Message> getReader() {
+    public BufferReader<Message> getReader() {
         return reader;
     }
 
-    public Writer<Message> getWriter() {
+    public BufferWriter<Message> getWriter() {
         return writer;
     }
 
@@ -106,24 +101,28 @@ public class ProcProperties {
      */
     public static class Builder {
         private static HashSet<Integer> uniqueIds = new HashSet<>();
-        private static HashSet<Integer> multiplePriorities = new HashSet<>();
-        private int id;
-        private int priority;
-        private Reader<Message> reader = null;
-        private Writer<Message> writer = null;
+        private int id = -1;
+        private int priority = -1;
+        private BufferReader<Message> reader = null;
+        private BufferWriter<Message> writer = null;
         private int initialHead = -1;
-        private UnaryOperator<Message> process;
+        private UnaryOperator<Message> process = null;
 
         public final Builder setId(int id) {
-            if (uniqueIds.add(id)) {
-                throw new IllegalArgumentException("Id already assigned to processor");
+            if (! uniqueIds.add(id)) {
+                throw new IllegalArgumentException("ID already assigned to processor");
+            }
+            if (id < 0) {
+                throw new IllegalArgumentException("ID cannot be negative");
             }
             this.id = id;
             return this;
         }
 
         public final Builder setPriority(int priority) {
-            multiplePriorities.add(priority);
+            if (priority < 0) {
+                throw new IllegalArgumentException("Priority cannot be negative");
+            }
             this.priority = priority;
             return this;
         }
@@ -134,10 +133,8 @@ public class ProcProperties {
          * @param reader the reader
          * @return a builder to carry on building
          */
-        public final Builder setReader(final Reader reader) {
-            if (reader == null) {
-                throw new IllegalArgumentException("Buffer reader cannot be null");
-            }
+        public final Builder setReader(final BufferReader<Message> reader) {
+            Objects.requireNonNull(reader, "Buffer reader cannot be null");
             this.reader = reader;
             return this;
         }
@@ -149,10 +146,8 @@ public class ProcProperties {
          * @param writer the writer
          * @return a builder to carry on building
          */
-        public final Builder setWriter(final Writer<Message> writer) {
-            if (writer == null) {
-                throw new IllegalArgumentException("Buffer writer cannot be null");
-            }
+        public final Builder setWriter(final BufferWriter<Message> writer) {
+            Objects.requireNonNull(writer, "Buffer writer cannot be null");
             this.writer = writer;
             return this;
         }
@@ -167,7 +162,7 @@ public class ProcProperties {
          */
         public final Builder setInitialHead(final int initialHead) {
             if (initialHead < 0) {
-                throw new IllegalArgumentException("Argument cannot less than zero: initialHead");
+                throw new IllegalArgumentException("Initial head cannot be negative");
             }
             this.initialHead = initialHead;
             return this;
@@ -187,20 +182,26 @@ public class ProcProperties {
          * Writer or
          * both, an initial head value to process up to
          */
-        public final ProcProperties createProcProperties() throws IllegalStateException{
-            if (multiplePriorities.size() < 2) {
-                throw new IllegalStateException("Multiple processor priorities required");
+        public final ProcProperties build() throws IllegalStateException {
+            if (id == -1) {
+                throw new IllegalStateException("Missing property: ID");
             }
-            if (reader == null || writer == null) {
-                throw new IllegalStateException("Reader and writer must be specified");
+            if (priority == -1) {
+                throw new IllegalStateException("Missing property: priority");
             }
-            if (initialHead < 0) {
-                throw new IllegalStateException("Invalid value for initial head");
+            if (initialHead == -1) {
+                throw new IllegalStateException("Missing property: initialHead");
+            }
+            if (reader == null) {
+                throw new IllegalStateException("Missing property: reader");
+            }
+            if (writer == null) {
+                throw new IllegalStateException("Missing property: writer");
             }
             if (process == null) {
-                throw new IllegalStateException("Processing function required");
+                throw new IllegalStateException("Missing property: process");
             }
-            return new ProcProperties(id, priority, reader, writer, initialHead, 0, process);
+            return new ProcProperties(this);
         }
     }
 

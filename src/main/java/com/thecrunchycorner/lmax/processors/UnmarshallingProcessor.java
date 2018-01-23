@@ -1,7 +1,7 @@
 package com.thecrunchycorner.lmax.processors;
 
-import com.thecrunchycorner.lmax.msgstore.Message;
-import com.thecrunchycorner.lmax.msgstore.OpStatus;
+import com.thecrunchycorner.lmax.buffer.Message;
+import com.thecrunchycorner.lmax.buffer.OpStatus;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 

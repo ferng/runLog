@@ -150,6 +150,7 @@ public final class SystemProperties {
     private static Optional<InputStreamReader> getPropsStream() {
         final URL fileUrl = Thread.currentThread().getContextClassLoader()
                 .getResource(PROPS_FILE_NAME);
+
         if (fileUrl == null) {
             return Optional.empty();
         }
@@ -170,7 +171,7 @@ public final class SystemProperties {
     private static void setDefaults() {
         // used for unit testing only
         properties = new Properties();
-        properties.setProperty("unit.test.value.systemdefault", "Pre-loaded test data");
+        properties.setProperty("unit.test.value.system.default", "Pre-loaded test data");
 
         //these are minimum threshold values, by all means go above, but never below
         properties.setProperty("threshold.buffer.minimum.size", "8");
