@@ -1,14 +1,18 @@
 package com.thecrunchycorner.lmax.workflow;
 
-import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.processors.Processor;
+import com.thecrunchycorner.lmax.processors.ProcessorStatus;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Initially sets up, initiates and then manages the processor workflow for all processors.
@@ -19,31 +23,47 @@ import java.util.stream.Collectors;
  * </p>
  */
 public final class ProcessorWorkflow {
+    private static Logger LOGGER = LogManager.getLogger(ProcessorWorkflow.class);
     private static int lastPriority;
 
-    private static Map<Integer, Processor> processorById;
+    private static Map<Integer, Processor> processorsById;
+    private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById;
     private static Map<Integer, List<ProcProperties>> propertiesByPriority;
 
     private ProcessorWorkflow() {
     }
 
+    public static void init(List<ProcProperties> properties) {
+        Objects.requireNonNull(properties, "Processor properties cannot be null");
+        properties.forEach((p) -> {
+            if (p == null) {
+                throw new NullPointerException("Processor properties cannot be null");
+            }
+        });
 
-    private static void init() {
-        processorById = ProcessorConfig.getProperties().stream()
-                .collect(Collectors.toConcurrentMap(
-                        ProcProperties::getId, initProcessor
-                ));
+        processorsById = properties
+                .stream()
+                .collect(Collectors.toConcurrentMap(ProcProperties::getId, Processor::new));
 
-        propertiesByPriority = ProcessorConfig.getProperties().stream()
+        propertiesByPriority = properties
+                .stream()
                 .collect(Collectors.groupingBy(ProcProperties::getPriority));
 
-        lastPriority = ProcessorConfig.getProperties().stream()
+        lastPriority = properties
+                .stream()
                 .map(ProcProperties::getPriority)
                 .reduce(0, Integer::compare);
 
+        LOGGER.info("{} Processors configured", properties.size());
     }
 
-    private static Function<ProcProperties, Processor<Message>> initProcessor = Processor::new;
+
+    public static void start() {
+        LOGGER.info("Spin up all processors");
+        processorsById.forEach((id, proc) ->
+                procFutureById.put(id, CompletableFuture.supplyAsync(proc.processLoop))
+        );
+    }
 
 
     public static int getLeadPos(int priority) {

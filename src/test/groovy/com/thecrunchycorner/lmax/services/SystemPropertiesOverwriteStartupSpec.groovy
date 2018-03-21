@@ -6,6 +6,7 @@ class SystemPropertiesOverwriteStartupSpec extends Specification {
 
     def 'test'() {
         given:
+        SystemProperties.refreshProperties()
         SystemProperties.set("threshold.buffer.minimum.size", "27")
         SystemProperties.set("unit.test.value.system.default", "57")
 

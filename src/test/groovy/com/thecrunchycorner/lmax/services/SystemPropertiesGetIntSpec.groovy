@@ -6,6 +6,7 @@ class SystemPropertiesGetIntSpec extends Specification {
 
     def 'test'() {
         when:
+        SystemProperties.refreshProperties()
         def loadedValue = SystemProperties.getAsInt(key)
 
         then:

@@ -6,6 +6,7 @@ class SystemPropertiesSetSpec extends Specification {
 
     def 'test'() {
         given:
+        SystemProperties.refreshProperties()
         SystemProperties.set("finger.size", "38")
 
         when:

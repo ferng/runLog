@@ -17,7 +17,15 @@ public enum ProcessorStatus {
      */
     BUSY,
     /**
-     * Processor has completed it's work and doesn't have anything else to do.
+     * Processor is wating for some more work to do.
      */
-    WAITING
+    WAITING,
+    /**
+     * Processor has completed it's work, cleaned up and has shutdown.
+     */
+    SHUTDOWN,
+    /**
+     * Processor crashed for some reason.
+     */
+    ERROR
 }

@@ -7,10 +7,6 @@ public enum OpStatus {
     /**
      * Message written to a store successfully.
      */
-    READ_SUCCESS,
-    /**
-     * Message read from a store successfully.
-     */
     WRITE_SUCCESS,
     /**
      * No more messages left in the store to process.

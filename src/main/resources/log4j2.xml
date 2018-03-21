@@ -4,17 +4,17 @@
 
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d %p - %t %c : %m%n"/>
+            <PatternLayout pattern="%d %-5p - %t %-40.40c{1.1.9.} - %m%n"/>
         </Console>
 
         <File name="FILE" fileName="target/lmax.log" append="true">
-            <PatternLayout pattern="%d %p - %t %c - %m%n"/>
+            <PatternLayout pattern="%d %-5p - %t %-40.40c{1.1.9} - %m%n"/>
         </File>
     </Appenders>
 
 
     <Loggers>
-        <Logger name="com.thecrunchycorner" level="debug" additivity="false">
+        <Logger name="com.thecrunchycorner" level="debug">
             <AppenderRef ref="FILE"/>
         </Logger>
 
@@ -24,5 +24,4 @@
     </Loggers>
 
 </Configuration>
-
 

@@ -6,6 +6,7 @@ class SystemPropertiesRemoveSpec extends Specification {
 
     def 'test'() {
         given:
+        SystemProperties.refreshProperties()
         SystemProperties.set("finger.size", "78")
         SystemProperties.set("threshold.buffer.minimum.size", "hello there")
         SystemProperties.remove(key)

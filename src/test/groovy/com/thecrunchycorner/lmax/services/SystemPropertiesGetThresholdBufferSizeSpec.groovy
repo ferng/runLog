@@ -6,6 +6,7 @@ class SystemPropertiesGetThresholdBufferSizeSpec extends Specification {
 
     def 'test'() {
         when:
+        SystemProperties.refreshProperties()
         def size = SystemProperties.getThresholdBufferSize()
 
         then:

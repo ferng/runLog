@@ -51,7 +51,7 @@ public class ProcProperties {
      *
      * @return head position
      */
-    final int getHead() {
+    public final int getHead() {
         return head;
     }
 
@@ -107,6 +107,8 @@ public class ProcProperties {
         private BufferWriter<Message> writer = null;
         private int initialHead = -1;
         private UnaryOperator<Message> process = null;
+
+        public void Builder() {}
 
         public final Builder setId(int id) {
             if (! uniqueIds.add(id)) {
@@ -178,7 +180,7 @@ public class ProcProperties {
          *
          * @return newly created properties object
          * @throws IllegalStateException If the builder is called before the minimum required
-         * configuration has been set this consists of: ProcessorPriorities, Buffer, Reader or
+         * configuration has been set this consists of: Buffer, Reader or
          * Writer or
          * both, an initial head value to process up to
          */

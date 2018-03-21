@@ -5,7 +5,7 @@ import com.thecrunchycorner.lmax.buffer.OpStatus;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 
-public abstract class UnmarshallingProcessor<T> {
+public abstract class UnmarshallingProcessor {
     private ProcessorStatus status;
     private volatile boolean interrupt = false;
     private ProcProperties props;

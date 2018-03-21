@@ -6,6 +6,7 @@ class SystemPropertiesRefreshSpec extends Specification {
 
     def 'test'() {
         given:
+        SystemProperties.refreshProperties()
         SystemProperties.set("threshold.buffer.minimum.size", "hello there")
         SystemProperties.set("unit.test.value.system.default", "78")
         SystemProperties.refreshProperties()

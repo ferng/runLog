@@ -4,9 +4,10 @@ import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.buffer.OpStatus;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
+import java.util.function.Supplier;
 
-public class Processor<T> {
-    private ProcessorStatus status;
+public class Processor {
+    private ProcessorStatus status = ProcessorStatus.INITIALIZED;
     private volatile boolean interrupt = false;
     private ProcProperties props;
 
@@ -16,25 +17,49 @@ public class Processor<T> {
     }
 
 
-    void updatePos(int pos) {
+    private void updatePos(int pos) {
         props.setPos(pos);
     }
 
-    void updateHead() {
+    private boolean updateHead() {
         int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
-        updatePos(leadPos);
+        if (props.getHead() < leadPos) {
+            props.setHead(leadPos);
+            return true;
+        }
+        return false;
     }
 
-    private void readAndProcessMsg() {
+    public Supplier<ProcessorStatus> processLoop = () -> {
+        while (!interrupt) {
+            if (props.getPos() == props.getHead()) {
+                if (!updateHead()) {
+                    continue;;
+                }
+            }
+
+
+
+        }
+
+    }
+
+
+    OpStatus readAndProcess() {
+        Message msg = processMessage(readMessage());
+        System.out.println(msg.getPayload());
+        return writeMessage(msg);
+    }
+
+    void batchReadAndProcessMsg() {
         Message msg = processMessage(readMessage());
         while (writeMessage(msg) == OpStatus.HEADER_REACHED) {
+            System.out.println(msg.getPayload());
         }
     }
 
-    private void batchReadAndProcessMsg() {
-        Message msg = processMessage(readMessage());
-        while (writeMessage(msg) == OpStatus.HEADER_REACHED) {
-        }
+    Object readPayload() {
+        return null;
     }
 
     private Message readMessage() {
@@ -42,14 +67,20 @@ public class Processor<T> {
     }
 
 
-    private Message processMessage(Message msg) {
+    Message processMessage(Message msg) {
         return props.getProcess().apply(msg);
+    }
+
+    OpStatus writePayload(Object payload) {
+        return null;
     }
 
     OpStatus writeMessage(Message msg) {
         props.getWriter().write(props.getPos(), msg);
         return OpStatus.WRITE_SUCCESS;
-    };
+    }
+
+    ;
 
 
     ProcessorStatus getStatus() {
@@ -74,7 +105,7 @@ public class Processor<T> {
 
     public final void run() {
         while (!interrupt) {
-            readAndProcessMsg();
+            readAndProcess();
         }
     }
 }
