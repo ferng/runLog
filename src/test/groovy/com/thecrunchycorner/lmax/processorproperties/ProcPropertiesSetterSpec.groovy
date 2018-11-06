@@ -7,7 +7,7 @@ import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesBuilderSpec extends Specification {
+class ProcPropertiesSetterSpec extends Specification {
 
     def test() {
         given:
@@ -26,14 +26,18 @@ class ProcPropertiesBuilderSpec extends Specification {
                 .setProcess(process)
                 .build()
 
+        props.setHead(15)
+        props.setPos(32)
+
+
         then:
         props.getId() == id
         props.getPriority() == 1
         props.getReader() == reader
         props.getWriter() == writer
-        props.getHead() == 12
+        props.getHead() == 15
         props.getProcess() == process
-        props.getPos() == 0
+        props.getPos() == 32
 
     }
 

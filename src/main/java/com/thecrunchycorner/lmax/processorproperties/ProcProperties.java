@@ -92,10 +92,6 @@ public class ProcProperties {
         return process;
     }
 
-    public void setProcess(UnaryOperator<Message> process) {
-        this.process = process;
-    }
-
     /**
      * Builder used to instantiate ProcProperties.
      */
@@ -107,8 +103,6 @@ public class ProcProperties {
         private BufferWriter<Message> writer = null;
         private int initialHead = -1;
         private UnaryOperator<Message> process = null;
-
-        public void Builder() {}
 
         public final Builder setId(int id) {
             if (! uniqueIds.add(id)) {
