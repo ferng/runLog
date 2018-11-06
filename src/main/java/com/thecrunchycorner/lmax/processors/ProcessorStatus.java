@@ -17,7 +17,7 @@ public enum ProcessorStatus {
      */
     BUSY,
     /**
-     * Processor is wating for some more work to do.
+     * Processor is waiting for some more work to do.
      */
     WAITING,
     /**

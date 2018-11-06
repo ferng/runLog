@@ -5,8 +5,11 @@ import com.thecrunchycorner.lmax.buffer.OpStatus;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 import java.util.function.Supplier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Processor {
+    private static Logger LOGGER = LogManager.getLogger(Processor.class);
     private ProcessorStatus status = ProcessorStatus.INITIALIZED;
     private volatile boolean interrupt = false;
     private ProcProperties props;
@@ -34,27 +37,25 @@ public class Processor {
         while (!interrupt) {
             if (props.getPos() == props.getHead()) {
                 if (!updateHead()) {
-                    continue;;
+                    LOGGER.debug("waiting for stuff");
                 }
+                LOGGER.debug("processing stuff");
             }
-
-
-
         }
-
-    }
+        return ProcessorStatus.SHUTDOWN;
+    };
 
 
     OpStatus readAndProcess() {
         Message msg = processMessage(readMessage());
-        System.out.println(msg.getPayload());
+        LOGGER.debug(msg.getPayload());
         return writeMessage(msg);
     }
 
     void batchReadAndProcessMsg() {
         Message msg = processMessage(readMessage());
         while (writeMessage(msg) == OpStatus.HEADER_REACHED) {
-            System.out.println(msg.getPayload());
+            LOGGER.debug(msg.getPayload());
         }
     }
 

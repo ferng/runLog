@@ -1,16 +1,12 @@
 package com.thecrunchycorner.lmax.buffer;
 
 import java.util.Objects;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Provides client classes with the means to write to a buffer.
  * Each writer is unique to the processor using it.
  */
-public class BufferWriter<E>{
-    private static Logger LOGGER = LogManager.getLogger(BufferWriter.class);
-
+public class BufferWriter<E> {
     private RingBuffer<E> buffer;
 
 

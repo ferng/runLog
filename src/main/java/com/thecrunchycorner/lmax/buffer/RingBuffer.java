@@ -12,15 +12,15 @@ import org.apache.logging.log4j.Logger;
 /**
  * A circular buffer used to exchange data between a disruptor and a processor.
  *
- * @param <E> the type of the contents held by the buffer.
+ * @param <T> the type of the contents held by the buffer.
  * <p>
  * <p>The buffer carries out no checks on the data being inserted besides the type checks carried
  * out by the generics framework.</p>
  */
-public class RingBuffer<E> {
+public class RingBuffer<T> {
     private static final Logger LOGGER = LogManager.getLogger(RingBuffer.class);
 
-    private final transient AtomicReferenceArray<E> buffer;
+    private final transient AtomicReferenceArray<T> buffer;
     private final transient int bufferSize;
 
 
@@ -35,10 +35,6 @@ public class RingBuffer<E> {
     public RingBuffer(final int size)
             throws MissingResourceException, IllegalStateException {
         OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
-        if (!opt.isPresent()) {
-            throw new MissingResourceException("Mandatory default system property missing: "
-                    + "threshold.buffer.minimum.size", getClass().getName(), "");
-        }
         int minSize = opt.getAsInt();
         if (size < minSize) {
             LOGGER.warn("Suggested buffer size {} is too small, defaulting to minimum {}.",
@@ -62,7 +58,7 @@ public class RingBuffer<E> {
      * @return the value of the index-ed position prior to any update
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
-    final E set(final int pos, final E item) {
+    final T set(final int pos, final T item) {
         if (pos < 0) {
             LOGGER.error("Position cannot be negative, message write failed");
             throw new IllegalArgumentException("Position cannot be negative");
@@ -70,7 +66,7 @@ public class RingBuffer<E> {
         Objects.requireNonNull(item, "Cannot write null to the buffer");
 
         final int realPos = getRealPos(pos);
-        final E prevVal = buffer.getAndSet(realPos, item);
+        final T prevVal = buffer.getAndSet(realPos, item);
         LOGGER.debug("value [{}] placed at index[{}] (real position [{}])", item, pos, realPos);
         return prevVal;
     }
@@ -92,7 +88,7 @@ public class RingBuffer<E> {
      * @throws IllegalArgumentException if the position is negative
      *
      */
-    final E get(final int pos) {
+    final T get(final int pos) {
         if (pos < 0) {
             LOGGER.error("Position cannot be negative, message read failed");
             throw new IllegalArgumentException("Position cannot be negative");

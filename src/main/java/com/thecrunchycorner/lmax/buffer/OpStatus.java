@@ -15,7 +15,7 @@ public enum OpStatus {
     /**
      * Error accessing store This will be fatal.
      */
-    ERROR
+    ERROR;
 
 }
 
