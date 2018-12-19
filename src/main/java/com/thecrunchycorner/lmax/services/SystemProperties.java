@@ -19,8 +19,9 @@ import org.apache.logging.log4j.Logger;
  */
 public final class SystemProperties {
     private static final Logger LOGGER = LogManager.getLogger(SystemProperties.class);
-    private static final String PROPS_FILE_NAME = "lmax.properties";
     private static Properties properties;
+
+    private static String propsFileName = "lmax.properties";
 
     private SystemProperties() {
     }
@@ -127,6 +128,11 @@ public final class SystemProperties {
         loadSystemProperties();
     }
 
+    static void refreshProperties(String newPropsFileName) {
+        propsFileName = newPropsFileName;
+        loadSystemProperties();
+    }
+
 
     private static void loadSystemProperties() {
         setDefaults();
@@ -134,22 +140,22 @@ public final class SystemProperties {
         final Optional<InputStreamReader> optionalStream = getPropsStream();
 
         if (optionalStream.isPresent()) {
-            LOGGER.info("Loading properties file: {}", PROPS_FILE_NAME);
+            LOGGER.info("Loading properties file: {}", propsFileName);
             try (final InputStreamReader stream = optionalStream.get()) {
                 properties.load(stream);
             } catch (IOException ex) {
-                LOGGER.error("Properties could not be loaded from : {}", PROPS_FILE_NAME);
+                LOGGER.error("Properties could not be loaded from : {}", propsFileName);
             }
         } else {
             LOGGER.warn("Properties file {} not found, using system defaults: ",
-                    PROPS_FILE_NAME);
+                    propsFileName);
         }
     }
 
 
     private static Optional<InputStreamReader> getPropsStream() {
         final URL fileUrl = Thread.currentThread().getContextClassLoader()
-                .getResource(PROPS_FILE_NAME);
+                .getResource(propsFileName);
 
         if (fileUrl == null) {
             return Optional.empty();

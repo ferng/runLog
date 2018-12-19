@@ -4,9 +4,12 @@ import spock.lang.Specification
 
 class SystemPropertiesOverwriteStartupSpec extends Specification {
 
+    def 'setup'() {
+        SystemProperties.refreshProperties()
+    }
+
     def 'test'() {
         given:
-        SystemProperties.refreshProperties()
         SystemProperties.set("threshold.buffer.minimum.size", "27")
         SystemProperties.set("unit.test.value.system.default", "57")
 

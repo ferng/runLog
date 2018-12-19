@@ -4,9 +4,12 @@ import spock.lang.Specification
 
 class SystemPropertiesSetSpec extends Specification {
 
+    def 'setup'() {
+        SystemProperties.refreshProperties()
+    }
+
     def 'test'() {
         given:
-        SystemProperties.refreshProperties()
         SystemProperties.set("finger.size", "38")
 
         when:

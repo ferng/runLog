@@ -4,9 +4,12 @@ import spock.lang.Specification
 
 class SystemPropertiesGetIntSpec extends Specification {
 
+    def 'setup'() {
+        SystemProperties.refreshProperties()
+    }
+
     def 'test'() {
         when:
-        SystemProperties.refreshProperties()
         def loadedValue = SystemProperties.getAsInt(key)
 
         then:

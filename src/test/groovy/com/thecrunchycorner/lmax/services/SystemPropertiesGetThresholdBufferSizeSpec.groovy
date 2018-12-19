@@ -4,9 +4,12 @@ import spock.lang.Specification
 
 class SystemPropertiesGetThresholdBufferSizeSpec extends Specification {
 
+    def 'setup'() {
+        SystemProperties.refreshProperties()
+    }
+
     def 'test'() {
         when:
-        SystemProperties.refreshProperties()
         def size = SystemProperties.getThresholdBufferSize()
 
         then:
