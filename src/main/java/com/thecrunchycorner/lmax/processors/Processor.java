@@ -16,27 +16,14 @@ public class Processor {
 
 
     public Processor(ProcProperties procProperties) {
-        this.props = props;
+        this.props = procProperties;
     }
 
-
-    private void updatePos(int pos) {
-        props.setPos(pos);
-    }
-
-    private boolean updateHead() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
-        if (props.getHead() < leadPos) {
-            props.setHead(leadPos);
-            return true;
-        }
-        return false;
-    }
 
     public Supplier<ProcessorStatus> processLoop = () -> {
         while (!interrupt) {
             if (props.getPos() == props.getHead()) {
-                if (!updateHead()) {
+                if (!headUpdated()) {
                     LOGGER.debug("waiting for stuff");
                 }
                 LOGGER.debug("processing stuff");
@@ -45,6 +32,20 @@ public class Processor {
         return ProcessorStatus.SHUTDOWN;
     };
 
+
+
+    private void updatePos(int pos) {
+        props.setPos(pos);
+    }
+
+    private boolean headUpdated() {
+        int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
+        if (props.getHead() < leadPos) {
+            props.setHead(leadPos);
+            return true;
+        }
+        return false;
+    }
 
     OpStatus readAndProcess() {
         Message msg = processMessage(readMessage());

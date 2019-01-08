@@ -3,6 +3,7 @@ package com.thecrunchycorner.lmax.workflow;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.processors.Processor;
 import com.thecrunchycorner.lmax.processors.ProcessorStatus;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -27,7 +28,7 @@ public final class ProcessorWorkflow {
     private static int lastPriority;
 
     private static Map<Integer, Processor> processorsById;
-    private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById;
+    private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById = new HashMap<>();
     private static Map<Integer, List<ProcProperties>> propertiesByPriority;
 
     private ProcessorWorkflow() {
@@ -61,7 +62,9 @@ public final class ProcessorWorkflow {
     public static void start() {
         LOGGER.info("Spin up all processors");
         processorsById.forEach((id, proc) ->
-                procFutureById.put(id, CompletableFuture.supplyAsync(proc.processLoop))
+                procFutureById.put(
+                        id, CompletableFuture.supplyAsync(proc.processLoop)
+                )
         );
     }
 
