@@ -29,9 +29,9 @@ public class Processor {
                 LOGGER.debug("processing stuff");
             }
         }
+        status = ProcessorStatus.SHUTDOWN;
         return ProcessorStatus.SHUTDOWN;
     };
-
 
 
     private void updatePos(int pos) {
@@ -64,6 +64,11 @@ public class Processor {
         return null;
     }
 
+    public void shutdown() {
+        LOGGER.debug("Processor {} shutdown", props.getId());
+        interrupt = true;
+    }
+
     private Message readMessage() {
         return props.getReader().read(props.getPos());
     }
@@ -82,10 +87,8 @@ public class Processor {
         return OpStatus.WRITE_SUCCESS;
     }
 
-    ;
 
-
-    ProcessorStatus getStatus() {
+    public ProcessorStatus getStatus() {
         return status;
     }
 

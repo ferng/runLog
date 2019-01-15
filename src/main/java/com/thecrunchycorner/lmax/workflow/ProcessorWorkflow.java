@@ -6,11 +6,9 @@ import com.thecrunchycorner.lmax.processors.ProcessorStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +26,8 @@ public final class ProcessorWorkflow {
     private static int lastPriority;
 
     private static Map<Integer, Processor> processorsById;
-    private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById = new HashMap<>();
+    private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById =
+            new HashMap<>();
     private static Map<Integer, List<ProcProperties>> propertiesByPriority;
 
     private ProcessorWorkflow() {
@@ -53,7 +52,7 @@ public final class ProcessorWorkflow {
         lastPriority = properties
                 .stream()
                 .map(ProcProperties::getPriority)
-                .reduce(0, Integer::compare);
+                .reduce(0, Integer::max);
 
         LOGGER.info("{} Processors configured", properties.size());
     }
@@ -62,15 +61,27 @@ public final class ProcessorWorkflow {
     public static void start() {
         LOGGER.info("Spin up all processors");
         processorsById.forEach((id, proc) ->
-                procFutureById.put(
-                        id, CompletableFuture.supplyAsync(proc.processLoop)
-                )
+                procFutureById.put(id, CompletableFuture.supplyAsync(proc.processLoop))
         );
     }
 
+    public static Map<Integer, ProcessorStatus> getProcStatus() {
+        Map<Integer, ProcessorStatus> statuses = new HashMap<>();
+        processorsById.forEach((id, proc) -> {
+            statuses.put(id, proc.getStatus());
+        });
+        return statuses;
+    }
+
+    public static void shutdown() {
+        LOGGER.info("Shutting down all processors");
+        processorsById.forEach((id, proc) ->
+                proc.shutdown()
+        );
+    }
 
     public static int getLeadPos(int priority) {
-        int leadProcessorPriority = getLeadingProcPriority(priority);
+        int leadProcessorPriority = getLeaderProcPriority(priority);
         List<ProcProperties> props = propertiesByPriority.get(leadProcessorPriority);
 
         Optional<Integer> leadProcPos = props
@@ -78,19 +89,11 @@ public final class ProcessorWorkflow {
                 .map(ProcProperties::getPos)
                 .reduce(Integer::min);
 
-        if (leadProcPos.isPresent()) {
-            return leadProcPos.get();
-        } else {
-            throw new MissingResourceException("Mandatory workflow definition missing, please "
-                    + "check ProcessorPriorities", ProcessorWorkflow.class.getName(), "");
-        }
+        return leadProcPos.get();
     }
 
 
-    private static int getLeadingProcPriority(int currentProcPriority) {
-        //using a bit of bitwise logic here to take care of any negative values (0-1) the & ignores
-        //the sign and we end up with the value we want 11111 & 0010 == 2 which is the priority
-        //belonging to the last processor, et voila
-        return (currentProcPriority - 1) & lastPriority;
+    private static int getLeaderProcPriority(int currentProcPriority) {
+        return (currentProcPriority + 1) % (lastPriority + 1);
     }
 }

@@ -27,5 +27,10 @@ public enum ProcessorStatus {
     /**
      * Processor crashed for some reason.
      */
-    ERROR
+    ERROR,
+    /**
+     * Processor did not shutdown in a timely manner so was forced.
+     */
+    FORCED,
+
 }

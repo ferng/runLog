@@ -115,6 +115,7 @@ public class ProcProperties {
             return this;
         }
 
+        // lower values have higher
         public final Builder setPriority(int priority) {
             if (priority < 0) {
                 throw new IllegalArgumentException("Priority cannot be negative");
