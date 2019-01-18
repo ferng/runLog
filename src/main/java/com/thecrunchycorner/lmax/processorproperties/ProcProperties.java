@@ -3,6 +3,8 @@ package com.thecrunchycorner.lmax.processorproperties;
 import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.buffer.BufferReader;
 import com.thecrunchycorner.lmax.buffer.BufferWriter;
+import com.thecrunchycorner.lmax.handlers.Reader;
+import com.thecrunchycorner.lmax.handlers.Writer;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
@@ -14,8 +16,8 @@ import java.util.function.UnaryOperator;
 public class ProcProperties {
     private final int id;
     private final int priority;
-    private final BufferReader<Message> reader;
-    private final BufferWriter<Message> writer;
+    private final Reader<Message> reader;
+    private final Writer<Message> writer;
     private int head;
     private int pos;
     private UnaryOperator<Message> process;
@@ -38,11 +40,11 @@ public class ProcProperties {
         return priority;
     }
 
-    public BufferReader<Message> getReader() {
+    public Reader<Message> getReader() {
         return reader;
     }
 
-    public BufferWriter<Message> getWriter() {
+    public Writer<Message> getWriter() {
         return writer;
     }
 
@@ -51,7 +53,7 @@ public class ProcProperties {
      *
      * @return head position
      */
-    public final int getHead() {
+    public int getHead() {
         return head;
     }
 
@@ -61,7 +63,7 @@ public class ProcProperties {
      *
      * @param head position
      */
-    public final void setHead(int head) {
+    public void setHead(int head) {
         this.head = head;
     }
 
@@ -86,6 +88,10 @@ public class ProcProperties {
      */
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public void movePos() {
+        pos++;
     }
 
     public UnaryOperator<Message> getProcess() {

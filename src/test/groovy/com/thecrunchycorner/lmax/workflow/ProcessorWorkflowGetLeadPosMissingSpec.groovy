@@ -37,15 +37,11 @@ class ProcessorWorkflowGetLeadPosMissingSpec extends Specification {
         prop4.getPriority() >> 4
         prop4.getPos() >> null
         ProcessorWorkflow.init(props)
-        def lead0 = ProcessorWorkflow.getLeadPos(0)
-        def lead1 = ProcessorWorkflow.getLeadPos(1)
-        def lead2 = ProcessorWorkflow.getLeadPos(2)
-        def lead3 = ProcessorWorkflow.getLeadPos(3)
 
         then:
-        101 == lead0
-        102 == lead1
-        103 == lead2
-        0 == lead3
+        101 == ProcessorWorkflow.getLeadPos(0)
+        102 == ProcessorWorkflow.getLeadPos(1)
+        103 == ProcessorWorkflow.getLeadPos(2)
+        0 == ProcessorWorkflow.getLeadPos(3)
     }
 }

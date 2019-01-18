@@ -35,7 +35,7 @@ public class Message {
      *
      * @return the payload, well it could be anything at all.
      */
-    public final Object getPayload() {
+    public Object getPayload() {
         return payload;
     }
 }

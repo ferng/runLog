@@ -1,12 +1,13 @@
 package com.thecrunchycorner.lmax.buffer;
 
+import com.thecrunchycorner.lmax.handlers.Writer;
 import java.util.Objects;
 
 /**
  * Provides client classes with the means to write to a buffer.
  * Each writer is unique to the processor using it.
  */
-public class BufferWriter<E> {
+public class BufferWriter<E> implements Writer<E> {
     private RingBuffer<E> buffer;
 
 
@@ -31,7 +32,8 @@ public class BufferWriter<E> {
      * @param msg what's the message to to write to this buffer?
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
-    public final void write(int pos, E msg) throws IllegalArgumentException {
+    @Override
+    public void write(int pos, E msg) throws IllegalArgumentException {
         Objects.requireNonNull(msg, "Cannot write null to the buffer");
         buffer.set(pos, msg);
     }

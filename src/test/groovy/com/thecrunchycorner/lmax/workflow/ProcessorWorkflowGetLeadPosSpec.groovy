@@ -37,17 +37,12 @@ class ProcessorWorkflowGetLeadPosSpec extends Specification {
         prop4.getPriority() >> 4
         prop4.getPos() >> 104
         ProcessorWorkflow.init(props)
-        def lead0 = ProcessorWorkflow.getLeadPos(0)
-        def lead1 = ProcessorWorkflow.getLeadPos(1)
-        def lead2 = ProcessorWorkflow.getLeadPos(2)
-        def lead3 = ProcessorWorkflow.getLeadPos(3)
-        def lead4 = ProcessorWorkflow.getLeadPos(4)
 
         then:
-        101 == lead0
-        102 == lead1
-        103 == lead2
-        104 == lead3
-        100 == lead4
+        101 == ProcessorWorkflow.getLeadPos(0)
+        102 == ProcessorWorkflow.getLeadPos(1)
+        103 == ProcessorWorkflow.getLeadPos(2)
+        104 == ProcessorWorkflow.getLeadPos(3)
+        105 == ProcessorWorkflow.getLeadPos(4)
     }
 }

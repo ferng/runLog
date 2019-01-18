@@ -23,20 +23,18 @@ public class Processor {
     public Supplier<ProcessorStatus> processLoop = () -> {
         while (!interrupt) {
             if (props.getPos() == props.getHead()) {
-                if (!headUpdated()) {
+                if (headUpdated()) {
+                    LOGGER.debug("processing stuff");
+                    processPending();
+                } else {
                     LOGGER.debug("waiting for stuff");
                 }
-                LOGGER.debug("processing stuff");
             }
         }
         status = ProcessorStatus.SHUTDOWN;
+        LOGGER.debug("Processor {} shutdown", props.getId());
         return ProcessorStatus.SHUTDOWN;
     };
-
-
-    private void updatePos(int pos) {
-        props.setPos(pos);
-    }
 
     private boolean headUpdated() {
         int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
@@ -47,30 +45,22 @@ public class Processor {
         return false;
     }
 
-    OpStatus readAndProcess() {
+    OpStatus processPending() {
         Message msg = processMessage(readMessage());
         LOGGER.debug(msg.getPayload());
-        return writeMessage(msg);
-    }
-
-    void batchReadAndProcessMsg() {
-        Message msg = processMessage(readMessage());
-        while (writeMessage(msg) == OpStatus.HEADER_REACHED) {
-            LOGGER.debug(msg.getPayload());
-        }
-    }
-
-    Object readPayload() {
-        return null;
+//        return writeMessage(msg);
+        return OpStatus.WRITE_SUCCESS;
     }
 
     public void shutdown() {
-        LOGGER.debug("Processor {} shutdown", props.getId());
         interrupt = true;
     }
 
-    private Message readMessage() {
-        return props.getReader().read(props.getPos());
+    Message readMessage() {
+        Message msg = props.getReader().read(props.getPos());
+
+        props.movePos();
+        return msg;
     }
 
 
@@ -78,39 +68,14 @@ public class Processor {
         return props.getProcess().apply(msg);
     }
 
-    OpStatus writePayload(Object payload) {
-        return null;
-    }
 
     OpStatus writeMessage(Message msg) {
         props.getWriter().write(props.getPos(), msg);
+        props.movePos();
         return OpStatus.WRITE_SUCCESS;
     }
 
-
     public ProcessorStatus getStatus() {
         return status;
-    }
-
-    void setStatus(ProcessorStatus status) {
-        this.status = status;
-    }
-
-    public final boolean isInterrupt() {
-        return interrupt;
-    }
-
-    public final void setInterrupt(boolean interrupt) {
-        this.interrupt = interrupt;
-    }
-
-    public final void reqInterrupt() {
-        interrupt = true;
-    }
-
-    public final void run() {
-        while (!interrupt) {
-            readAndProcess();
-        }
     }
 }

@@ -1,12 +1,13 @@
 package com.thecrunchycorner.lmax.buffer;
 
+import com.thecrunchycorner.lmax.handlers.Reader;
 import java.util.Objects;
 
 /**
  * Provides client classes with the means to read from a buffer. Each reader is uniquely owned by
  * the processor using it.
  */
-public class BufferReader<E> {
+public class BufferReader<E> implements Reader<E> {
     private RingBuffer<E> buffer;
 
 
@@ -29,7 +30,8 @@ public class BufferReader<E> {
      * data.
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
-    public final E read(int pos) {
+    @Override
+    public E read(int pos) {
         return buffer.get(pos);
     }
 }
