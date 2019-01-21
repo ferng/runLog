@@ -1,6 +1,5 @@
 package com.thecrunchycorner.lmax.processorproperties
 
-import com.thecrunchycorner.lmax.buffer.BufferReader
 import com.thecrunchycorner.lmax.buffer.BufferWriter
 import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
@@ -8,7 +7,6 @@ import spock.lang.Specification
 import java.util.function.UnaryOperator
 
 class ProcPropertiesBuilderMissingHeadSpec extends Specification {
-    def reader = Mock(BufferReader.class)
     def writer = Mock(BufferWriter.class)
     def process = Mock(UnaryOperator)
 
@@ -21,7 +19,6 @@ class ProcPropertiesBuilderMissingHeadSpec extends Specification {
         def props = new ProcProperties.Builder()
                 .setId(IdGenerator.id)
                 .setPriority(1)
-                .setReader(reader)
                 .setWriter(writer)
                 .setProcess(process)
                 .build()

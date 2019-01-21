@@ -1,6 +1,5 @@
 package com.thecrunchycorner.lmax.processorproperties
 
-import com.thecrunchycorner.lmax.buffer.BufferReader
 import com.thecrunchycorner.lmax.buffer.BufferWriter
 import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
@@ -8,7 +7,6 @@ import spock.lang.Specification
 import java.util.function.UnaryOperator
 
 class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
-    def reader = Mock(BufferReader.class)
     def writer = Mock(BufferWriter.class)
     def process = Mock(UnaryOperator)
 
@@ -18,7 +16,6 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
         def props = new ProcProperties.Builder()
                 .setId(id)
                 .setPriority(1)
-                .setReader(reader)
                 .setWriter(writer)
                 .setInitialHead(12)
                 .setProcess(process)
@@ -27,7 +24,6 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
         def props2 = new ProcProperties.Builder()
                 .setId(id)
                 .setPriority(2)
-                .setReader(reader)
                 .setWriter(writer)
                 .setInitialHead(15)
                 .setProcess(process)

@@ -1,7 +1,6 @@
 package com.thecrunchycorner.lmax.processorproperties
 
 import com.thecrunchycorner.lmax.buffer.BufferReader
-import com.thecrunchycorner.lmax.buffer.BufferWriter
 import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
 
@@ -9,7 +8,6 @@ import java.util.function.UnaryOperator
 
 class ProcPropertiesBuilderNegativePositionSpec extends Specification {
     def reader = Mock(BufferReader.class)
-    def writer = Mock(BufferWriter.class)
     def process = Mock(UnaryOperator)
 
     def test() {
@@ -18,7 +16,6 @@ class ProcPropertiesBuilderNegativePositionSpec extends Specification {
                 .setId(IdGenerator.id)
                 .setPriority(1)
                 .setReader(reader)
-                .setWriter(writer)
                 .setInitialHead(-1)
                 .setProcess(process)
                 .build()

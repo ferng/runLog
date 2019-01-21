@@ -43,6 +43,6 @@ class ProcessorWorkflowGetLeadPosSpec extends Specification {
         102 == ProcessorWorkflow.getLeadPos(1)
         103 == ProcessorWorkflow.getLeadPos(2)
         104 == ProcessorWorkflow.getLeadPos(3)
-        105 == ProcessorWorkflow.getLeadPos(4)
+        100 == ProcessorWorkflow.getLeadPos(4)
     }
 }

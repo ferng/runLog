@@ -1,27 +1,25 @@
 package com.thecrunchycorner.lmax.processorproperties
 
-import com.thecrunchycorner.lmax.buffer.BufferReader
 import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesBuilderNegativePrioritySpec extends Specification {
-    def reader = Mock(BufferReader.class)
+class ProcPropertiesBuilderMissingReaderWriterSpec extends Specification {
     def process = Mock(UnaryOperator)
 
     def test() {
         when:
         def props = new ProcProperties.Builder()
                 .setId(IdGenerator.id)
-                .setPriority(-1)
-                .setReader(reader)
-                .setInitialHead(12)
+                .setPriority(1)
+                .setInitialHead(32)
                 .setProcess(process)
                 .build()
 
         then:
-        IllegalArgumentException ex1 = thrown()
-        ex1.message == "Priority cannot be negative"
+        IllegalStateException ex1 = thrown()
+        ex1.message == "Invalid configuration: reader or writer must be configured"
     }
+
 }

@@ -1,8 +1,8 @@
 package com.thecrunchycorner.lmax.processorproperties;
 
-import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.buffer.BufferReader;
 import com.thecrunchycorner.lmax.buffer.BufferWriter;
+import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.handlers.Reader;
 import com.thecrunchycorner.lmax.handlers.Writer;
 import java.util.HashSet;
@@ -111,7 +111,7 @@ public class ProcProperties {
         private UnaryOperator<Message> process = null;
 
         public final Builder setId(int id) {
-            if (! uniqueIds.add(id)) {
+            if (!uniqueIds.add(id)) {
                 throw new IllegalArgumentException("ID already assigned to processor");
             }
             if (id < 0) {
@@ -195,11 +195,13 @@ public class ProcProperties {
             if (initialHead == -1) {
                 throw new IllegalStateException("Missing property: initialHead");
             }
-            if (reader == null) {
-                throw new IllegalStateException("Missing property: reader");
+            if (reader == null && writer == null) {
+                throw new IllegalStateException("Invalid configuration: reader or writer must be " +
+                        "configured");
             }
-            if (writer == null) {
-                throw new IllegalStateException("Missing property: writer");
+            if (!(reader == null) && !(writer == null)) {
+                throw new IllegalStateException("Invalid configuration: reader or writer must be " +
+                        "configured not both");
             }
             if (process == null) {
                 throw new IllegalStateException("Missing property: process");
