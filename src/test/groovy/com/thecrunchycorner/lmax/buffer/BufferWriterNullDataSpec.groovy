@@ -6,7 +6,7 @@ class BufferWriterNullDataSpec extends Specification {
 
     def test() {
         given:
-        def buffer = new RingBuffer(32);
+        def buffer = new RingBuffer(1, 32)
         def writer = new BufferWriter(buffer)
 
         when:

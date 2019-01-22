@@ -37,7 +37,7 @@ public class Processor {
     };
 
     private boolean headUpdated() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
+        int leadPos = ProcessorWorkflow.getLeadPos(props.getBufferId(), props.getPriority());
         if (props.getHead() < leadPos) {
             props.setHead(leadPos);
             return true;

@@ -6,7 +6,7 @@ class BufferReaderNegativeSpec extends Specification {
 
     def test() {
         given:
-        def buffer = new RingBuffer(32);
+        def buffer = new RingBuffer(1, 32)
         def reader = new BufferReader(buffer)
 
         when:

@@ -28,7 +28,7 @@ public final class ProcessorWorkflow {
     private static Map<Integer, Processor> processorsById;
     private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById =
             new HashMap<>();
-    private static Map<Integer, List<ProcProperties>> propertiesByPriority;
+    private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByPriority;
 
     private ProcessorWorkflow() {
     }
@@ -45,9 +45,12 @@ public final class ProcessorWorkflow {
                 .stream()
                 .collect(Collectors.toConcurrentMap(ProcProperties::getId, Processor::new));
 
-        propertiesByPriority = properties
+        propertiesByBufferByPriority = properties
                 .stream()
-                .collect(Collectors.groupingBy(ProcProperties::getPriority));
+                .collect(
+                        Collectors.groupingBy(ProcProperties::getBufferId,
+                        Collectors.groupingBy(ProcProperties::getPriority)
+                ));
 
         lastPriority = properties
                 .stream()
@@ -80,9 +83,10 @@ public final class ProcessorWorkflow {
         );
     }
 
-    public static int getLeadPos(int priority) {
+    public static int getLeadPos(int bufferId, int priority) {
         int leadProcessorPriority = getLeaderProcPriority(priority);
-        List<ProcProperties> props = propertiesByPriority.get(leadProcessorPriority);
+        List<ProcProperties> props =
+                propertiesByBufferByPriority.get(bufferId).get(leadProcessorPriority);
 
         Optional<Integer> leadProcPos = props
                 .stream()

@@ -78,6 +78,13 @@ public class ProcProperties {
         return pos;
     }
 
+    public int getBufferId() {
+        if (reader != null) {
+            return reader.getBufferId();
+        } else {
+            return writer.getBufferId();
+        }
+    }
 
     /**
      * Update this processor's position, we have finished working with this cell and can release

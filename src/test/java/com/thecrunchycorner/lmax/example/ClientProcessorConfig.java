@@ -24,7 +24,7 @@ public class ClientProcessorConfig {
         int thresholdBufferSize = SystemProperties.getThresholdBufferSize();
         int inputBufferSize = inputSizeOpt.orElse(thresholdBufferSize);
 
-        RingBuffer<Message> ring = new RingBuffer<>(inputBufferSize);
+        RingBuffer<Message> ring = new RingBuffer<>(1, inputBufferSize);
         BufferWriter<Message> writer = new BufferWriter<>(ring);
         BufferReader<Message> reader = new BufferReader<>(ring);
 

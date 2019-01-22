@@ -22,6 +22,10 @@ public class BufferWriter<E> implements Writer<E> {
         this.buffer = buffer;
     }
 
+    @Override
+    public int getBufferId() {
+        return buffer.getId();
+    }
 
     /**
      * Writes an object to its buffer. It is up to the client to ensure the position being

@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.buffer
 
 import spock.lang.Specification
 
-class BufferReaderUnsetSpec extends Specification {
+class BufferReaderGetIdSpec extends Specification {
 
     def test() {
         given:
@@ -10,10 +10,10 @@ class BufferReaderUnsetSpec extends Specification {
         def reader = new BufferReader(buffer)
 
         when:
-        def data = reader.read(2)
+        def data = reader.getBufferId()
 
         then:
-        data == null
+        data == 1
 
 
     }

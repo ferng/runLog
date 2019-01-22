@@ -22,7 +22,7 @@ public abstract class UnmarshallingProcessor {
     }
 
     void updateHead() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getPriority());
+        int leadPos = ProcessorWorkflow.getLeadPos(1, props.getPriority());
         updatePos(leadPos);
     }
 

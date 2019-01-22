@@ -2,18 +2,18 @@ package com.thecrunchycorner.lmax.buffer
 
 import spock.lang.Specification
 
-class BufferReaderUnsetSpec extends Specification {
+class BufferWriterGetIdSpec extends Specification {
 
     def test() {
         given:
         def buffer = new RingBuffer(1, 32)
-        def reader = new BufferReader(buffer)
+        def writer = new BufferWriter(buffer)
 
         when:
-        def data = reader.read(2)
+        def data = writer.getBufferId()
 
         then:
-        data == null
+        data == 1
 
 
     }

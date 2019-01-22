@@ -22,6 +22,7 @@ public class RingBuffer<T> {
 
     private final transient AtomicReferenceArray<T> buffer;
     private final transient int bufferSize;
+    private final transient int id;
 
 
     /**
@@ -32,7 +33,7 @@ public class RingBuffer<T> {
      * increased to that threshold, so, essentially, passing 0 will result in a buffer with the
      * default threshold buffer size.
      */
-    public RingBuffer(final int size)
+    public RingBuffer(final int id, final int size)
             throws MissingResourceException, IllegalStateException {
         OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
         int minSize = opt.getAsInt();
@@ -44,6 +45,7 @@ public class RingBuffer<T> {
         }
         buffer = new AtomicReferenceArray<>(minSize);
         this.bufferSize = minSize;
+        this.id = id;
     }
 
 
@@ -96,6 +98,9 @@ public class RingBuffer<T> {
         return buffer.get(getRealPos(pos));
     }
 
+    public final int getId() {
+        return id;
+    }
 
     /**
      * Gets the size of the buffer which will either the default or the value passed to then

@@ -8,7 +8,7 @@ class RingBufferIllegalPutSpec extends Specification {
     def 'test'() {
         given:
         def thresholdSize = SystemProperties.getThresholdBufferSize()
-        def buffer = new RingBuffer<>(thresholdSize)
+        def buffer = new RingBuffer<>(1, thresholdSize)
 
 
         when:

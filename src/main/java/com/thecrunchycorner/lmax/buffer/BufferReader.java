@@ -21,6 +21,10 @@ public class BufferReader<E> implements Reader<E> {
         this.buffer = buffer;
     }
 
+    @Override
+    public int getBufferId() {
+        return buffer.getId();
+    }
 
     /**
      * Retrieves an object from its buffer.
