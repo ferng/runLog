@@ -3,11 +3,13 @@ package com.thecrunchycorner.lmax.workflow;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
 import com.thecrunchycorner.lmax.processors.Processor;
 import com.thecrunchycorner.lmax.processors.ProcessorStatus;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
@@ -23,12 +25,13 @@ import org.apache.logging.log4j.Logger;
  */
 public final class ProcessorWorkflow {
     private static Logger LOGGER = LogManager.getLogger(ProcessorWorkflow.class);
-    private static int lastPriority;
 
     private static Map<Integer, Processor> processorsById;
+    private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByPriority;
+    private static Map<Integer, Map<Integer, Integer>> priorityPairsByBuffer = new HashMap<>();
     private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById =
             new HashMap<>();
-    private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByPriority;
+
 
     private ProcessorWorkflow() {
     }
@@ -49,13 +52,24 @@ public final class ProcessorWorkflow {
                 .stream()
                 .collect(
                         Collectors.groupingBy(ProcProperties::getBufferId,
-                        Collectors.groupingBy(ProcProperties::getPriority)
-                ));
+                                Collectors.groupingBy(ProcProperties::getPriority)
+                        ));
 
-        lastPriority = properties
-                .stream()
-                .map(ProcProperties::getPriority)
-                .reduce(0, Integer::max);
+        Map<Integer, ArrayList<Integer>> prioritiesByBuffer = new HashMap<>();
+        propertiesByBufferByPriority.forEach((bufferId, priorities) -> {
+            TreeSet<Integer> priorityKeys = new TreeSet<>(priorities.keySet());
+            prioritiesByBuffer.put(bufferId, new ArrayList<>(priorityKeys));
+        });
+
+        prioritiesByBuffer.forEach((bufferId, priorities) -> {
+            Map<Integer, Integer> priorityPairs = new HashMap<>();
+            priorities.forEach((priority) -> {
+                int paired = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
+                priorityPairs.put(priority, paired);
+            });
+            priorityPairsByBuffer.put(bufferId, priorityPairs);
+
+        });
 
         LOGGER.info("{} Processors configured", properties.size());
     }
@@ -84,7 +98,7 @@ public final class ProcessorWorkflow {
     }
 
     public static int getLeadPos(int bufferId, int priority) {
-        int leadProcessorPriority = getLeaderProcPriority(priority);
+        int leadProcessorPriority = priorityPairsByBuffer.get(bufferId).get(priority);
         List<ProcProperties> props =
                 propertiesByBufferByPriority.get(bufferId).get(leadProcessorPriority);
 
@@ -94,10 +108,5 @@ public final class ProcessorWorkflow {
                 .reduce(Integer::min);
 
         return leadProcPos.get();
-    }
-
-
-    private static int getLeaderProcPriority(int currentProcPriority) {
-        return (currentProcPriority + 1) % (lastPriority + 1);
     }
 }
