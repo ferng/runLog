@@ -48,6 +48,7 @@ class ProcessorWorkflowGetLeadPosTwoBuffersSpec extends Specification {
         prop5.getPriority() >> 100
         prop5.getPos() >> 353
         prop5.getBufferId() >> 2
+
         ProcessorWorkflow.init(props)
 
         then:

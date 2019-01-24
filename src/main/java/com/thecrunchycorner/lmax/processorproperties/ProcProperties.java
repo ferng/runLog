@@ -15,6 +15,7 @@ import java.util.function.UnaryOperator;
  */
 public class ProcProperties {
     private final int id;
+    private final int procId;
     private final int priority;
     private final Reader<Message> reader;
     private final Writer<Message> writer;
@@ -24,6 +25,7 @@ public class ProcProperties {
 
     private ProcProperties(Builder builder) {
         this.id = builder.id;
+        this.procId = builder.procId;
         this.priority = builder.priority;
         this.reader = builder.reader;
         this.writer = builder.writer;
@@ -34,6 +36,10 @@ public class ProcProperties {
 
     public int getId() {
         return id;
+    }
+
+    public int getProcId() {
+        return procId;
     }
 
     public int getPriority() {
@@ -111,6 +117,7 @@ public class ProcProperties {
     public static class Builder {
         private static HashSet<Integer> uniqueIds = new HashSet<>();
         private int id = -1;
+        private int procId = -1;
         private int priority = -1;
         private BufferReader<Message> reader = null;
         private BufferWriter<Message> writer = null;
@@ -127,6 +134,15 @@ public class ProcProperties {
             this.id = id;
             return this;
         }
+
+        public final Builder setProcId(int procId) {
+            if (procId < 0) {
+                throw new IllegalArgumentException(" processor ID cannot be negative");
+            }
+            this.procId = procId;
+            return this;
+        }
+
 
         // lower values have higher
         public final Builder setPriority(int priority) {

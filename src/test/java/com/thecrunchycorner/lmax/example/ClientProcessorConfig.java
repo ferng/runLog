@@ -5,6 +5,7 @@ import com.thecrunchycorner.lmax.buffer.BufferWriter;
 import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.buffer.RingBuffer;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
+import com.thecrunchycorner.lmax.processorproperties.PropertiesPair;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class ClientProcessorConfig {
     private static Logger LOGGER = LogManager.getLogger(ClientProcessorConfig.class);
 
-    private static List<ProcProperties> props = new ArrayList<>();
+    private static List<PropertiesPair> props = new ArrayList<>();
 
     public static void init() {
         OptionalInt inputSizeOpt = SystemProperties.getAsInt("input.buffer.size");
@@ -30,27 +31,24 @@ public class ClientProcessorConfig {
 
         ProcProperties.Builder builder = new ProcProperties.Builder();
 
-        //left buffer unmarshall
-        ProcProperties inUnMarshall =
+        //processor reads from left buffer
+        ProcProperties processorIn =
                 builder.setId(0)
                         .setPriority(0)
                         .setReader(reader)
-                        .setWriter(writer)
                         .setInitialHead(inputBufferSize)
                         .setProcess(getSimpleprocessor())
                         .build();
-        props.add(inUnMarshall);
 
-        //left buffer processor
-        ProcProperties businessProc =
+        //processor writes to right buffer
+        ProcProperties processorOut =
                 builder.setId(1)
                         .setPriority(1)
-                        .setReader(reader)
                         .setWriter(writer)
                         .setInitialHead(0)
-                        .setProcess(getSimpleprocessor())
                         .build();
-        props.add(businessProc);
+
+        props.add(new PropertiesPair(processorIn, processorOut));
 
         ProcessorWorkflow.init(props);
     }

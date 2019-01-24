@@ -12,18 +12,24 @@ public class Processor {
     private static Logger LOGGER = LogManager.getLogger(Processor.class);
     private ProcessorStatus status = ProcessorStatus.INITIALIZED;
     private volatile boolean interrupt = false;
-    private ProcProperties props;
+    private ProcProperties primary;
+    private ProcProperties secondary;
 
 
-    public Processor(ProcProperties procProperties) {
-        this.props = procProperties;
+    public Processor(ProcProperties primary, ProcProperties secondary) {
+        this.primary = primary;
+        if (secondary == null) {
+            this.secondary = primary;
+        } else {
+            this.secondary = secondary;
+        }
     }
 
 
     public Supplier<ProcessorStatus> processLoop = () -> {
         while (!interrupt) {
-            if (props.getPos() == props.getHead()) {
-                if (headUpdated()) {
+            if (primary.getPos() == primary.getHead()) {
+                if (headUpdated(primary)) {
                     LOGGER.debug("processing stuff");
                     processPending();
                 } else {
@@ -32,14 +38,14 @@ public class Processor {
             }
         }
         status = ProcessorStatus.SHUTDOWN;
-        LOGGER.debug("Processor {} shutdown", props.getId());
+        LOGGER.debug("Processor {} shutdown", primary.getId());
         return ProcessorStatus.SHUTDOWN;
     };
 
-    private boolean headUpdated() {
-        int leadPos = ProcessorWorkflow.getLeadPos(props.getBufferId(), props.getPriority());
-        if (props.getHead() < leadPos) {
-            props.setHead(leadPos);
+    private boolean headUpdated(ProcProperties properties) {
+        int leadPos = ProcessorWorkflow.getLeadPos(properties.getBufferId(), properties.getPriority());
+        if (properties.getHead() < leadPos) {
+            properties.setHead(leadPos);
             return true;
         }
         return false;
@@ -57,25 +63,29 @@ public class Processor {
     }
 
     Message readMessage() {
-        Message msg = props.getReader().read(props.getPos());
+        Message msg = primary.getReader().read(primary.getPos());
 
-        props.movePos();
+        primary.movePos();
         return msg;
     }
 
 
     Message processMessage(Message msg) {
-        return props.getProcess().apply(msg);
+        return primary.getProcess().apply(msg);
     }
 
 
     OpStatus writeMessage(Message msg) {
-        props.getWriter().write(props.getPos(), msg);
-        props.movePos();
+        secondary.getWriter().write(secondary.getPos(), msg);
+        secondary.movePos();
         return OpStatus.WRITE_SUCCESS;
     }
 
     public ProcessorStatus getStatus() {
         return status;
+    }
+
+    public int getId() {
+        return primary.getProcId();
     }
 }
