@@ -23,18 +23,23 @@ class ProcessorWorkflowStartShutdownSpec extends Specification {
 
         when:
         prop0.getId() >> 10
+        prop0.getProcId() >> 10
         prop0.getPriority() >> 0
         prop0.getPos() >> 100
         prop1.getId() >> 11
+        prop1.getProcId() >> 11
         prop1.getPriority() >> 1
         prop1.getPos() >> 101
         prop2.getId() >> 12
+        prop2.getProcId() >> 12
         prop2.getPriority() >> 2
         prop2.getPos() >> 102
         prop3.getId() >> 13
+        prop3.getProcId() >> 13
         prop3.getPriority() >> 3
         prop3.getPos() >> 103
         prop4.getId() >> 14
+        prop4.getProcId() >> 14
         prop4.getPriority() >> 4
         prop4.getPos() >> 104
         ProcessorWorkflow.init(props)

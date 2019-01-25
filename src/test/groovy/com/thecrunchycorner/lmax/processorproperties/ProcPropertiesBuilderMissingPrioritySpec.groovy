@@ -14,6 +14,7 @@ class ProcPropertiesBuilderMissingPrioritySpec extends Specification {
         when:
         def props = new ProcProperties.Builder()
                 .setId(IdGenerator.id)
+                .setProcId(IdGenerator.id)
                 .setReader(reader)
                 .setInitialHead(32)
                 .setProcess(process)

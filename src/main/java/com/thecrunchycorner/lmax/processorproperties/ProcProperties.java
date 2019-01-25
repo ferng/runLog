@@ -137,7 +137,7 @@ public class ProcProperties {
 
         public final Builder setProcId(int procId) {
             if (procId < 0) {
-                throw new IllegalArgumentException(" processor ID cannot be negative");
+                throw new IllegalArgumentException("Processor ID cannot be negative");
             }
             this.procId = procId;
             return this;
@@ -211,6 +211,9 @@ public class ProcProperties {
         public final ProcProperties build() throws IllegalStateException {
             if (id == -1) {
                 throw new IllegalStateException("Missing property: ID");
+            }
+            if (procId == -1) {
+                throw new IllegalStateException("Missing property: procId");
             }
             if (priority == -1) {
                 throw new IllegalStateException("Missing property: priority");

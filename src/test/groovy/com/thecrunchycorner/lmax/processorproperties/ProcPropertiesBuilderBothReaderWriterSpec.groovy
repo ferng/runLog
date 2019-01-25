@@ -16,6 +16,7 @@ class ProcPropertiesBuilderBothReaderWriterSpec extends Specification {
         when:
         def props = new ProcProperties.Builder()
                 .setId(IdGenerator.id)
+                .setProcId(IdGenerator.id)
                 .setPriority(1)
                 .setInitialHead(32)
                 .setReader(reader)

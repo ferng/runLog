@@ -6,28 +6,23 @@ import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesGetIdFromWriterSpec extends Specification {
+class ProcPropertiesBuilderMissingProcIdSpec extends Specification {
+    def writer = Mock(BufferWriter.class)
+    def process = Mock(UnaryOperator)
 
     def test() {
-        given:
-        def writer = Mock(BufferWriter.class)
-        def process = Mock(UnaryOperator)
-        def id = IdGenerator.id
-
         when:
-        writer.getBufferId() >> 25
         def props = new ProcProperties.Builder()
-                .setId(id)
-                .setProcId(id)
+                .setId(IdGenerator.id)
                 .setPriority(1)
                 .setWriter(writer)
-                .setInitialHead(12)
+                .setInitialHead(32)
                 .setProcess(process)
                 .build()
 
         then:
-        25 == props.getBufferId()
-
+        IllegalStateException ex1 = thrown()
+        ex1.message == "Missing property: procId"
     }
 
 }

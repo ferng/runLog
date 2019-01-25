@@ -1,33 +1,28 @@
 package com.thecrunchycorner.lmax.processorproperties
 
-import com.thecrunchycorner.lmax.buffer.BufferWriter
+import com.thecrunchycorner.lmax.buffer.BufferReader
 import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesGetIdFromWriterSpec extends Specification {
+class ProcPropertiesBuilderNegativeProcIdSpec extends Specification {
+    def reader = Mock(BufferReader.class)
+    def process = Mock(UnaryOperator)
 
     def test() {
-        given:
-        def writer = Mock(BufferWriter.class)
-        def process = Mock(UnaryOperator)
-        def id = IdGenerator.id
-
         when:
-        writer.getBufferId() >> 25
         def props = new ProcProperties.Builder()
-                .setId(id)
-                .setProcId(id)
+                .setId(IdGenerator.id)
+                .setProcId(-1)
                 .setPriority(1)
-                .setWriter(writer)
+                .setReader(reader)
                 .setInitialHead(12)
                 .setProcess(process)
                 .build()
 
         then:
-        25 == props.getBufferId()
-
+        IllegalArgumentException ex1 = thrown()
+        ex1.message == "Processor ID cannot be negative"
     }
-
 }

@@ -18,6 +18,7 @@ class ProcPropertiesBuilderMissingHeadSpec extends Specification {
         when:
         def props = new ProcProperties.Builder()
                 .setId(IdGenerator.id)
+                .setProcId(IdGenerator.id)
                 .setPriority(1)
                 .setWriter(writer)
                 .setProcess(process)

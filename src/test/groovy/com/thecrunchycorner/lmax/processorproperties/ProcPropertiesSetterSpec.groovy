@@ -17,6 +17,7 @@ class ProcPropertiesSetterSpec extends Specification {
         when:
         def props = new ProcProperties.Builder()
                 .setId(id)
+                .setProcId(22)
                 .setPriority(1)
                 .setWriter(writer)
                 .setInitialHead(12)
@@ -29,6 +30,7 @@ class ProcPropertiesSetterSpec extends Specification {
 
         then:
         props.getId() == id
+        props.getProcId() == 22
         props.getPriority() == 1
         props.getReader() == null
         props.getWriter() == writer

@@ -44,34 +44,74 @@ public final class ProcessorWorkflow {
             }
         });
 
-        processorsById = properties
-                .stream()
-                .collect(Collectors.toConcurrentMap(ProcProperties::getId, Processor::new));
+        Map<Integer, List<ProcProperties>> propertiesByProcessor = getPropertiesByProcessorId(properties);
 
-        propertiesByBufferByPriority = properties
-                .stream()
-                .collect(
-                        Collectors.groupingBy(ProcProperties::getBufferId,
-                                Collectors.groupingBy(ProcProperties::getPriority)
-                        ));
+        processorsById = getProcessorsById(propertiesByProcessor);
 
-        Map<Integer, ArrayList<Integer>> prioritiesByBuffer = new HashMap<>();
-        propertiesByBufferByPriority.forEach((bufferId, priorities) -> {
-            TreeSet<Integer> priorityKeys = new TreeSet<>(priorities.keySet());
-            prioritiesByBuffer.put(bufferId, new ArrayList<>(priorityKeys));
-        });
+        propertiesByBufferByPriority = getPropertiesByBufferByPriority(properties);
 
+        Map<Integer, ArrayList<Integer>> prioritiesByBuffer =
+                getPrioritiesByBuffer(propertiesByBufferByPriority);
+
+        priorityPairsByBuffer = getPriorityPairsByBuffer(prioritiesByBuffer);
+
+        LOGGER.info("{} Processors configured", properties.size());
+    }
+
+    private static Map<Integer, Map<Integer, Integer>> getPriorityPairsByBuffer(Map<Integer, ArrayList<Integer>> prioritiesByBuffer) {
+        Map<Integer, Map<Integer, Integer>> pairs = new HashMap<>();
         prioritiesByBuffer.forEach((bufferId, priorities) -> {
             Map<Integer, Integer> priorityPairs = new HashMap<>();
             priorities.forEach((priority) -> {
                 int paired = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
                 priorityPairs.put(priority, paired);
             });
-            priorityPairsByBuffer.put(bufferId, priorityPairs);
-
+            pairs.put(bufferId, priorityPairs);
         });
 
-        LOGGER.info("{} Processors configured", properties.size());
+        return pairs;
+    }
+
+    private static Map<Integer, ArrayList<Integer>> getPrioritiesByBuffer(Map<Integer,
+            Map<Integer, List<ProcProperties>>> props) {
+
+        Map<Integer, ArrayList<Integer>> sortedPriorities = new HashMap<>();
+
+        props.forEach((bufferId, priorities) -> {
+            TreeSet<Integer> priorityKeys = new TreeSet<>(priorities.keySet());
+            sortedPriorities.put(bufferId, new ArrayList<>(priorityKeys));
+        });
+
+        return sortedPriorities;
+    }
+
+    private static Map<Integer, Map<Integer, List<ProcProperties>>> getPropertiesByBufferByPriority(List<ProcProperties> properties) {
+        return properties
+                .stream()
+                .collect(
+                        Collectors.groupingBy(ProcProperties::getBufferId,
+                                Collectors.groupingBy(ProcProperties::getPriority)
+                        ));
+    }
+
+    private static Map<Integer, Processor> getProcessorsById(Map<Integer, List<ProcProperties>> propertiesByProcessor) {
+        Map<Integer, Processor> procs = new HashMap<>();
+        propertiesByProcessor.forEach((procId, propPair) -> {
+            Processor proc;
+            if (propPair.size() == 2) {
+                proc = new Processor(propPair.get(0), propPair.get(1));
+            } else {
+                proc = new Processor(propPair.get(0));
+            }
+            procs.put(procId, proc);
+        });
+        return procs;
+    }
+
+    private static Map<Integer, List<ProcProperties>> getPropertiesByProcessorId(List<ProcProperties> properties) {
+        return properties
+                .stream()
+                .collect(Collectors.groupingBy(ProcProperties::getProcId));
     }
 
 

@@ -16,15 +16,15 @@ public class Processor {
     private ProcProperties secondary;
 
 
-    public Processor(ProcProperties primary, ProcProperties secondary) {
+    public Processor(ProcProperties primary) {
         this.primary = primary;
-        if (secondary == null) {
-            this.secondary = primary;
-        } else {
-            this.secondary = secondary;
-        }
+        this.secondary = primary;
     }
 
+    public Processor(ProcProperties primary, ProcProperties secondary) {
+        this.primary = primary;
+        this.secondary = secondary;
+    }
 
     public Supplier<ProcessorStatus> processLoop = () -> {
         while (!interrupt) {
@@ -43,7 +43,8 @@ public class Processor {
     };
 
     private boolean headUpdated(ProcProperties properties) {
-        int leadPos = ProcessorWorkflow.getLeadPos(properties.getBufferId(), properties.getPriority());
+        int leadPos = ProcessorWorkflow.getLeadPos(properties.getBufferId(),
+                properties.getPriority());
         if (properties.getHead() < leadPos) {
             properties.setHead(leadPos);
             return true;
@@ -83,9 +84,5 @@ public class Processor {
 
     public ProcessorStatus getStatus() {
         return status;
-    }
-
-    public int getId() {
-        return primary.getProcId();
     }
 }

@@ -15,6 +15,7 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
         def id = IdGenerator.id
         def props = new ProcProperties.Builder()
                 .setId(id)
+                .setProcId(id)
                 .setPriority(1)
                 .setWriter(writer)
                 .setInitialHead(12)
@@ -23,6 +24,7 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
 
         def props2 = new ProcProperties.Builder()
                 .setId(id)
+                .setProcId(id)
                 .setPriority(2)
                 .setWriter(writer)
                 .setInitialHead(15)

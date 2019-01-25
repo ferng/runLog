@@ -17,6 +17,7 @@ class ProcPropertiesBuilderSpec extends Specification {
         when:
         def props = new ProcProperties.Builder()
                 .setId(id)
+                .setProcId(id)
                 .setPriority(1)
                 .setWriter(writer)
                 .setInitialHead(12)

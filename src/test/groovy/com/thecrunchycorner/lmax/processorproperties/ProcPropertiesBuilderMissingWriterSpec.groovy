@@ -15,6 +15,7 @@ class ProcPropertiesBuilderMissingWriterSpec extends Specification {
         when:
         def props = new ProcProperties.Builder()
                 .setId(id)
+                .setProcId(IdGenerator.id)
                 .setPriority(1)
                 .setReader(reader)
                 .setInitialHead(12)
