@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesBuilderMissingProcessSpec extends Specification {
+class ProcPropertiesBuilderMissingProcessOnWriterSpec extends Specification {
     def writer = Mock(BufferWriter.class)
     def process = Mock(UnaryOperator)
 
@@ -21,8 +21,7 @@ class ProcPropertiesBuilderMissingProcessSpec extends Specification {
                 .build()
 
         then:
-        IllegalStateException ex1 = thrown()
-        ex1.message == "Missing property: process"
+        noExceptionThrown()
     }
 
 }

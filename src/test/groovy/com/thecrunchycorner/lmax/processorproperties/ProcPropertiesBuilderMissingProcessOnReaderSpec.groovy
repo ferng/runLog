@@ -1,18 +1,14 @@
 package com.thecrunchycorner.lmax.processorproperties
 
-import com.thecrunchycorner.lmax.buffer.BufferWriter
+import com.thecrunchycorner.lmax.buffer.BufferReader
 import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesBuilderMissingHeadSpec extends Specification {
-    def writer = Mock(BufferWriter.class)
+class ProcPropertiesBuilderMissingProcessOnReaderSpec extends Specification {
+    def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
-
-    def cleanup() {
-
-    }
 
     def test() {
         when:
@@ -20,11 +16,13 @@ class ProcPropertiesBuilderMissingHeadSpec extends Specification {
                 .setId(IdGenerator.id)
                 .setProcId(IdGenerator.id)
                 .setPriority(1)
-                .setWriter(writer)
-                .setProcess(process)
+                .setReader(reader)
+                .setInitialHead(32)
                 .build()
 
         then:
-        noExceptionThrown()
+        IllegalStateException ex1 = thrown()
+        ex1.message == "Missing property in primary (reader): process"
     }
+
 }

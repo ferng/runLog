@@ -9,10 +9,10 @@ class BufferWriterReaderSpec extends Specification {
         def buffer = new RingBuffer(1, 32)
         def reader = new BufferReader(buffer)
         def writer = new BufferWriter(buffer)
-        writer.write(1, "hello")
+        writer.write(1, new Message("hello"))
 
         when:
-        def data = reader.read(1)
+        def data = reader.read(1).getPayload()
 
         then:
         data == "hello"

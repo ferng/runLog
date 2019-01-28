@@ -7,7 +7,7 @@ import java.util.Objects;
  * Provides client classes with the means to read from a buffer. Each reader is uniquely owned by
  * the processor using it.
  */
-public class BufferReader<E> implements Reader<E> {
+public class BufferReader<E extends Message> implements Reader<Message> {
     private RingBuffer<E> buffer;
 
 

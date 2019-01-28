@@ -119,8 +119,8 @@ public class ProcProperties {
         private int id = -1;
         private int procId = -1;
         private int priority = -1;
-        private BufferReader<Message> reader = null;
-        private BufferWriter<Message> writer = null;
+        private Reader<Message> reader = null;
+        private Writer<Message> writer = null;
         private int initialHead = -1;
         private UnaryOperator<Message> process = null;
 
@@ -159,7 +159,7 @@ public class ProcProperties {
          * @param reader the reader
          * @return a builder to carry on building
          */
-        public final Builder setReader(final BufferReader<Message> reader) {
+        public final Builder setReader(final Reader<Message> reader) {
             Objects.requireNonNull(reader, "Buffer reader cannot be null");
             this.reader = reader;
             return this;
@@ -172,7 +172,7 @@ public class ProcProperties {
          * @param writer the writer
          * @return a builder to carry on building
          */
-        public final Builder setWriter(final BufferWriter<Message> writer) {
+        public final Builder setWriter(final Writer<Message> writer) {
             Objects.requireNonNull(writer, "Buffer writer cannot be null");
             this.writer = writer;
             return this;
@@ -218,19 +218,16 @@ public class ProcProperties {
             if (priority == -1) {
                 throw new IllegalStateException("Missing property: priority");
             }
-            if (initialHead == -1) {
-                throw new IllegalStateException("Missing property: initialHead");
-            }
             if (reader == null && writer == null) {
                 throw new IllegalStateException("Invalid configuration: reader or writer must be " +
                         "configured");
             }
-            if (!(reader == null) && !(writer == null)) {
+            if (reader != null && writer != null) {
                 throw new IllegalStateException("Invalid configuration: reader or writer must be " +
                         "configured not both");
             }
-            if (process == null) {
-                throw new IllegalStateException("Missing property: process");
+            if (reader != null && process == null) {
+                throw new IllegalStateException("Missing property in primary (reader): process");
             }
             return new ProcProperties(this);
         }
