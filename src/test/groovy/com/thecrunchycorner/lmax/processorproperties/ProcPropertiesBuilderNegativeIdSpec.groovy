@@ -1,6 +1,7 @@
 package com.thecrunchycorner.lmax.processorproperties
 
 import com.thecrunchycorner.lmax.buffer.BufferReader
+import com.thecrunchycorner.lmax.testHelpers.IdGenerator
 import spock.lang.Specification
 
 import java.util.function.UnaryOperator
@@ -8,11 +9,12 @@ import java.util.function.UnaryOperator
 class ProcPropertiesBuilderNegativeIdSpec extends Specification {
     def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
+    def id = -IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(-1)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setPriority(1)
                 .setReader(reader)
                 .setInitialHead(12)
@@ -21,6 +23,6 @@ class ProcPropertiesBuilderNegativeIdSpec extends Specification {
 
         then:
         IllegalArgumentException ex1 = thrown()
-        ex1.message == "ID cannot be negative"
+        ex1.message == "ID cannot be negative. id: " + id
     }
 }

@@ -9,11 +9,12 @@ import java.util.function.UnaryOperator
 class ProcPropertiesBuilderMissingProcIdSpec extends Specification {
     def writer = Mock(BufferWriter.class)
     def process = Mock(UnaryOperator)
+    def id = IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(IdGenerator.id)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setPriority(1)
                 .setWriter(writer)
                 .setInitialHead(32)
@@ -22,7 +23,7 @@ class ProcPropertiesBuilderMissingProcIdSpec extends Specification {
 
         then:
         IllegalStateException ex1 = thrown()
-        ex1.message == "Missing property: procId"
+        ex1.message == "Missing property: procId. id: " + id
     }
 
 }

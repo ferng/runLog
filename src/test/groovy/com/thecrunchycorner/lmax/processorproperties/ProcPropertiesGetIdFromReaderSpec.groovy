@@ -16,7 +16,7 @@ class ProcPropertiesGetIdFromReaderSpec extends Specification {
 
         when:
         reader.getBufferId() >> 76
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
                 .setPriority(1)

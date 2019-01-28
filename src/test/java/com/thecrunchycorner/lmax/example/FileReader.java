@@ -13,13 +13,16 @@ import org.apache.logging.log4j.Logger;
 public class FileReader implements Reader<Message> {
     private static Logger LOGGER = LogManager.getLogger(FileReader.class);
 
-    private Path path = Paths.get("source.dat");
     private BufferedReader reader;
     private int bufferId;
 
 
     FileReader(int bufferId) {
         try {
+            Path path = Paths.get("src", "test", "java",
+                    "com", "thecrunchycorner", "lmax", "example",
+                    "source.dat").toAbsolutePath();
+            LOGGER.debug(path);
             reader = Files.newBufferedReader(path);
             this.bufferId = bufferId;
         } catch (IOException e) {

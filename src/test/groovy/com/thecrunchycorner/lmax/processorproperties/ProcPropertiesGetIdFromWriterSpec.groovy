@@ -16,7 +16,7 @@ class ProcPropertiesGetIdFromWriterSpec extends Specification {
 
         when:
         writer.getBufferId() >> 25
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
                 .setPriority(1)

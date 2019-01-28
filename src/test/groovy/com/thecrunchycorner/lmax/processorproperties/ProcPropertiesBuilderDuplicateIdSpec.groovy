@@ -13,7 +13,7 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
     def test() {
         when:
         def id = IdGenerator.id
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
                 .setPriority(1)
@@ -22,7 +22,7 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
                 .setProcess(process)
                 .build()
 
-        def props2 = new ProcProperties.Builder()
+        def props2 = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
                 .setPriority(2)
@@ -33,6 +33,6 @@ class ProcPropertiesBuilderDuplicateIdSpec extends Specification {
 
         then:
         IllegalArgumentException ex1 = thrown()
-        ex1.message == "ID already assigned to processor"
+        ex1.message == "ID already assigned to processor. id: " + id
     }
 }

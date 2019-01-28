@@ -9,11 +9,12 @@ import java.util.function.UnaryOperator
 class ProcPropertiesBuilderMissingPrioritySpec extends Specification {
     def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
+    def id = IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(IdGenerator.id)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setProcId(IdGenerator.id)
                 .setReader(reader)
                 .setInitialHead(32)
@@ -22,7 +23,7 @@ class ProcPropertiesBuilderMissingPrioritySpec extends Specification {
 
         then:
         IllegalStateException ex1 = thrown()
-        ex1.message == "Missing property: priority"
+        ex1.message == "Missing property: priority. id: " + id
     }
 
 }

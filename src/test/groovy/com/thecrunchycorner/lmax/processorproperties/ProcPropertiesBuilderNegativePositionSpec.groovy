@@ -9,11 +9,12 @@ import java.util.function.UnaryOperator
 class ProcPropertiesBuilderNegativePositionSpec extends Specification {
     def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
+    def id = IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(IdGenerator.id)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setPriority(1)
                 .setReader(reader)
                 .setInitialHead(-1)
@@ -22,6 +23,6 @@ class ProcPropertiesBuilderNegativePositionSpec extends Specification {
 
         then:
         IllegalArgumentException ex1 = thrown()
-        ex1.message == "Initial head cannot be negative"
+        ex1.message == "Initial head cannot be negative. id: " + id
     }
 }

@@ -11,11 +11,12 @@ class ProcPropertiesBuilderBothReaderWriterSpec extends Specification {
     def reader = Mock(BufferReader.class)
     def writer = Mock(BufferWriter.class)
     def process = Mock(UnaryOperator)
+    def id = IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(IdGenerator.id)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setProcId(IdGenerator.id)
                 .setPriority(1)
                 .setInitialHead(32)
@@ -26,7 +27,7 @@ class ProcPropertiesBuilderBothReaderWriterSpec extends Specification {
 
         then:
         IllegalStateException ex1 = thrown()
-        ex1.message == "Invalid configuration: reader or writer must be configured not both"
+        ex1.message == "Invalid configuration: reader or writer must be configured not both. id: " + id
     }
 
 }

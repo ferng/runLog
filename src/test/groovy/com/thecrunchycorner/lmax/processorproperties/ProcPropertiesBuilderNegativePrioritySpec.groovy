@@ -9,11 +9,12 @@ import java.util.function.UnaryOperator
 class ProcPropertiesBuilderNegativePrioritySpec extends Specification {
     def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
+    def id = IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(IdGenerator.id)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setPriority(-1)
                 .setReader(reader)
                 .setInitialHead(12)
@@ -22,6 +23,6 @@ class ProcPropertiesBuilderNegativePrioritySpec extends Specification {
 
         then:
         IllegalArgumentException ex1 = thrown()
-        ex1.message == "Priority cannot be negative"
+        ex1.message == "Priority cannot be negative. id: " + id
     }
 }

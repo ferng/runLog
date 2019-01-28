@@ -13,7 +13,7 @@ class ProcPropertiesBuilderMissingReaderSpec extends Specification {
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
                 .setPriority(1)

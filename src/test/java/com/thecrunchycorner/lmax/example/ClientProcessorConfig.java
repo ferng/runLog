@@ -8,6 +8,7 @@ import com.thecrunchycorner.lmax.buffer.RingBuffer;
 import com.thecrunchycorner.lmax.handlers.Reader;
 import com.thecrunchycorner.lmax.handlers.Writer;
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties;
+import com.thecrunchycorner.lmax.processorproperties.ProcPropertiesBuilder;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ClientProcessorConfig {
         OptionalInt inputSizeOpt = SystemProperties.getAsInt("input.buffer.size");
         int thresholdBufferSize = SystemProperties.getThresholdBufferSize();
         int inputBufferSize = inputSizeOpt.orElse(thresholdBufferSize);
-        ProcProperties.Builder builder = new ProcProperties.Builder();
+        ProcPropertiesBuilder builder = new ProcPropertiesBuilder();
 
 
         int leftBufferId = 1;

@@ -7,11 +7,12 @@ import java.util.function.UnaryOperator
 
 class ProcPropertiesBuilderMissingReaderWriterSpec extends Specification {
     def process = Mock(UnaryOperator)
+    def id = IdGenerator.id
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
-                .setId(IdGenerator.id)
+        def props = new ProcPropertiesBuilder()
+                .setId(id)
                 .setProcId(IdGenerator.id)
                 .setPriority(1)
                 .setInitialHead(32)
@@ -20,7 +21,7 @@ class ProcPropertiesBuilderMissingReaderWriterSpec extends Specification {
 
         then:
         IllegalStateException ex1 = thrown()
-        ex1.message == "Invalid configuration: reader or writer must be configured"
+        ex1.message == "Invalid configuration: reader or writer must be configured. id: " + id
     }
 
 }

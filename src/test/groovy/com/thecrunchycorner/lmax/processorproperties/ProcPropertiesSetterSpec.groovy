@@ -15,7 +15,7 @@ class ProcPropertiesSetterSpec extends Specification {
         def id = IdGenerator.id
 
         when:
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(22)
                 .setPriority(1)

@@ -12,7 +12,7 @@ class ProcPropertiesBuilderMissingProcessOnWriterSpec extends Specification {
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setId(IdGenerator.id)
                 .setProcId(IdGenerator.id)
                 .setPriority(1)

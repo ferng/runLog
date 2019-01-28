@@ -11,7 +11,7 @@ class ProcPropertiesBuilderMissingIdSpec extends Specification {
 
     def test() {
         when:
-        def props = new ProcProperties.Builder()
+        def props = new ProcPropertiesBuilder()
                 .setPriority(1)
                 .setWriter(writer)
                 .setInitialHead(32)

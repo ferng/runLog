@@ -1,7 +1,5 @@
 package com.thecrunchycorner.lmax.processorproperties;
 
-import com.thecrunchycorner.lmax.buffer.BufferReader;
-import com.thecrunchycorner.lmax.buffer.BufferWriter;
 import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.handlers.Reader;
 import com.thecrunchycorner.lmax.handlers.Writer;
@@ -23,15 +21,15 @@ public class ProcProperties {
     private int pos;
     private UnaryOperator<Message> process;
 
-    private ProcProperties(Builder builder) {
-        this.id = builder.id;
-        this.procId = builder.procId;
-        this.priority = builder.priority;
-        this.reader = builder.reader;
-        this.writer = builder.writer;
+    ProcProperties(ProcPropertiesBuilder builder) {
+        this.id = builder.getId();
+        this.procId = builder.getProcId();
+        this.priority = builder.getPriority();
+        this.reader = builder.getReader();
+        this.writer = builder.getWriter();
+        this.head = builder.getInitialHead();
+        this.process = builder.getProcess();
         this.pos = 0;
-        this.head = builder.initialHead;
-        this.process = builder.process;
     }
 
     public int getId() {
@@ -110,127 +108,4 @@ public class ProcProperties {
     public UnaryOperator<Message> getProcess() {
         return process;
     }
-
-    /**
-     * Builder used to instantiate ProcProperties.
-     */
-    public static class Builder {
-        private static HashSet<Integer> uniqueIds = new HashSet<>();
-        private int id = -1;
-        private int procId = -1;
-        private int priority = -1;
-        private Reader<Message> reader = null;
-        private Writer<Message> writer = null;
-        private int initialHead = -1;
-        private UnaryOperator<Message> process = null;
-
-        public final Builder setId(int id) {
-            if (!uniqueIds.add(id)) {
-                throw new IllegalArgumentException("ID already assigned to processor");
-            }
-            if (id < 0) {
-                throw new IllegalArgumentException("ID cannot be negative");
-            }
-            this.id = id;
-            return this;
-        }
-
-        public final Builder setProcId(int procId) {
-            if (procId < 0) {
-                throw new IllegalArgumentException("Processor ID cannot be negative");
-            }
-            this.procId = procId;
-            return this;
-        }
-
-
-        // lower values have higher
-        public final Builder setPriority(int priority) {
-            if (priority < 0) {
-                throw new IllegalArgumentException("Priority cannot be negative");
-            }
-            this.priority = priority;
-            return this;
-        }
-
-        /**
-         * Sets the Buffer reader.
-         *
-         * @param reader the reader
-         * @return a builder to carry on building
-         */
-        public final Builder setReader(final Reader<Message> reader) {
-            Objects.requireNonNull(reader, "Buffer reader cannot be null");
-            this.reader = reader;
-            return this;
-        }
-
-
-        /**
-         * Sets the Buffer writer.
-         *
-         * @param writer the writer
-         * @return a builder to carry on building
-         */
-        public final Builder setWriter(final Writer<Message> writer) {
-            Objects.requireNonNull(writer, "Buffer writer cannot be null");
-            this.writer = writer;
-            return this;
-        }
-
-
-        /**
-         * How far can we go to when we first start. In truth, only the leading reader/writer
-         * will be non-zero in which case its value should be set to the size of the buffer.
-         *
-         * @param initialHead the highest buffer position we can read/write to
-         * @return a builder to carry on building
-         */
-        public final Builder setInitialHead(final int initialHead) {
-            if (initialHead < 0) {
-                throw new IllegalArgumentException("Initial head cannot be negative");
-            }
-            this.initialHead = initialHead;
-            return this;
-        }
-
-        public final Builder setProcess(UnaryOperator<Message> process) {
-            this.process = process;
-            return this;
-        }
-
-        /**
-         * Instantiate this set of properties.
-         *
-         * @return newly created properties object
-         * @throws IllegalStateException If the builder is called before the minimum required
-         * configuration has been set this consists of: Buffer, Reader or
-         * Writer or
-         * both, an initial head value to process up to
-         */
-        public final ProcProperties build() throws IllegalStateException {
-            if (id == -1) {
-                throw new IllegalStateException("Missing property: ID");
-            }
-            if (procId == -1) {
-                throw new IllegalStateException("Missing property: procId");
-            }
-            if (priority == -1) {
-                throw new IllegalStateException("Missing property: priority");
-            }
-            if (reader == null && writer == null) {
-                throw new IllegalStateException("Invalid configuration: reader or writer must be " +
-                        "configured");
-            }
-            if (reader != null && writer != null) {
-                throw new IllegalStateException("Invalid configuration: reader or writer must be " +
-                        "configured not both");
-            }
-            if (reader != null && process == null) {
-                throw new IllegalStateException("Missing property in primary (reader): process");
-            }
-            return new ProcProperties(this);
-        }
-    }
-
 }
