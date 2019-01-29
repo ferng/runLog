@@ -20,6 +20,7 @@ public class ProcProperties {
     private int head;
     private int pos;
     private UnaryOperator<Message> process;
+    private boolean external;
 
     ProcProperties(ProcPropertiesBuilder builder) {
         this.id = builder.getId();
@@ -29,6 +30,7 @@ public class ProcProperties {
         this.writer = builder.getWriter();
         this.head = builder.getInitialHead();
         this.process = builder.getProcess();
+        this.external = builder.isExternal();
         this.pos = 0;
     }
 
@@ -107,5 +109,9 @@ public class ProcProperties {
 
     public UnaryOperator<Message> getProcess() {
         return process;
+    }
+
+    public boolean isExternal() {
+        return external;
     }
 }

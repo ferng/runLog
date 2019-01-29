@@ -20,6 +20,7 @@ public class ProcPropertiesBuilder {
     private Writer<Message> writer = null;
     private int initialHead = -1;
     private UnaryOperator<Message> process = null;
+    private boolean external = false;
 
     public final ProcPropertiesBuilder setId(int id) {
         if (!uniqueIds.add(id)) {
@@ -96,6 +97,11 @@ public class ProcPropertiesBuilder {
         return this;
     }
 
+    public final ProcPropertiesBuilder setExternal(boolean external) {
+        this.external = external;
+        return this;
+    }
+
     /**
      * Instantiate this set of properties.
      *
@@ -126,7 +132,20 @@ public class ProcPropertiesBuilder {
         if (reader != null && process == null) {
             throw new IllegalStateException("Missing property in primary (reader): process. id: " + id);
         }
-        return new ProcProperties(this);
+        ProcProperties props = new ProcProperties(this);
+        reset();
+        return props;
+    }
+
+    private void reset() {
+        id = -1;
+        procId = -1;
+        priority = -1;
+        reader = null;
+        writer = null;
+        initialHead = -1;
+        process = null;
+        external = false;
     }
 
     public int getId() {
@@ -155,5 +174,9 @@ public class ProcPropertiesBuilder {
 
     public UnaryOperator<Message> getProcess() {
         return process;
+    }
+
+    public boolean isExternal() {
+        return external;
     }
 }

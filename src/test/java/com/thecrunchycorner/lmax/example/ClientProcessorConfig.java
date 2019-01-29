@@ -55,6 +55,7 @@ public class ClientProcessorConfig {
                 builder.setId(1)
                         .setProcId(0)
                         .setPriority(0)
+                        .setInitialHead(inputBufferSize)
                         .setWriter(receiverBuffWriter)
                         .build();
         props.add(receiverWriter);
@@ -67,6 +68,7 @@ public class ClientProcessorConfig {
                 builder.setId(2)
                         .setProcId(1)
                         .setPriority(1)
+                        .setInitialHead(0)
                         .setReader(unMarshallerBuffReader)
                         .setProcess(unMarshallInboundMessage())
                         .build();
@@ -78,6 +80,7 @@ public class ClientProcessorConfig {
                 builder.setId(3)
                         .setProcId(1)
                         .setPriority(1)
+                        .setInitialHead(0)
                         .setWriter(unMarshallerBuffWriter)
                         .build();
         props.add(unMarshallerWriter);
@@ -171,16 +174,17 @@ public class ClientProcessorConfig {
     }
 
 
-
-
     private static UnaryOperator<Message> getSimpleprocessor() {
-        return (m) -> m;
+        return (m) -> {
+            LOGGER.debug("message: {}", m.getPayload());
+            return m;
+        };
     }
 
     private static UnaryOperator<Message> unMarshallInboundMessage() {
         return (m) -> {
             String text = (String) m.getPayload();
-            LOGGER.debug("Unmarshalling: " + text);
+            LOGGER.debug("Unmarshalling: {}", text);
             return new Message(text.replace("<", "").replace(">", ""));
         };
     }

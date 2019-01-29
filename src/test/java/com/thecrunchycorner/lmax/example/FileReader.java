@@ -26,7 +26,7 @@ public class FileReader implements Reader<Message> {
             reader = Files.newBufferedReader(path);
             this.bufferId = bufferId;
         } catch (IOException e) {
-            LOGGER.error("source file is missing", e);
+            LOGGER.error("source file is missing, {}", e);
         }
     }
 
@@ -44,8 +44,9 @@ public class FileReader implements Reader<Message> {
         Message line = null;
         try {
             line = new Message(reader.readLine());
+            LOGGER.debug("line read: {}", line.getPayload());
         } catch (IOException e) {
-            LOGGER.error("error reading file", e);
+            LOGGER.error("error reading file {}", e);
         }
         return line;
     }

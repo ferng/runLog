@@ -28,12 +28,12 @@ public class Processor {
 
     public Supplier<ProcessorStatus> processLoop = () -> {
         while (!interrupt) {
-            if (primary.getPos() == primary.getHead()) {
+            if (primary.getPos() == primary.getHead() || primary.isExternal()) {
                 if (headUpdated(primary)) {
                     LOGGER.debug("processing stuff");
                     processPending();
                 } else {
-                    LOGGER.debug("waiting for stuff");
+//                    LOGGER.debug("waiting for stuff");
                 }
             }
         }
@@ -53,10 +53,14 @@ public class Processor {
     }
 
     OpStatus processPending() {
-        Message msg = processMessage(readMessage());
-        LOGGER.debug(msg.getPayload());
-//        return writeMessage(msg);
-        return OpStatus.WRITE_SUCCESS;
+        Message in = readMessage();
+        if (in.getPayload() == null) {
+            return OpStatus.HEADER_REACHED;
+        } else {
+            Message msg = processMessage(in);
+            LOGGER.debug(msg.getPayload());
+            return writeMessage(msg);
+        }
     }
 
     public void shutdown() {
