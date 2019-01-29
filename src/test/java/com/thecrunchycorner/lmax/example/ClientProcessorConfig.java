@@ -32,8 +32,8 @@ public class ClientProcessorConfig {
 
         int leftBufferId = 1;
         int rightBufferId = 2;
-        RingBuffer<Message> leftBuffer = new RingBuffer<>(1, inputBufferSize);
-        RingBuffer<Message> rightBuffer = new RingBuffer<>(2, inputBufferSize);
+        RingBuffer<Message> leftBuffer = new RingBuffer<>(leftBufferId, inputBufferSize);
+        RingBuffer<Message> rightBuffer = new RingBuffer<>(rightBufferId, inputBufferSize);
 
 
         //================================================
@@ -45,6 +45,7 @@ public class ClientProcessorConfig {
                         .setPriority(0)
                         .setReader(receiverFileReader)
                         .setProcess(getSimpleprocessor())
+                        .setExternal(true)
                         .build();
         props.add(receiverReader);
 
@@ -80,90 +81,90 @@ public class ClientProcessorConfig {
                         .setWriter(unMarshallerBuffWriter)
                         .build();
         props.add(unMarshallerWriter);
-
-
-        //================================================
-        //processor 2: logger: log data just written into LEFT buffer
-        Reader<Message> loggerBuffReader = new BufferReader<>(leftBuffer);
-        ProcProperties loggerReader =
-                builder.setId(4)
-                        .setProcId(2)
-                        .setPriority(1)
-                        .setReader(loggerBuffReader)
-                        .setProcess(logMessage())
-                        .build();
-        props.add(loggerReader);
-
-
-        //================================================
-        //processor 3: processor: reader from LEFT buffer
-        Reader<Message> processorBuffReader = new BufferReader<>(leftBuffer);
-        ProcProperties processorReader =
-                builder.setId(5)
-                        .setProcId(3)
-                        .setPriority(2)
-                        .setReader(processorBuffReader)
-                        .setProcess(process())
-                        .build();
-        props.add(processorReader);
-
-
-        //processor 3: writer to RIGHT buffer
-        Writer<Message> processorBuffWriter = new BufferWriter<>(rightBuffer);
-        ProcProperties processorWriter =
-                builder.setId(6)
-                        .setProcId(3)
-                        .setPriority(2)
-                        .setWriter(processorBuffWriter)
-                        .build();
-        props.add(processorWriter);
-
-
-        //================================================
-        //processor 4: marshaller: reader from RIGHT buffer
-        Reader<Message> marshallerBuffReader = new BufferReader<>(rightBuffer);
-        ProcProperties marshallerReader =
-                builder.setId(7)
-                        .setProcId(4)
-                        .setPriority(3)
-                        .setReader(marshallerBuffReader)
-                        .setProcess(marshallOutboundMessage())
-                        .build();
-        props.add(marshallerReader);
-
-        //processor 4: writer to the RIGHT buffer
-        Writer<Message> marshallerBuffWriter = new BufferWriter<>(rightBuffer);
-        ProcProperties marshallerWriter =
-                builder.setId(8)
-                        .setProcId(4)
-                        .setPriority(3)
-                        .setWriter(marshallerBuffWriter)
-                        .build();
-        props.add(marshallerWriter);
-
-
-        //================================================
-        //processor 5: marshaller: reader from RIGHT buffer
-        Reader<Message> senderBuffReader = new BufferReader<>(rightBuffer);
-        ProcProperties senderReader =
-                builder.setId(9)
-                        .setProcId(5)
-                        .setPriority(4)
-                        .setReader(senderBuffReader)
-                        .setProcess(getSimpleprocessor())
-                        .build();
-        props.add(senderReader);
-
-        //processor 5: writer to the RIGHT buffer
-        FileWriter senderFileWriter = new FileWriter(rightBufferId);
-        ProcProperties senderWriter =
-                builder.setId(10)
-                        .setProcId(5)
-                        .setPriority(4)
-                        .setWriter(senderFileWriter)
-                        .build();
-        props.add(senderWriter);
-
+//
+//
+//        //================================================
+//        //processor 2: logger: log data just written into LEFT buffer
+//        Reader<Message> loggerBuffReader = new BufferReader<>(leftBuffer);
+//        ProcProperties loggerReader =
+//                builder.setId(4)
+//                        .setProcId(2)
+//                        .setPriority(1)
+//                        .setReader(loggerBuffReader)
+//                        .setProcess(logMessage())
+//                        .build();
+//        props.add(loggerReader);
+//
+//
+//        //================================================
+//        //processor 3: processor: reader from LEFT buffer
+//        Reader<Message> processorBuffReader = new BufferReader<>(leftBuffer);
+//        ProcProperties processorReader =
+//                builder.setId(5)
+//                        .setProcId(3)
+//                        .setPriority(2)
+//                        .setReader(processorBuffReader)
+//                        .setProcess(process())
+//                        .build();
+//        props.add(processorReader);
+//
+//
+//        //processor 3: writer to RIGHT buffer
+//        Writer<Message> processorBuffWriter = new BufferWriter<>(rightBuffer);
+//        ProcProperties processorWriter =
+//                builder.setId(6)
+//                        .setProcId(3)
+//                        .setPriority(2)
+//                        .setWriter(processorBuffWriter)
+//                        .build();
+//        props.add(processorWriter);
+//
+//
+//        //================================================
+//        //processor 4: marshaller: reader from RIGHT buffer
+//        Reader<Message> marshallerBuffReader = new BufferReader<>(rightBuffer);
+//        ProcProperties marshallerReader =
+//                builder.setId(7)
+//                        .setProcId(4)
+//                        .setPriority(3)
+//                        .setReader(marshallerBuffReader)
+//                        .setProcess(marshallOutboundMessage())
+//                        .build();
+//        props.add(marshallerReader);
+//
+//        //processor 4: writer to the RIGHT buffer
+//        Writer<Message> marshallerBuffWriter = new BufferWriter<>(rightBuffer);
+//        ProcProperties marshallerWriter =
+//                builder.setId(8)
+//                        .setProcId(4)
+//                        .setPriority(3)
+//                        .setWriter(marshallerBuffWriter)
+//                        .build();
+//        props.add(marshallerWriter);
+//
+//
+//        //================================================
+//        //processor 5: writer: reader from RIGHT buffer
+//        Reader<Message> senderBuffReader = new BufferReader<>(rightBuffer);
+//        ProcProperties senderReader =
+//                builder.setId(9)
+//                        .setProcId(5)
+//                        .setPriority(4)
+//                        .setReader(senderBuffReader)
+//                        .setProcess(getSimpleprocessor())
+//                        .build();
+//        props.add(senderReader);
+//
+//        //processor 5: writer to the RIGHT buffer
+//        FileWriter senderFileWriter = new FileWriter(rightBufferId);
+//        ProcProperties senderWriter =
+//                builder.setId(10)
+//                        .setProcId(5)
+//                        .setPriority(4)
+//                        .setWriter(senderFileWriter)
+//                        .build();
+//        props.add(senderWriter);
+//
 
 
         ProcessorWorkflow.init(props);
@@ -179,6 +180,7 @@ public class ClientProcessorConfig {
     private static UnaryOperator<Message> unMarshallInboundMessage() {
         return (m) -> {
             String text = (String) m.getPayload();
+            LOGGER.debug("Unmarshalling: " + text);
             return new Message(text.replace("<", "").replace(">", ""));
         };
     }

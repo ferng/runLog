@@ -16,12 +16,14 @@ import org.apache.logging.log4j.Logger;
 public class FileWriter implements Writer<Message> {
     private static Logger LOGGER = LogManager.getLogger(FileWriter.class);
 
-    private Path path = Paths.get("destination.dat");
     private BufferedWriter writer;
     private int bufferId;
 
     FileWriter(int bufferId) {
         try {
+            Path path = Paths.get("src", "test", "java",
+                    "com", "thecrunchycorner", "lmax", "example",
+                    "destination.dat").toAbsolutePath();
             writer = Files.newBufferedWriter(path, CREATE, WRITE);
             this.bufferId = bufferId;
         } catch (IOException e) {
