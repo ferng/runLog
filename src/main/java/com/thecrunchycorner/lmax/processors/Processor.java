@@ -13,12 +13,11 @@ public class Processor {
     private ProcessorStatus status = ProcessorStatus.INITIALIZED;
     private volatile boolean interrupt = false;
     private ProcProperties primary;
-    private ProcProperties secondary;
+    private ProcProperties secondary = null;
 
 
     public Processor(ProcProperties primary) {
         this.primary = primary;
-        this.secondary = primary;
     }
 
     public Processor(ProcProperties primary, ProcProperties secondary) {
@@ -30,7 +29,7 @@ public class Processor {
         while (!interrupt) {
             if (primary.getPos() == primary.getHead() || primary.isExternal()) {
                 if (headUpdated(primary)) {
-                    LOGGER.debug("processing stuff");
+                    LOGGER.debug("processing stuff by {}", primary.getProcId());
                     processPending();
                 } else {
 //                    LOGGER.debug("waiting for stuff");
@@ -45,6 +44,7 @@ public class Processor {
     private boolean headUpdated(ProcProperties properties) {
         int leadPos = ProcessorWorkflow.getLeadPos(properties.getBufferId(),
                 properties.getPriority());
+
         if (properties.getHead() < leadPos) {
             properties.setHead(leadPos);
             return true;
@@ -54,11 +54,14 @@ public class Processor {
 
     OpStatus processPending() {
         Message in = readMessage();
-        if (in.getPayload() == null) {
+        if (in == null || in.getPayload() == null) {
             return OpStatus.HEADER_REACHED;
         } else {
             Message msg = processMessage(in);
-            LOGGER.debug(msg.getPayload());
+            LOGGER.debug("Processing {}", msg.getPayload());
+            if (secondary == null) {
+                return OpStatus.NO_WRITE_OP;
+            }
             return writeMessage(msg);
         }
     }

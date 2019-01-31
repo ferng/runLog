@@ -44,21 +44,21 @@ public final class ProcessorWorkflow {
             }
         });
 
-        Map<Integer, List<ProcProperties>> propertiesByProcessor = getPropertiesByProcessorId(properties);
+        Map<Integer, List<ProcProperties>> propertiesByProcessor = calcPropertiesByProcessorId(properties);
 
-        processorsById = getProcessorsById(propertiesByProcessor);
+        processorsById = calcProcessorsById(propertiesByProcessor);
 
-        propertiesByBufferByPriority = getPropertiesByBufferByPriority(properties);
+        propertiesByBufferByPriority = calcPropertiesByBufferByPriority(properties);
 
         Map<Integer, ArrayList<Integer>> prioritiesByBuffer =
-                getPrioritiesByBuffer(propertiesByBufferByPriority);
+                calcPrioritiesByBuffer(propertiesByBufferByPriority);
 
-        priorityPairsByBuffer = getPriorityPairsByBuffer(prioritiesByBuffer);
+        priorityPairsByBuffer = calcPriorityPairsByBuffer(prioritiesByBuffer);
 
         LOGGER.info("{} Processors configured", properties.size());
     }
 
-    private static Map<Integer, Processor> getProcessorsById(Map<Integer, List<ProcProperties>> propertiesByProcessor) {
+    private static Map<Integer, Processor> calcProcessorsById(Map<Integer, List<ProcProperties>> propertiesByProcessor) {
         Map<Integer, Processor> procs = new HashMap<>();
         propertiesByProcessor.forEach((procId, propPair) -> {
             Processor proc;
@@ -72,7 +72,7 @@ public final class ProcessorWorkflow {
         return procs;
     }
 
-    private static Map<Integer, Map<Integer, List<ProcProperties>>> getPropertiesByBufferByPriority(List<ProcProperties> properties) {
+    private static Map<Integer, Map<Integer, List<ProcProperties>>> calcPropertiesByBufferByPriority(List<ProcProperties> properties) {
         return properties
                 .stream()
                 .collect(
@@ -81,7 +81,7 @@ public final class ProcessorWorkflow {
                         ));
     }
 
-    private static Map<Integer, ArrayList<Integer>> getPrioritiesByBuffer(Map<Integer,
+    private static Map<Integer, ArrayList<Integer>> calcPrioritiesByBuffer(Map<Integer,
             Map<Integer, List<ProcProperties>>> props) {
 
         Map<Integer, ArrayList<Integer>> sortedPriorities = new HashMap<>();
@@ -94,13 +94,13 @@ public final class ProcessorWorkflow {
         return sortedPriorities;
     }
 
-    private static Map<Integer, Map<Integer, Integer>> getPriorityPairsByBuffer(Map<Integer, ArrayList<Integer>> prioritiesByBuffer) {
+    private static Map<Integer, Map<Integer, Integer>> calcPriorityPairsByBuffer(Map<Integer, ArrayList<Integer>> prioritiesByBuffer) {
         Map<Integer, Map<Integer, Integer>> pairs = new HashMap<>();
         prioritiesByBuffer.forEach((bufferId, priorities) -> {
             Map<Integer, Integer> priorityPairs = new HashMap<>();
             priorities.forEach((priority) -> {
-                int paired = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
-                priorityPairs.put(priority, paired);
+                int lead = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
+                priorityPairs.put(lead, priority);
             });
             pairs.put(bufferId, priorityPairs);
         });
@@ -108,7 +108,7 @@ public final class ProcessorWorkflow {
         return pairs;
     }
 
-    private static Map<Integer, List<ProcProperties>> getPropertiesByProcessorId(List<ProcProperties> properties) {
+    private static Map<Integer, List<ProcProperties>> calcPropertiesByProcessorId(List<ProcProperties> properties) {
         return properties
                 .stream()
                 .collect(Collectors.groupingBy(ProcProperties::getProcId));
@@ -144,6 +144,7 @@ public final class ProcessorWorkflow {
 
         Optional<Integer> leadProcPos = props
                 .stream()
+                .filter((prop) -> !prop.isExternal())
                 .map(ProcProperties::getPos)
                 .reduce(Integer::min);
 
