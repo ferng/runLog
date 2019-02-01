@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FileReader implements Reader<Message> {
+public class FileReader implements Reader {
     private static Logger LOGGER = LogManager.getLogger(FileReader.class);
 
     private BufferedReader reader;

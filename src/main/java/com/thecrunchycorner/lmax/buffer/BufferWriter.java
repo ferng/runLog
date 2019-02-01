@@ -7,8 +7,8 @@ import java.util.Objects;
  * Provides client classes with the means to write to a buffer.
  * Each writer is unique to the processor using it.
  */
-public class BufferWriter<E> implements Writer<E> {
-    private RingBuffer<E> buffer;
+public class BufferWriter implements Writer {
+    private RingBuffer buffer;
 
 
     /**
@@ -17,7 +17,7 @@ public class BufferWriter<E> implements Writer<E> {
      *
      * @param buffer is the RingBuffer we will be writing to
      */
-    public BufferWriter(RingBuffer<E> buffer) {
+    public BufferWriter(RingBuffer buffer) {
         Objects.requireNonNull(buffer, "Missing buffer");
         this.buffer = buffer;
     }
@@ -37,7 +37,7 @@ public class BufferWriter<E> implements Writer<E> {
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
     @Override
-    public void write(int pos, E msg) throws IllegalArgumentException {
+    public void write(int pos, Message msg) throws IllegalArgumentException {
         Objects.requireNonNull(msg, "Cannot write null to the buffer");
         buffer.set(pos, msg);
     }

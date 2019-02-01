@@ -1,7 +1,9 @@
 package com.thecrunchycorner.lmax.handlers;
 
-public interface Writer<E> {
+import com.thecrunchycorner.lmax.buffer.Message;
+
+public interface Writer {
     int getBufferId();
 
-    void write(int pos, E msg);
+    void write(int pos, Message msg);
 }

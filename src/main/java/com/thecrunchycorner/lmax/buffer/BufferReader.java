@@ -7,8 +7,8 @@ import java.util.Objects;
  * Provides client classes with the means to read from a buffer. Each reader is uniquely owned by
  * the processor using it.
  */
-public class BufferReader<E extends Message> implements Reader<Message> {
-    private RingBuffer<E> buffer;
+public class BufferReader implements Reader {
+    private RingBuffer buffer;
 
 
     /**
@@ -16,7 +16,7 @@ public class BufferReader<E extends Message> implements Reader<Message> {
      *
      * @param buffer the buffer we will be reading from
      */
-    public BufferReader(RingBuffer<E> buffer) {
+    public BufferReader(RingBuffer buffer) {
         Objects.requireNonNull(buffer, "Missing buffer");
         this.buffer = buffer;
     }
@@ -35,7 +35,7 @@ public class BufferReader<E extends Message> implements Reader<Message> {
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
     @Override
-    public E read(int pos) {
+    public Message read(int pos) {
         return buffer.get(pos);
     }
 }

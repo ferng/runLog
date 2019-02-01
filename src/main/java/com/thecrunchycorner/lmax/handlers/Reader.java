@@ -2,8 +2,8 @@ package com.thecrunchycorner.lmax.handlers;
 
 import com.thecrunchycorner.lmax.buffer.Message;
 
-public interface Reader<E extends Message> {
+public interface Reader {
     int getBufferId();
 
-    E read(int pos);
+    Message read(int pos);
 }

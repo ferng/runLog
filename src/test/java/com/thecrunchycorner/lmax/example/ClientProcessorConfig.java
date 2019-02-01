@@ -32,8 +32,8 @@ public class ClientProcessorConfig {
 
         int leftBufferId = 1;
         int rightBufferId = 2;
-        RingBuffer<Message> leftBuffer = new RingBuffer<>(leftBufferId, inputBufferSize);
-        RingBuffer<Message> rightBuffer = new RingBuffer<>(rightBufferId, inputBufferSize);
+        RingBuffer leftBuffer = new RingBuffer(leftBufferId, inputBufferSize);
+        RingBuffer rightBuffer = new RingBuffer(rightBufferId, inputBufferSize);
 
 
         //================================================
@@ -50,7 +50,7 @@ public class ClientProcessorConfig {
         props.add(receiverReader);
 
         //processor 0: writer to LEFT buffer
-        Writer<Message> receiverBuffWriter = new BufferWriter<>(leftBuffer);
+        Writer receiverBuffWriter = new BufferWriter(leftBuffer);
         ProcProperties receiverWriter =
                 builder.setId(1)
                         .setProcId(0)
@@ -63,7 +63,7 @@ public class ClientProcessorConfig {
 
         //================================================
         //processor 1: unMarshaller: reader from LEFT buffer
-        Reader<Message> unMarshallerBuffReader = new BufferReader<>(leftBuffer);
+        Reader unMarshallerBuffReader = new BufferReader(leftBuffer);
         ProcProperties unMarshallerReader =
                 builder.setId(2)
                         .setProcId(1)
@@ -75,7 +75,7 @@ public class ClientProcessorConfig {
         props.add(unMarshallerReader);
 
         //processor 1: writer to LEFT buffer
-        Writer<Message> unMarshallerBuffWriter = new BufferWriter<>(leftBuffer);
+        Writer unMarshallerBuffWriter = new BufferWriter(leftBuffer);
         ProcProperties unMarshallerWriter =
                 builder.setId(3)
                         .setProcId(1)
@@ -94,7 +94,7 @@ public class ClientProcessorConfig {
         // have the same priority so either can go first, normally you wouldn't do this you'd
         // probably do a logger and replicator for example as both read, but do not update the
         // data so it will always be consistent.
-        Reader<Message> loggerBuffReader = new BufferReader<>(leftBuffer);
+        Reader loggerBuffReader = new BufferReader(leftBuffer);
         ProcProperties loggerReader =
                 builder.setId(4)
                         .setProcId(2)
@@ -108,7 +108,7 @@ public class ClientProcessorConfig {
 
         //================================================
         //processor 3: processor: reader from LEFT buffer
-        Reader<Message> processorBuffReader = new BufferReader<>(leftBuffer);
+        Reader processorBuffReader = new BufferReader(leftBuffer);
         ProcProperties processorReader =
                 builder.setId(5)
                         .setProcId(3)
@@ -121,7 +121,7 @@ public class ClientProcessorConfig {
 
 
         //processor 3: writer to RIGHT buffer
-        Writer<Message> processorBuffWriter = new BufferWriter<>(rightBuffer);
+        Writer processorBuffWriter = new BufferWriter(rightBuffer);
         ProcProperties processorWriter =
                 builder.setId(6)
                         .setProcId(3)
@@ -134,7 +134,7 @@ public class ClientProcessorConfig {
 
         //================================================
         //processor 4: marshaller: reader from RIGHT buffer
-        Reader<Message> marshallerBuffReader = new BufferReader<>(rightBuffer);
+        Reader marshallerBuffReader = new BufferReader(rightBuffer);
         ProcProperties marshallerReader =
                 builder.setId(7)
                         .setProcId(4)
@@ -146,7 +146,7 @@ public class ClientProcessorConfig {
         props.add(marshallerReader);
 
         //processor 4: writer to the RIGHT buffer
-        Writer<Message> marshallerBuffWriter = new BufferWriter<>(rightBuffer);
+        Writer marshallerBuffWriter = new BufferWriter(rightBuffer);
         ProcProperties marshallerWriter =
                 builder.setId(8)
                         .setProcId(4)
@@ -159,7 +159,7 @@ public class ClientProcessorConfig {
 
         //================================================
         //processor 5: sender: reader from RIGHT buffer
-//        Reader<Message> senderBuffReader = new BufferReader<>(rightBuffer);
+//        Reader senderBuffReader = new BufferReader(rightBuffer);
 //        ProcProperties senderReader =
 //                builder.setId(9)
 //                        .setProcId(5)

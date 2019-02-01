@@ -16,8 +16,8 @@ public class ProcPropertiesBuilder {
     private int id = -1;
     private int procId = -1;
     private int priority = -1;
-    private Reader<Message> reader = null;
-    private Writer<Message> writer = null;
+    private Reader reader = null;
+    private Writer writer = null;
     private int initialHead = -1;
     private UnaryOperator<Message> process = null;
     private boolean external = false;
@@ -57,7 +57,7 @@ public class ProcPropertiesBuilder {
      * @param reader the reader
      * @return a builder to carry on building
      */
-    public final ProcPropertiesBuilder setReader(final Reader<Message> reader) {
+    public final ProcPropertiesBuilder setReader(final Reader reader) {
         Objects.requireNonNull(reader, "Buffer reader cannot be null. id: " + id);
         this.reader = reader;
         return this;
@@ -70,7 +70,7 @@ public class ProcPropertiesBuilder {
      * @param writer the writer
      * @return a builder to carry on building
      */
-    public final ProcPropertiesBuilder setWriter(final Writer<Message> writer) {
+    public final ProcPropertiesBuilder setWriter(final Writer writer) {
         Objects.requireNonNull(writer, "Buffer writer cannot be null. id: " + id);
         this.writer = writer;
         return this;
@@ -160,11 +160,11 @@ public class ProcPropertiesBuilder {
         return priority;
     }
 
-    public Reader<Message> getReader() {
+    public Reader getReader() {
         return reader;
     }
 
-    public Writer<Message> getWriter() {
+    public Writer getWriter() {
         return writer;
     }
 

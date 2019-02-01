@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FileWriter implements Writer<Message> {
+public class FileWriter implements Writer {
     private static Logger LOGGER = LogManager.getLogger(FileWriter.class);
 
     private BufferedWriter writer;

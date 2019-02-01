@@ -15,8 +15,8 @@ public class ProcProperties {
     private final int id;
     private final int procId;
     private final int priority;
-    private final Reader<Message> reader;
-    private final Writer<Message> writer;
+    private final Reader reader;
+    private final Writer writer;
     private int head;
     private int pos;
     private UnaryOperator<Message> process;
@@ -46,11 +46,11 @@ public class ProcProperties {
         return priority;
     }
 
-    public Reader<Message> getReader() {
+    public Reader getReader() {
         return reader;
     }
 
-    public Writer<Message> getWriter() {
+    public Writer getWriter() {
         return writer;
     }
 

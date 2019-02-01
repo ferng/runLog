@@ -1,6 +1,7 @@
 package com.thecrunchycorner.lmax.buffer;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
+import java.lang.reflect.Array;
 import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.OptionalInt;
@@ -12,15 +13,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * A circular buffer used to exchange data between a disruptor and a processor.
  *
- * @param <T> the type of the contents held by the buffer.
- * <p>
- * <p>The buffer carries out no checks on the data being inserted besides the type checks carried
- * out by the generics framework.</p>
  */
-public class RingBuffer<T> {
+public class RingBuffer {
     private static final Logger LOGGER = LogManager.getLogger(RingBuffer.class);
 
-    private final transient AtomicReferenceArray<T> buffer;
+    private final transient Message[] buffer;
     private final transient int bufferSize;
     private final transient int id;
 
@@ -43,7 +40,7 @@ public class RingBuffer<T> {
         } else {
             minSize = size;
         }
-        buffer = new AtomicReferenceArray<>(minSize);
+        buffer = new Message[minSize];
         this.bufferSize = minSize;
         this.id = id;
     }
@@ -60,7 +57,7 @@ public class RingBuffer<T> {
      * @return the value of the index-ed position prior to any update
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
-    final T set(final int pos, final T item) {
+    final void set(final int pos, final Message item) {
         if (pos < 0) {
             LOGGER.error("Position cannot be negative, message write failed");
             throw new IllegalArgumentException("Position cannot be negative");
@@ -68,9 +65,8 @@ public class RingBuffer<T> {
         Objects.requireNonNull(item, "Cannot write null to the buffer");
 
         final int realPos = getRealPos(pos);
-        final T prevVal = buffer.getAndSet(realPos, item);
+        buffer[realPos] = item;
         LOGGER.debug("value [{}] placed at index[{}] (real position [{}])", item, pos, realPos);
-        return prevVal;
     }
 
 
@@ -90,12 +86,12 @@ public class RingBuffer<T> {
      * @throws IllegalArgumentException if the position is negative
      *
      */
-    final T get(final int pos) {
+    final Message get(final int pos) {
         if (pos < 0) {
             LOGGER.error("Position cannot be negative, message read failed");
             throw new IllegalArgumentException("Position cannot be negative");
         }
-        return buffer.get(getRealPos(pos));
+        return buffer[getRealPos(pos)];
     }
 
     public final int getId() {
@@ -109,7 +105,7 @@ public class RingBuffer<T> {
      * @return the size of the buffer
      */
     public final int size() {
-        return buffer.length();
+        return bufferSize;
     }
 
 
