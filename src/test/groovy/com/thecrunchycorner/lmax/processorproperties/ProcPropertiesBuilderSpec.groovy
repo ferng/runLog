@@ -19,6 +19,7 @@ class ProcPropertiesBuilderSpec extends Specification {
                 .setId(id)
                 .setProcId(id)
                 .setPriority(1)
+                .setExternal(false)
                 .setWriter(writer)
                 .setInitialHead(12)
                 .setProcess(process)
@@ -27,6 +28,7 @@ class ProcPropertiesBuilderSpec extends Specification {
         then:
         props.getId() == id
         props.getPriority() == 1
+        !props.isExternal()
         props.getWriter() == writer
         props.getHead() == 12
         props.getProcess() == process

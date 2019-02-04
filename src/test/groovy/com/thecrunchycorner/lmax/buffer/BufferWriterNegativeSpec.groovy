@@ -10,7 +10,7 @@ class BufferWriterNegativeSpec extends Specification {
         def writer = new BufferWriter(buffer)
 
         when:
-        writer.write(-32, "data")
+        writer.write(-32, new Message("data"))
 
         then:
         IllegalArgumentException ex1 = thrown()

@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.services
 
 import spock.lang.Specification
 
-class SystemPropertiesRefreshWithNewFile  extends Specification {
+class SystemPropertiesRefreshWithNewFileSpec extends Specification {
 
     def 'setup'() {
         SystemProperties.refreshProperties()

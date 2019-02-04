@@ -12,7 +12,7 @@ class RingBufferIllegalPutSpec extends Specification {
 
 
         when:
-        buffer.set(-1, 1)
+        buffer.set(-1, new Message(1))
 
         then:
         IllegalArgumentException ex1 = thrown()

@@ -183,7 +183,6 @@ public class ClientProcessorConfig {
         props.add(senderWriter);
 
 
-
         ProcessorWorkflow.init(props);
     }
 

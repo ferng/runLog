@@ -19,6 +19,7 @@ class ProcPropertiesSetterSpec extends Specification {
                 .setId(id)
                 .setProcId(22)
                 .setPriority(1)
+                .setExternal(true)
                 .setWriter(writer)
                 .setInitialHead(12)
                 .setProcess(process)
@@ -32,6 +33,7 @@ class ProcPropertiesSetterSpec extends Specification {
         props.getId() == id
         props.getProcId() == 22
         props.getPriority() == 1
+        props.isExternal()
         props.getReader() == null
         props.getWriter() == writer
         props.getHead() == 15

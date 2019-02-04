@@ -2,7 +2,7 @@ package com.thecrunchycorner.lmax.buffer
 
 import spock.lang.Specification
 
-class OpStatusSpec  extends Specification{
+class OpStatusSpec extends Specification {
 
     def 'test'() {
         given:

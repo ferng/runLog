@@ -46,7 +46,7 @@ public class FileWriter implements Writer {
             String output = (String) msg.getPayload();
             writer.write(output);
             writer.flush();
-            LOGGER.debug("line written: {}", output );
+            LOGGER.debug("line written: {}", output);
         } catch (Throwable e) {
             LOGGER.error("error writing to file", e);
         }

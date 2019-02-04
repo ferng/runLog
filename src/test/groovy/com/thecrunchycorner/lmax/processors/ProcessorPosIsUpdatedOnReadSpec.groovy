@@ -5,13 +5,11 @@ import com.thecrunchycorner.lmax.buffer.Message
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties
 import spock.lang.Specification
 
-class ProcessorPosIsUpdatedOnRead extends Specification {
+class ProcessorPosIsUpdatedOnReadSpec extends Specification {
 
     def 'test'() {
         given:
-        def props = new ArrayList()
         def prop = Mock(ProcProperties.class)
-        props.add(prop)
         def reader = Mock(BufferReader.class)
         def proc = new Processor(prop)
         def msg = new Message(22)

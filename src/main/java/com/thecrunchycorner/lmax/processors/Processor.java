@@ -31,8 +31,6 @@ public class Processor {
                 if (headUpdated(primary)) {
                     LOGGER.debug("processing stuff by {}", primary.getProcId());
                     processPending();
-                } else {
-//                    LOGGER.debug("waiting for stuff");
                 }
             }
         }

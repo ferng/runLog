@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +46,8 @@ public final class ProcessorWorkflow {
             }
         });
 
-        Map<Integer, List<ProcProperties>> propertiesByProcessor = calcPropertiesByProcessorId(properties);
+        Map<Integer, List<ProcProperties>> propertiesByProcessor =
+                calcPropertiesByProcessorId(properties);
 
         processorsById = calcProcessorsById(propertiesByProcessor);
 

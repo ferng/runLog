@@ -13,7 +13,8 @@ public class LmaxClient {
         LOGGER.info("Start processing");
         ProcessorWorkflow.start();
         do {
-//            LOGGER.info(ProcessorWorkflow.getProcStatus().values());
+            // put something here to call ProcessorWorkflow.shutdown()
+            // to end the whole thing, maybe a rest service? up to you
         } while (true);
     }
 }

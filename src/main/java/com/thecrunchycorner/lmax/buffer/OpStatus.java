@@ -14,13 +14,11 @@ public enum OpStatus {
     HEADER_REACHED,
 
 
-
     NO_WRITE_OP,
     /**
      * Error accessing store This will be fatal.
      */
     ERROR
-
 
 
 }

@@ -1,18 +1,15 @@
 package com.thecrunchycorner.lmax.buffer;
 
 import com.thecrunchycorner.lmax.services.SystemProperties;
-import java.lang.reflect.Array;
 import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.OptionalInt;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 /**
  * A circular buffer used to exchange data between a disruptor and a processor.
- *
  */
 public class RingBuffer {
     private static final Logger LOGGER = LogManager.getLogger(RingBuffer.class);
@@ -48,7 +45,7 @@ public class RingBuffer {
 
     /**
      * Inserts the item into the given buffer position.
-     *
+     * <p>
      * You must check whether you can write to a given position with ... prior to writing to it,
      * this will happily overwrite data which hasn't been processed yet.
      *
@@ -76,7 +73,7 @@ public class RingBuffer {
      * for any other processor that may need it as long as the leading processor's head hasn't
      * overwritten it, this should not happen as the current processor's position will still keep
      * control of the data until it no longer needs it
-     *
+     * <p>
      * You must check whether you can read from a given position with ... prior to reading from
      * it, this will happily read data out of sequence which hasn't been processed by leading
      * processors yet.
@@ -84,7 +81,6 @@ public class RingBuffer {
      * @param pos the index to read from
      * @return the value of the index-ed position
      * @throws IllegalArgumentException if the position is negative
-     *
      */
     final Message get(final int pos) {
         if (pos < 0) {

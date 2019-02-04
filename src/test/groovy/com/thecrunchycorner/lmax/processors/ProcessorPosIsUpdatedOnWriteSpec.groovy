@@ -6,27 +6,26 @@ import com.thecrunchycorner.lmax.buffer.OpStatus
 import com.thecrunchycorner.lmax.processorproperties.ProcProperties
 import spock.lang.Specification
 
-class ProcessorPosIsUpdatedOnWrite extends Specification {
+class ProcessorPosIsUpdatedOnWriteSpec extends Specification {
 
     def 'test'() {
         given:
-        def props = new ArrayList()
-        def prop = Mock(ProcProperties.class)
-        props.add(prop)
+        def propPrimary = Mock(ProcProperties.class)
+        def propSecondary = Mock(ProcProperties.class)
         def writer = Mock(BufferWriter.class)
-        def proc = new Processor(prop)
+        def proc = new Processor(propPrimary, propSecondary)
         def msg = new Message(22)
 
         when:
-        prop.getId() >> 10
-        prop.getPriority() >> 0
-        prop.getPos() >> 0
+        propSecondary.getId() >> 10
+        propSecondary.getPriority() >> 0
+        propSecondary.getPos() >> 0
         writer.write(0, msg)
-        prop.getWriter() >> writer
+        propSecondary.getWriter() >> writer
         def outcome = proc.writeMessage(msg)
 
         then:
         OpStatus.WRITE_SUCCESS == outcome
-        1 * prop.movePos()
+        1 * propSecondary.movePos()
     }
 }

@@ -55,8 +55,8 @@ class ProcessorWorkflowGetLeadPosTwoBuffersSpec extends Specification {
         101 == ProcessorWorkflow.getLeadPos(1, 60)
         100 == ProcessorWorkflow.getLeadPos(1, 70)
 
-        351 == ProcessorWorkflow.getLeadPos(2, 80)
-        353 == ProcessorWorkflow.getLeadPos(2, 90)
-        350 == ProcessorWorkflow.getLeadPos(2, 100)
+        353 == ProcessorWorkflow.getLeadPos(2, 80)
+        350 == ProcessorWorkflow.getLeadPos(2, 90)
+        351 == ProcessorWorkflow.getLeadPos(2, 100)
     }
 }

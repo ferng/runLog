@@ -3,8 +3,6 @@ package com.thecrunchycorner.lmax.processorproperties;
 import com.thecrunchycorner.lmax.buffer.Message;
 import com.thecrunchycorner.lmax.handlers.Reader;
 import com.thecrunchycorner.lmax.handlers.Writer;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 

@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcessorProcessLoopInterruptedAfterProcessingMsg extends Specification {
+class ProcessorProcessLoopInterruptedAfterProcessingMsgSpec extends Specification {
 
     def 'test'() {
         given:
@@ -36,7 +36,7 @@ class ProcessorProcessLoopInterruptedAfterProcessingMsg extends Specification {
         prop0.getProcess() >> process
         prop1.getId() >> 11
         prop1.getPriority() >> 1
-        prop1.getPos() >> {101; proc.shutdown(); 101}
+        prop1.getPos() >> { 101; proc.shutdown(); 101 }
         prop1.getHead() >> 201
         ProcessorWorkflow.init(props)
         def processor = proc.processLoop

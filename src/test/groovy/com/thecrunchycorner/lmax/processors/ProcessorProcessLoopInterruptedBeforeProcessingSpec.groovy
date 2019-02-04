@@ -5,7 +5,7 @@ import com.thecrunchycorner.lmax.processorproperties.ProcProperties
 import com.thecrunchycorner.lmax.workflow.ProcessorWorkflow
 import spock.lang.Specification
 
-class ProcessorProcessLoopInterruptedBeforeProcessing extends Specification {
+class ProcessorProcessLoopInterruptedBeforeProcessingSpec extends Specification {
 
     def 'test'() {
         given:
@@ -23,7 +23,7 @@ class ProcessorProcessLoopInterruptedBeforeProcessing extends Specification {
         prop0.getHead() >> 100
         prop1.getId() >> 11
         prop1.getPriority() >> 1
-        prop1.getPos() >> {100; proc.shutdown(); 100}
+        prop1.getPos() >> { 100; proc.shutdown(); 100 }
         prop1.getHead() >> 201
         ProcessorWorkflow.init(props)
         def processor = proc.processLoop

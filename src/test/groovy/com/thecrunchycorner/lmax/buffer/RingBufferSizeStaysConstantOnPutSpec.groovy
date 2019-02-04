@@ -13,9 +13,9 @@ class RingBufferSizeStaysConstantOnPutSpec extends Specification {
 
         when:
         for (int i = 0; i < thresholdSize; i++) {
-            buffer.set(i, i)
+            buffer.set(i, new Message(i))
         }
-        buffer.set(thresholdSize +1 , 1)
+        buffer.set(thresholdSize + 1, new Message(1))
 
 
         then:

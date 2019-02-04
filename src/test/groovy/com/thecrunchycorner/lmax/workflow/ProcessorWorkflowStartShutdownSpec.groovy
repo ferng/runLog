@@ -48,7 +48,7 @@ class ProcessorWorkflowStartShutdownSpec extends Specification {
 
         then:
         def statuses = ProcessorWorkflow.getProcStatus()
-        statuses.each{k, v -> ProcessorStatus.SHUTDOWN == v}
+        statuses.each { k, v -> ProcessorStatus.SHUTDOWN == v }
         statuses.size() == props.size()
     }
 }

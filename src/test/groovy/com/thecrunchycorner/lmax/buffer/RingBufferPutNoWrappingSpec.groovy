@@ -3,7 +3,7 @@ package com.thecrunchycorner.lmax.buffer
 import com.thecrunchycorner.lmax.services.SystemProperties
 import spock.lang.Specification
 
-class RingBufferPutNoWrappingSpec extends Specification{
+class RingBufferPutNoWrappingSpec extends Specification {
 
     def 'test'() {
         given:
@@ -13,11 +13,11 @@ class RingBufferPutNoWrappingSpec extends Specification{
 
 
         when:
-        buffer.set(0, testInt1)
+        buffer.set(0, new Message(testInt1))
 
 
         then:
-        buffer.get(0) == testInt1
+        buffer.get(0).getPayload() == testInt1
     }
 
 }

@@ -44,10 +44,10 @@ class ProcessorWorkflowGetLeadPosSpec extends Specification {
         ProcessorWorkflow.init(props)
 
         then:
-        101 == ProcessorWorkflow.getLeadPos(1, 0)
-        102 == ProcessorWorkflow.getLeadPos(1, 1)
-        103 == ProcessorWorkflow.getLeadPos(1, 2)
-        104 == ProcessorWorkflow.getLeadPos(1, 3)
-        100 == ProcessorWorkflow.getLeadPos(1, 4)
+        104 == ProcessorWorkflow.getLeadPos(1, 0)
+        100 == ProcessorWorkflow.getLeadPos(1, 1)
+        101 == ProcessorWorkflow.getLeadPos(1, 2)
+        102 == ProcessorWorkflow.getLeadPos(1, 3)
+        103 == ProcessorWorkflow.getLeadPos(1, 4)
     }
 }

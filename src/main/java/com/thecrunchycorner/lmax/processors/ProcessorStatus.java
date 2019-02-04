@@ -11,26 +11,8 @@ public enum ProcessorStatus {
     /**
      * Processor has started and is ready to start work.
      */
-    STARTED,
-    /**
-     * Processor is busy processing data.
-     */
-    BUSY,
-    /**
-     * Processor is waiting for some more work to do.
-     */
-    WAITING,
-    /**
-     * Processor has completed it's work, cleaned up and has shutdown.
-     */
     SHUTDOWN,
     /**
      * Processor crashed for some reason.
      */
-    ERROR,
-    /**
-     * Processor did not shutdown in a timely manner so was forced.
-     */
-    FORCED,
-
 }

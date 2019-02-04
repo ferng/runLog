@@ -14,14 +14,14 @@ class RingBufferPutWrappingSpec extends Specification {
 
         when:
         for (int i = 0; i < thresholdSize; i++) {
-            buffer.set(i, i)
+            buffer.set(i, new Message(i))
         }
-        buffer.set(thresholdSize, testInt1)
+        buffer.set(thresholdSize, new Message(testInt1))
 
 
         then:
-        buffer.get(thresholdSize) == testInt1
-        buffer.get(0) == testInt1
+        buffer.get(thresholdSize).getPayload() == testInt1
+        buffer.get(0).getPayload() == testInt1
     }
 
 }
