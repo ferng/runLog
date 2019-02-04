@@ -159,28 +159,28 @@ public class ClientProcessorConfig {
 
         //================================================
         //processor 5: sender: reader from RIGHT buffer
-//        Reader senderBuffReader = new BufferReader(rightBuffer);
-//        ProcProperties senderReader =
-//                builder.setId(9)
-//                        .setProcId(5)
-//                        .setPriority(4)
-//                        .setInitialHead(0)
-//                        .setReader(senderBuffReader)
-//                        .setProcess(getSimpleprocessorSender())
-//                        .build();
-//        props.add(senderReader);
-//
-//        //processor 5: writer to the RIGHT buffer
-//        FileWriter senderFileWriter = new FileWriter(rightBufferId);
-//        ProcProperties senderWriter =
-//                builder.setId(10)
-//                        .setProcId(5)
-//                        .setPriority(4)
-//                        .setInitialHead(0)
-//                        .setWriter(senderFileWriter)
-//                        .setExternal(true)
-//                        .build();
-//        props.add(senderWriter);
+        Reader senderBuffReader = new BufferReader(rightBuffer);
+        ProcProperties senderReader =
+                builder.setId(9)
+                        .setProcId(5)
+                        .setPriority(4)
+                        .setInitialHead(0)
+                        .setReader(senderBuffReader)
+                        .setProcess(getSimpleprocessorSender())
+                        .build();
+        props.add(senderReader);
+
+        //processor 5: writer to the RIGHT buffer
+        FileWriter senderFileWriter = new FileWriter(rightBufferId);
+        ProcProperties senderWriter =
+                builder.setId(10)
+                        .setProcId(5)
+                        .setPriority(4)
+                        .setInitialHead(0)
+                        .setWriter(senderFileWriter)
+                        .setExternal(true)
+                        .build();
+        props.add(senderWriter);
 
 
 

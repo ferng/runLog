@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +31,7 @@ public final class ProcessorWorkflow {
     private static Map<Integer, Processor> processorsById;
     private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByPriority;
     private static Map<Integer, Map<Integer, Integer>> priorityPairsByBuffer = new HashMap<>();
+    private static Map<Integer, Map<Integer, Integer>> priorityHeadsByBuffer = new HashMap<>();
     private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById =
             new HashMap<>();
 
@@ -53,7 +56,7 @@ public final class ProcessorWorkflow {
         Map<Integer, ArrayList<Integer>> prioritiesByBuffer =
                 calcPrioritiesByBuffer(propertiesByBufferByPriority);
 
-        priorityPairsByBuffer = calcPriorityPairsByBuffer(prioritiesByBuffer);
+        calcPriorityDataByBuffer(prioritiesByBuffer);
 
         LOGGER.info("{} Processors configured", properties.size());
     }
@@ -94,18 +97,18 @@ public final class ProcessorWorkflow {
         return sortedPriorities;
     }
 
-    private static Map<Integer, Map<Integer, Integer>> calcPriorityPairsByBuffer(Map<Integer, ArrayList<Integer>> prioritiesByBuffer) {
-        Map<Integer, Map<Integer, Integer>> pairs = new HashMap<>();
+    private static void calcPriorityDataByBuffer(Map<Integer, ArrayList<Integer>> prioritiesByBuffer) {
         prioritiesByBuffer.forEach((bufferId, priorities) -> {
+            Map<Integer, Integer> priorityHeads = new HashMap<>();
             Map<Integer, Integer> priorityPairs = new HashMap<>();
             priorities.forEach((priority) -> {
                 int lead = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
                 priorityPairs.put(lead, priority);
+                priorityHeads.put(lead, 0);
             });
-            pairs.put(bufferId, priorityPairs);
+            priorityPairsByBuffer.put(bufferId, priorityPairs);
+            priorityHeadsByBuffer.put(bufferId, priorityHeads);
         });
-
-        return pairs;
     }
 
     private static Map<Integer, List<ProcProperties>> calcPropertiesByProcessorId(List<ProcProperties> properties) {
@@ -118,7 +121,8 @@ public final class ProcessorWorkflow {
     public static void start() {
         LOGGER.info("Spin up all processors");
         processorsById.forEach((id, proc) ->
-                procFutureById.put(id, CompletableFuture.supplyAsync(proc.processLoop))
+                procFutureById.put(id, CompletableFuture.supplyAsync(proc.processLoop,
+                        Executors.newFixedThreadPool(processorsById.size())))
         );
     }
 

@@ -43,6 +43,11 @@ public class FileReader implements Reader {
     private Message read() {
         Message line = null;
         try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            LOGGER.info("Thread terminated {}", e);
+        }
+        try {
             line = new Message(reader.readLine());
             LOGGER.debug("line read: {}", line.getPayload());
         } catch (IOException e) {
