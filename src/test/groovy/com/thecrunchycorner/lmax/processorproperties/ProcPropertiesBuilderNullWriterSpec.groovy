@@ -13,7 +13,7 @@ class ProcPropertiesBuilderNullWriterSpec extends Specification {
         when:
         def props = new ProcPropertiesBuilder()
                 .setId(id)
-                .setPriority(1)
+                .setStage(1)
                 .setWriter(null)
                 .setInitialHead(12)
                 .setProcess(process)

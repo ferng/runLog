@@ -18,7 +18,7 @@ class SystemPropertiesGetSpec extends Specification {
         where:
         key                              | expectedValue
         "threshold.buffer.minimum.size"  | Optional.of("16")
-        "unit.test.value.system.default" | Optional.of("Pre-loaded test data")
+        "system.name" | Optional.of("fern's lmax")
         "unit.test.value.undefined"      | Optional.empty()
     }
 

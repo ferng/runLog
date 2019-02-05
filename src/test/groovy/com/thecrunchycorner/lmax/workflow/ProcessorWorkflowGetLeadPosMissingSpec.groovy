@@ -22,23 +22,23 @@ class ProcessorWorkflowGetLeadPosMissingSpec extends Specification {
 
         when:
         prop0.getId() >> 10
-        prop0.getPriority() >> 0
+        prop0.getStage() >> 0
         prop0.getPos() >> 100
         prop0.getBufferId() >> 1
         prop1.getId() >> 11
-        prop1.getPriority() >> 1
+        prop1.getStage() >> 1
         prop1.getPos() >> 101
         prop1.getBufferId() >> 1
         prop2.getId() >> 12
-        prop2.getPriority() >> 2
+        prop2.getStage() >> 2
         prop2.getPos() >> 102
         prop2.getBufferId() >> 1
         prop3.getId() >> 13
-        prop3.getPriority() >> 3
+        prop3.getStage() >> 3
         prop3.getPos() >> 103
         prop3.getBufferId() >> 1
         prop4.getId() >> 14
-        prop4.getPriority() >> 4
+        prop4.getStage() >> 4
         prop4.getPos() >> null
         prop4.getBufferId() >> 1
         ProcessorWorkflow.init(props)

@@ -24,7 +24,7 @@ class ProcessorProcessPendingMessageWithWriteSpec extends Specification {
 
         when:
         propPrimary.getId() >> 10
-        propPrimary.getPriority() >> 0
+        propPrimary.getStage() >> 0
         propPrimary.getPos() >> 0
         reader.read(0) >> msg1
         propPrimary.getReader() >> reader

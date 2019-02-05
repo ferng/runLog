@@ -10,7 +10,7 @@ class SystemPropertiesGetIntSpec extends Specification {
 
     def 'test'() {
         when:
-        def loadedValue = SystemProperties.getAsInt(key)
+        def loadedValue = SystemProperties.getAsOptInt(key)
 
         then:
         loadedValue == expectedValue
@@ -18,8 +18,6 @@ class SystemPropertiesGetIntSpec extends Specification {
         where:
         key                              | expectedValue
         "threshold.buffer.minimum.size"  | OptionalInt.of(16)
-        "unit.test.value.system.default" | OptionalInt.empty()
-        "unit.test.value.undefined"      | OptionalInt.empty()
     }
 
 }

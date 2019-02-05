@@ -23,7 +23,7 @@ class ProcPropertiesBuilderMissingPrioritySpec extends Specification {
 
         then:
         IllegalStateException ex1 = thrown()
-        ex1.message == "Missing property: priority. id: " + id
+        ex1.message == "Missing property: stage. id: " + id
     }
 
 }

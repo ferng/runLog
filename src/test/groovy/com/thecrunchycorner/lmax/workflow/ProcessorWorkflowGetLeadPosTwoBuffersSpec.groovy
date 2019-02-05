@@ -24,28 +24,28 @@ class ProcessorWorkflowGetLeadPosTwoBuffersSpec extends Specification {
 
         when:
         prop0.getId() >> 52
-        prop0.getPriority() >> 60
+        prop0.getStage() >> 60
         prop0.getPos() >> 100
         prop0.getBufferId() >> 1
         prop1.getId() >> 53
-        prop1.getPriority() >> 70
+        prop1.getStage() >> 70
         prop1.getPos() >> 101
         prop1.getBufferId() >> 1
 
         prop2.getId() >> 201
-        prop2.getPriority() >> 80
+        prop2.getStage() >> 80
         prop2.getPos() >> 350
         prop2.getBufferId() >> 2
         prop3.getId() >> 202
-        prop3.getPriority() >> 90
+        prop3.getStage() >> 90
         prop3.getPos() >> 351
         prop3.getBufferId() >> 2
         prop4.getId() >> 203
-        prop4.getPriority() >> 90
+        prop4.getStage() >> 90
         prop4.getPos() >> 352
         prop4.getBufferId() >> 2
         prop5.getId() >> 204
-        prop5.getPriority() >> 100
+        prop5.getStage() >> 100
         prop5.getPos() >> 353
         prop5.getBufferId() >> 2
 

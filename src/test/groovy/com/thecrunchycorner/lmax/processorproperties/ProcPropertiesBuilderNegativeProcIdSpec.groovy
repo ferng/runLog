@@ -16,7 +16,7 @@ class ProcPropertiesBuilderNegativeProcIdSpec extends Specification {
         def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(-1)
-                .setPriority(1)
+                .setStage(1)
                 .setReader(reader)
                 .setInitialHead(12)
                 .setProcess(process)

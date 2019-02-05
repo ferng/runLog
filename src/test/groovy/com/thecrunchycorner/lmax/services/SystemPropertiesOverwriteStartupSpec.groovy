@@ -11,7 +11,7 @@ class SystemPropertiesOverwriteStartupSpec extends Specification {
     def 'test'() {
         given:
         SystemProperties.set("threshold.buffer.minimum.size", "27")
-        SystemProperties.set("unit.test.value.system.default", "57")
+        SystemProperties.set("system.name", "57")
 
         when:
         def loadedValue = SystemProperties.get(key)
@@ -22,7 +22,7 @@ class SystemPropertiesOverwriteStartupSpec extends Specification {
         where:
         key                              | expectedValue
         "threshold.buffer.minimum.size"  | Optional.of("27")
-        "unit.test.value.system.default" | Optional.of("57")
+        "system.name" | Optional.of("57")
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 /**
  * Lmax communication is based on messages, although the stores are unconcerned about the type of
- * data being inserted the rest of the application does care.
+ * data being inserted the rest of the processors supplied by the user will care.
  */
 public class Message {
     private final UUID id = UUID.randomUUID();

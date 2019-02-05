@@ -19,7 +19,7 @@ class ProcPropertiesGetIdFromWriterSpec extends Specification {
         def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
-                .setPriority(1)
+                .setStage(1)
                 .setWriter(writer)
                 .setInitialHead(12)
                 .setProcess(process)

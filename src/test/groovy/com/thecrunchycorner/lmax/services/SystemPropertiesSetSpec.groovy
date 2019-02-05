@@ -22,7 +22,7 @@ class SystemPropertiesSetSpec extends Specification {
         key                              | expectedValue
         "finger.size"                    | Optional.of("38")
         "threshold.buffer.minimum.size"  | Optional.of("16")
-        "unit.test.value.system.default" | Optional.of("Pre-loaded test data")
+        "system.name" | Optional.of("fern's lmax")
         "unit.test.value.undefined"      | Optional.empty()
     }
 

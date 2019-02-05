@@ -4,8 +4,7 @@ import com.thecrunchycorner.lmax.handlers.Reader;
 import java.util.Objects;
 
 /**
- * Provides client classes with the means to read from a buffer. Each reader is uniquely owned by
- * the processor using it.
+ * Provides clients with the means to read from a buffer. Each reader is unique to a processor.
  */
 public class BufferReader implements Reader {
     private RingBuffer buffer;
@@ -21,10 +20,17 @@ public class BufferReader implements Reader {
         this.buffer = buffer;
     }
 
+
+    /**
+     * What's the ID of the buffer we are accessing.
+     *
+     * @return buffer the buffer we work on
+     */
     @Override
     public int getBufferId() {
         return buffer.getId();
     }
+
 
     /**
      * Retrieves an object from its buffer.

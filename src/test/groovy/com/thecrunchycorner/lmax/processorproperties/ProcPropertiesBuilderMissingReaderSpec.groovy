@@ -16,7 +16,7 @@ class ProcPropertiesBuilderMissingReaderSpec extends Specification {
         def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
-                .setPriority(1)
+                .setStage(1)
                 .setWriter(writer)
                 .setInitialHead(12)
                 .setProcess(process)
@@ -24,7 +24,7 @@ class ProcPropertiesBuilderMissingReaderSpec extends Specification {
 
         then:
         props.getId() == id
-        props.getPriority() == 1
+        props.getStage() == 1
         props.getReader() == null
         props.getWriter() == writer
         props.getHead() == 12

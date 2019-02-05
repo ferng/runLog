@@ -16,7 +16,7 @@ class ProcPropertiesBuilderMissingProcessOnReaderSpec extends Specification {
         def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(IdGenerator.id)
-                .setPriority(1)
+                .setStage(1)
                 .setReader(reader)
                 .setInitialHead(32)
                 .build()

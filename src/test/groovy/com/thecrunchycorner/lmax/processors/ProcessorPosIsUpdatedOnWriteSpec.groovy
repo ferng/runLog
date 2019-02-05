@@ -18,7 +18,7 @@ class ProcessorPosIsUpdatedOnWriteSpec extends Specification {
 
         when:
         propSecondary.getId() >> 10
-        propSecondary.getPriority() >> 0
+        propSecondary.getStage() >> 0
         propSecondary.getPos() >> 0
         writer.write(0, msg)
         propSecondary.getWriter() >> writer

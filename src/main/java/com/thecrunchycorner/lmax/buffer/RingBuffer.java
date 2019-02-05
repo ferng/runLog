@@ -3,7 +3,6 @@ package com.thecrunchycorner.lmax.buffer;
 import com.thecrunchycorner.lmax.services.SystemProperties;
 import java.util.MissingResourceException;
 import java.util.Objects;
-import java.util.OptionalInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,8 +28,7 @@ public class RingBuffer {
      */
     public RingBuffer(final int id, final int size)
             throws MissingResourceException, IllegalStateException {
-        OptionalInt opt = SystemProperties.getAsInt("threshold.buffer.minimum.size");
-        int minSize = opt.getAsInt();
+        int minSize = SystemProperties.getThresholdBufferSize();
         if (size < minSize) {
             LOGGER.warn("Suggested buffer size {} is too small, defaulting to minimum {}.",
                     size, minSize);
@@ -46,12 +44,14 @@ public class RingBuffer {
     /**
      * Inserts the item into the given buffer position.
      * <p>
-     * You must check whether you can write to a given position with ... prior to writing to it,
-     * this will happily overwrite data which hasn't been processed yet.
+     * <p>
+     * You must check whether you can write to a given position with:
+     * {@link com.thecrunchycorner.lmax.workflow.ProcessorWorkflow#getLeadPos(int, int)}
+     * prior to writing to it as this will happily overwrite data which hasn't been processed yet.
+     * </p>
      *
      * @param pos the index-ed buffer position to write to
      * @param item the new value
-     * @return the value of the index-ed position prior to any update
      * @throws IllegalArgumentException if the position is negative or the message is null
      */
     final void set(final int pos, final Message item) {
@@ -68,15 +68,21 @@ public class RingBuffer {
 
 
     /**
-     * Gets the item from the given position. This operation does not remove any data being held
+     * Gets the item from the given position.
+     * <p>
+     * <p>
+     * This operation does not remove any data being held
      * by the buffer, nor does it affect the buffer in any way. This means the data is available
      * for any other processor that may need it as long as the leading processor's head hasn't
      * overwritten it, this should not happen as the current processor's position will still keep
      * control of the data until it no longer needs it
+     * </p>
      * <p>
-     * You must check whether you can read from a given position with ... prior to reading from
-     * it, this will happily read data out of sequence which hasn't been processed by leading
-     * processors yet.
+     * You must check whether you can read from a given position with:
+     * {@link com.thecrunchycorner.lmax.workflow.ProcessorWorkflow#getLeadPos(int, int)}
+     * prior to reading from it, as this will happily read data out of sequence which hasn't been
+     * processed by leading processors yet.
+     * </p>
      *
      * @param pos the index to read from
      * @return the value of the index-ed position
@@ -90,9 +96,15 @@ public class RingBuffer {
         return buffer[getRealPos(pos)];
     }
 
+
+    /**
+     * What's this buffer's ID?
+     * @return the ID for this buffer
+     */
     public final int getId() {
         return id;
     }
+
 
     /**
      * Gets the size of the buffer which will either the default or the value passed to then

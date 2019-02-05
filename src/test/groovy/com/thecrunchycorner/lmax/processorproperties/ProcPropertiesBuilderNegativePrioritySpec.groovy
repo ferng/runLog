@@ -15,7 +15,7 @@ class ProcPropertiesBuilderNegativePrioritySpec extends Specification {
         when:
         def props = new ProcPropertiesBuilder()
                 .setId(id)
-                .setPriority(-1)
+                .setStage(-1)
                 .setReader(reader)
                 .setInitialHead(12)
                 .setProcess(process)
@@ -23,6 +23,6 @@ class ProcPropertiesBuilderNegativePrioritySpec extends Specification {
 
         then:
         IllegalArgumentException ex1 = thrown()
-        ex1.message == "Priority cannot be negative. id: " + id
+        ex1.message == "Stage cannot be negative. id: " + id
     }
 }

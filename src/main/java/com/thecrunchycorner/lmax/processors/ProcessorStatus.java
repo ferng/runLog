@@ -11,8 +11,5 @@ public enum ProcessorStatus {
     /**
      * Processor has started and is ready to start work.
      */
-    SHUTDOWN,
-    /**
-     * Processor crashed for some reason.
-     */
+    SHUTDOWN
 }

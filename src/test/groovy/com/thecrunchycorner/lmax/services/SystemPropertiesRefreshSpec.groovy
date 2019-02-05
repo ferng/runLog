@@ -11,7 +11,7 @@ class SystemPropertiesRefreshSpec extends Specification {
     def 'test'() {
         given:
         SystemProperties.set("threshold.buffer.minimum.size", "hello there")
-        SystemProperties.set("unit.test.value.system.default", "78")
+        SystemProperties.set("system.name", "78")
         SystemProperties.refreshProperties()
 
         when:
@@ -23,7 +23,7 @@ class SystemPropertiesRefreshSpec extends Specification {
         where:
         key                              | expectedValue
         "threshold.buffer.minimum.size"  | Optional.of("16")
-        "unit.test.value.system.default" | Optional.of("Pre-loaded test data")
+        "system.name" | Optional.of("fern's lmax")
         "unit.test.value.undefined"      | Optional.empty()
     }
 

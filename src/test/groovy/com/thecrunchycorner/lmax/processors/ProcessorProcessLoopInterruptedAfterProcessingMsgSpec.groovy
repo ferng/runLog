@@ -26,7 +26,7 @@ class ProcessorProcessLoopInterruptedAfterProcessingMsgSpec extends Specificatio
 
         when:
         prop0.getId() >> 10
-        prop0.getPriority() >> 0
+        prop0.getStage() >> 0
         prop0.getPos() >> 100
         prop0.getHead() >> 100
         reader.read(100) >> readerMsg
@@ -35,7 +35,7 @@ class ProcessorProcessLoopInterruptedAfterProcessingMsgSpec extends Specificatio
         process.apply(readerMsg) >> writerMsg
         prop0.getProcess() >> process
         prop1.getId() >> 11
-        prop1.getPriority() >> 1
+        prop1.getStage() >> 1
         prop1.getPos() >> { 101; proc.shutdown(); 101 }
         prop1.getHead() >> 201
         ProcessorWorkflow.init(props)
@@ -45,7 +45,7 @@ class ProcessorProcessLoopInterruptedAfterProcessingMsgSpec extends Specificatio
 
         then:
         ProcessorStatus.SHUTDOWN == outcome
-        1 * prop0.getPriority()
+        1 * prop0.getStage()
         1 * prop0.getHead()
         1 * prop0.setHead(101)
         1 * prop0.getPos()

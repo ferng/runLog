@@ -24,7 +24,7 @@ public class ClientProcessorConfig {
     private static List<ProcProperties> props = new ArrayList<>();
 
     public static void init() {
-        OptionalInt inputSizeOpt = SystemProperties.getAsInt("input.buffer.size");
+        OptionalInt inputSizeOpt = SystemProperties.getAsOptInt("input.buffer.size");
         int thresholdBufferSize = SystemProperties.getThresholdBufferSize();
         int inputBufferSize = inputSizeOpt.orElse(thresholdBufferSize);
         ProcPropertiesBuilder builder = new ProcPropertiesBuilder();
@@ -42,7 +42,7 @@ public class ClientProcessorConfig {
         ProcProperties receiverReader =
                 builder.setId(0)
                         .setProcId(0)
-                        .setPriority(0)
+                        .setStage(0)
                         .setReader(receiverFileReader)
                         .setProcess(getSimpleprocessorReceiver())
                         .setExternal(true)
@@ -54,7 +54,7 @@ public class ClientProcessorConfig {
         ProcProperties receiverWriter =
                 builder.setId(1)
                         .setProcId(0)
-                        .setPriority(0)
+                        .setStage(0)
                         .setInitialHead(0)
                         .setWriter(receiverBuffWriter)
                         .build();
@@ -67,7 +67,7 @@ public class ClientProcessorConfig {
         ProcProperties unMarshallerReader =
                 builder.setId(2)
                         .setProcId(1)
-                        .setPriority(1)
+                        .setStage(1)
                         .setInitialHead(0)
                         .setReader(unMarshallerBuffReader)
                         .setProcess(unMarshallInboundMessage())
@@ -79,7 +79,7 @@ public class ClientProcessorConfig {
         ProcProperties unMarshallerWriter =
                 builder.setId(3)
                         .setProcId(1)
-                        .setPriority(1)
+                        .setStage(1)
                         .setInitialHead(0)
                         .setWriter(unMarshallerBuffWriter)
                         .build();
@@ -98,7 +98,7 @@ public class ClientProcessorConfig {
         ProcProperties loggerReader =
                 builder.setId(4)
                         .setProcId(2)
-                        .setPriority(1)
+                        .setStage(1)
                         .setInitialHead(0)
                         .setReader(loggerBuffReader)
                         .setProcess(logMessage())
@@ -112,7 +112,7 @@ public class ClientProcessorConfig {
         ProcProperties processorReader =
                 builder.setId(5)
                         .setProcId(3)
-                        .setPriority(2)
+                        .setStage(2)
                         .setInitialHead(0)
                         .setReader(processorBuffReader)
                         .setProcess(process())
@@ -125,7 +125,7 @@ public class ClientProcessorConfig {
         ProcProperties processorWriter =
                 builder.setId(6)
                         .setProcId(3)
-                        .setPriority(2)
+                        .setStage(2)
                         .setInitialHead(0)
                         .setWriter(processorBuffWriter)
                         .build();
@@ -138,7 +138,7 @@ public class ClientProcessorConfig {
         ProcProperties marshallerReader =
                 builder.setId(7)
                         .setProcId(4)
-                        .setPriority(3)
+                        .setStage(3)
                         .setInitialHead(0)
                         .setReader(marshallerBuffReader)
                         .setProcess(marshallOutboundMessage())
@@ -150,7 +150,7 @@ public class ClientProcessorConfig {
         ProcProperties marshallerWriter =
                 builder.setId(8)
                         .setProcId(4)
-                        .setPriority(3)
+                        .setStage(3)
                         .setInitialHead(0)
                         .setWriter(marshallerBuffWriter)
                         .build();
@@ -163,7 +163,7 @@ public class ClientProcessorConfig {
         ProcProperties senderReader =
                 builder.setId(9)
                         .setProcId(5)
-                        .setPriority(4)
+                        .setStage(4)
                         .setInitialHead(0)
                         .setReader(senderBuffReader)
                         .setProcess(getSimpleprocessorSender())
@@ -175,7 +175,7 @@ public class ClientProcessorConfig {
         ProcProperties senderWriter =
                 builder.setId(10)
                         .setProcId(5)
-                        .setPriority(4)
+                        .setStage(4)
                         .setInitialHead(0)
                         .setWriter(senderFileWriter)
                         .setExternal(true)

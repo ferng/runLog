@@ -19,7 +19,7 @@ class ProcPropertiesGetIdFromReaderSpec extends Specification {
         def props = new ProcPropertiesBuilder()
                 .setId(id)
                 .setProcId(id)
-                .setPriority(1)
+                .setStage(1)
                 .setReader(reader)
                 .setInitialHead(12)
                 .setProcess(process)

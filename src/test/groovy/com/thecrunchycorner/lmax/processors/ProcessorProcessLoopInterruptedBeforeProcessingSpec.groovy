@@ -18,11 +18,11 @@ class ProcessorProcessLoopInterruptedBeforeProcessingSpec extends Specification 
 
         when:
         prop0.getId() >> 10
-        prop0.getPriority() >> 0
+        prop0.getStage() >> 0
         prop0.getPos() >> 100
         prop0.getHead() >> 100
         prop1.getId() >> 11
-        prop1.getPriority() >> 1
+        prop1.getStage() >> 1
         prop1.getPos() >> { 100; proc.shutdown(); 100 }
         prop1.getHead() >> 201
         ProcessorWorkflow.init(props)

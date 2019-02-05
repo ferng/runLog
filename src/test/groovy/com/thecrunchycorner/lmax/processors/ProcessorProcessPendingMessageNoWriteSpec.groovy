@@ -23,7 +23,7 @@ class ProcessorProcessPendingMessageNoWriteSpec extends Specification {
 
         when:
         prop.getId() >> 10
-        prop.getPriority() >> 0
+        prop.getStage() >> 0
         prop.getPos() >> 0
         reader.read(0) >> msg1
         prop.getReader() >> reader

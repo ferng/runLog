@@ -28,9 +28,8 @@ public final class ProcessorWorkflow {
     private static Logger LOGGER = LogManager.getLogger(ProcessorWorkflow.class);
 
     private static Map<Integer, Processor> processorsById;
-    private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByPriority;
+    private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByStage;
     private static Map<Integer, Map<Integer, Integer>> priorityPairsByBuffer = new HashMap<>();
-    private static Map<Integer, Map<Integer, Integer>> priorityHeadsByBuffer = new HashMap<>();
     private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById =
             new HashMap<>();
 
@@ -38,6 +37,12 @@ public final class ProcessorWorkflow {
     private ProcessorWorkflow() {
     }
 
+
+    /**
+     * Preps up all the processors, their data and head position calculations.
+     *
+     * @param properties the processor properties which will define this LMAX inmplementation
+     */
     public static void init(List<ProcProperties> properties) {
         Objects.requireNonNull(properties, "Processor properties cannot be null");
         properties.forEach((p) -> {
@@ -51,15 +56,16 @@ public final class ProcessorWorkflow {
 
         processorsById = calcProcessorsById(propertiesByProcessor);
 
-        propertiesByBufferByPriority = calcPropertiesByBufferByPriority(properties);
+        propertiesByBufferByStage = calcPropertiesByBufferByStage(properties);
 
         Map<Integer, ArrayList<Integer>> prioritiesByBuffer =
-                calcPrioritiesByBuffer(propertiesByBufferByPriority);
+                calcStagesByBuffer(propertiesByBufferByStage);
 
-        calcPriorityDataByBuffer(prioritiesByBuffer);
+        priorityPairsByBuffer = calcPriorityDataByBuffer(prioritiesByBuffer);
 
         LOGGER.info("{} Processors configured", properties.size());
     }
+
 
     private static Map<Integer, Processor> calcProcessorsById(Map<Integer, List<ProcProperties>> propertiesByProcessor) {
         Map<Integer, Processor> procs = new HashMap<>();
@@ -75,16 +81,18 @@ public final class ProcessorWorkflow {
         return procs;
     }
 
-    private static Map<Integer, Map<Integer, List<ProcProperties>>> calcPropertiesByBufferByPriority(List<ProcProperties> properties) {
+
+    private static Map<Integer, Map<Integer, List<ProcProperties>>> calcPropertiesByBufferByStage(List<ProcProperties> properties) {
         return properties
                 .stream()
                 .collect(
                         Collectors.groupingBy(ProcProperties::getBufferId,
-                                Collectors.groupingBy(ProcProperties::getPriority)
+                                Collectors.groupingBy(ProcProperties::getStage)
                         ));
     }
 
-    private static Map<Integer, ArrayList<Integer>> calcPrioritiesByBuffer(Map<Integer,
+
+    private static Map<Integer, ArrayList<Integer>> calcStagesByBuffer(Map<Integer,
             Map<Integer, List<ProcProperties>>> props) {
 
         Map<Integer, ArrayList<Integer>> sortedPriorities = new HashMap<>();
@@ -97,19 +105,21 @@ public final class ProcessorWorkflow {
         return sortedPriorities;
     }
 
-    private static void calcPriorityDataByBuffer(Map<Integer, ArrayList<Integer>> prioritiesByBuffer) {
+
+    private static Map<Integer, Map<Integer, Integer>> calcPriorityDataByBuffer(Map<Integer,
+            ArrayList<Integer>> prioritiesByBuffer) {
+        Map<Integer, Map<Integer, Integer>> priorityData = new HashMap<>();
         prioritiesByBuffer.forEach((bufferId, priorities) -> {
-            Map<Integer, Integer> priorityHeads = new HashMap<>();
             Map<Integer, Integer> priorityPairs = new HashMap<>();
             priorities.forEach((priority) -> {
                 int lead = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
                 priorityPairs.put(lead, priority);
-                priorityHeads.put(lead, 0);
             });
-            priorityPairsByBuffer.put(bufferId, priorityPairs);
-            priorityHeadsByBuffer.put(bufferId, priorityHeads);
+            priorityData.put(bufferId, priorityPairs);
         });
+        return priorityData;
     }
+
 
     private static Map<Integer, List<ProcProperties>> calcPropertiesByProcessorId(List<ProcProperties> properties) {
         return properties
@@ -118,6 +128,9 @@ public final class ProcessorWorkflow {
     }
 
 
+    /**
+     * This starts up the LMAX framework, which simply means starting up all the processors
+     */
     public static void start() {
         LOGGER.info("Spin up all processors");
         processorsById.forEach((id, proc) ->
@@ -126,14 +139,22 @@ public final class ProcessorWorkflow {
         );
     }
 
+
+    /**
+     * How are all the processors doing?
+     *
+     * @return Map with the current processor status (by processorId)
+     */
     public static Map<Integer, ProcessorStatus> getProcStatus() {
         Map<Integer, ProcessorStatus> statuses = new HashMap<>();
-        processorsById.forEach((id, proc) -> {
-            statuses.put(id, proc.getStatus());
-        });
+        processorsById.forEach((id, proc) -> statuses.put(id, proc.getStatus()));
         return statuses;
     }
 
+
+    /**
+     * Shutdown all processors & by default the whole of LMAX
+     */
     public static void shutdown() {
         LOGGER.info("Shutting down all processors");
         processorsById.forEach((id, proc) ->
@@ -141,10 +162,19 @@ public final class ProcessorWorkflow {
         );
     }
 
-    public static int getLeadPos(int bufferId, int priority) {
-        int leadProcessorPriority = priorityPairsByBuffer.get(bufferId).get(priority);
+
+    /**
+     * Return the leader's position (which becomes the head for processors in this stage)
+     *
+     * @param bufferId What ring buffer are we talking about?
+     * @param stage what's the stage the current processor is in (so we what the next stage is
+     * and get the position that one is in
+     * @return the leading stage position (anything before that is then free for anyone else to use)
+     */
+    public static int getLeadPos(int bufferId, int stage) throws IndexOutOfBoundsException {
+        int leadProcessorPriority = priorityPairsByBuffer.get(bufferId).get(stage);
         List<ProcProperties> props =
-                propertiesByBufferByPriority.get(bufferId).get(leadProcessorPriority);
+                propertiesByBufferByStage.get(bufferId).get(leadProcessorPriority);
 
         Optional<Integer> leadProcPos = props
                 .stream()
@@ -152,6 +182,8 @@ public final class ProcessorWorkflow {
                 .map(ProcProperties::getPos)
                 .reduce(Integer::min);
 
+        // This can never be null as ProcPropertiesBuilder prohibits such a state
+        //noinspection OptionalGetWithoutIsPresent
         return leadProcPos.get();
     }
 }

@@ -15,7 +15,7 @@ class ProcPropertiesBuilderMissingProcIdSpec extends Specification {
         when:
         def props = new ProcPropertiesBuilder()
                 .setId(id)
-                .setPriority(1)
+                .setStage(1)
                 .setWriter(writer)
                 .setInitialHead(32)
                 .setProcess(process)

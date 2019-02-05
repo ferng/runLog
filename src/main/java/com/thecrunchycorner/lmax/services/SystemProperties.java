@@ -50,44 +50,39 @@ public final class SystemProperties {
 
 
     /**
-     * Retrieve and convert to an int the property value using the property identifier given.
-     *
-     * @param id the name of the property to retrieve
-     * @return optional with an integer representation of whatever value is held by the property if
-     * present or an empty Optional id it doesn't exist or the value is not an int
-     */
-    public static OptionalInt getAsInt(final String id) {
-        try {
-            return OptionalInt.of(getPropertyAsInt(id));
-        } catch (NumberFormatException | MissingResourceException ex) {
-            return OptionalInt.empty();
-        }
-    }
-
-
-    /**
      * Convenience method to get the system default buffer size.
      *
-     * @return the default buffersize
+     * @return the default buffer's size
      * @throws NumberFormatException the property wasn't a numeric value, the buffer size can
      * only be a number
      * @throws MissingResourceException the code is broken a default should always be available as
      * one is declared in the properties file and one is declared directly in this class
      */
-    public static int getThresholdBufferSize() throws NumberFormatException {
+    public static int getThresholdBufferSize() throws NumberFormatException,
+            MissingResourceException {
         return getPropertyAsInt("threshold.buffer.minimum.size");
     }
 
 
     /**
-     * Convenience method to retrieve the given property having converted it to an int if possible.
+     * Retrieve and convert to an int the property value using the property identifier given.
      *
-     * @param id what system property do you want
-     * @return the value of that property as an int
-     * @throws NumberFormatException it wasn't an int
-     * @throws MissingResourceException it wasn't there to begin with
+     * @param id the name of the property to retrieve
+     * @return optional with an integer representation of whatever value is held by the property if
+     * present or an empty Optional id it doesn't exist or the value is not an int
+     * @throws NumberFormatException the property wasn't a numeric value, the buffer size can
+     * only be a number
+     * @throws MissingResourceException the code is broken a default should always be available as
+     * one is declared in the properties file and one is declared directly in this class
      */
-    private static int getPropertyAsInt(final String id) throws NumberFormatException {
+    public static OptionalInt getAsOptInt(final String id) throws NumberFormatException,
+            MissingResourceException {
+        return OptionalInt.of(getPropertyAsInt(id));
+    }
+
+
+    private static int getPropertyAsInt(final String id) throws NumberFormatException,
+            MissingResourceException {
         final String prop = properties.getProperty(id);
 
         if (prop == null) {
@@ -95,17 +90,23 @@ public final class SystemProperties {
             throw new MissingResourceException("System property missing: " + id,
                     SystemProperties.class.getName(), "");
         }
+
+        int response;
         try {
-            return Integer.parseInt(prop);
+            response = Integer.parseInt(prop);
         } catch (NumberFormatException ex) {
             LOGGER.error("Property {} is not Integer as expected", id);
             throw new NumberFormatException("System property is not a number: " + id);
         }
+        return response;
     }
 
 
     /**
      * Set the property identified by the given identifier to a value.
+     *
+     * @param id the name (or id) of the property
+     * @param value the value you want to set the property to
      */
     public static void set(final String id, final String value) {
         properties.setProperty(id, value);
@@ -114,6 +115,8 @@ public final class SystemProperties {
 
     /**
      * Remove the property identified by the given identifier if present, nothing happens otherwise.
+     *
+     * @param id the name (or id) of the property
      */
     static void remove(final String id) {
         properties.remove(id);
@@ -128,6 +131,13 @@ public final class SystemProperties {
         loadSystemProperties();
     }
 
+
+    /**
+     * Refresh all properties those provided by an alternative file name, any properties added
+     * programmatically will be removed.
+     *
+     * @param newPropsFileName the filename of the file holding the properties to be loaded
+     */
     static void refreshProperties(String newPropsFileName) {
         propsFileName = newPropsFileName;
         loadSystemProperties();
@@ -172,12 +182,10 @@ public final class SystemProperties {
     }
 
 
-    //clean up and pre-populate any vital data in case we don't find properties files or property.
-    //using defaults in property constructor doesn't work so we're setting them here
     private static void setDefaults() {
         // used for unit testing only
         properties = new Properties();
-        properties.setProperty("unit.test.value.system.default", "Pre-loaded test data");
+        properties.setProperty("system.name", "fern's lmax");
 
         //these are minimum threshold values, by all means go above, but never below
         properties.setProperty("threshold.buffer.minimum.size", "8");
