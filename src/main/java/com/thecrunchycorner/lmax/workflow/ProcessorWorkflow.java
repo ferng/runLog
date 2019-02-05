@@ -29,7 +29,7 @@ public final class ProcessorWorkflow {
 
     private static Map<Integer, Processor> processorsById;
     private static Map<Integer, Map<Integer, List<ProcProperties>>> propertiesByBufferByStage;
-    private static Map<Integer, Map<Integer, Integer>> priorityPairsByBuffer = new HashMap<>();
+    private static Map<Integer, Map<Integer, Integer>> stagePairsByBuffer = new HashMap<>();
     private static Map<Integer, CompletableFuture<ProcessorStatus>> procFutureById =
             new HashMap<>();
 
@@ -58,10 +58,10 @@ public final class ProcessorWorkflow {
 
         propertiesByBufferByStage = calcPropertiesByBufferByStage(properties);
 
-        Map<Integer, ArrayList<Integer>> prioritiesByBuffer =
+        Map<Integer, ArrayList<Integer>> stageByBuffer =
                 calcStagesByBuffer(propertiesByBufferByStage);
 
-        priorityPairsByBuffer = calcPriorityDataByBuffer(prioritiesByBuffer);
+        stagePairsByBuffer = calcStageDataByBuffer(stageByBuffer);
 
         LOGGER.info("{} Processors configured", properties.size());
     }
@@ -95,29 +95,29 @@ public final class ProcessorWorkflow {
     private static Map<Integer, ArrayList<Integer>> calcStagesByBuffer(Map<Integer,
             Map<Integer, List<ProcProperties>>> props) {
 
-        Map<Integer, ArrayList<Integer>> sortedPriorities = new HashMap<>();
+        Map<Integer, ArrayList<Integer>> sortedStages = new HashMap<>();
 
-        props.forEach((bufferId, priorities) -> {
-            TreeSet<Integer> priorityKeys = new TreeSet<>(priorities.keySet());
-            sortedPriorities.put(bufferId, new ArrayList<>(priorityKeys));
+        props.forEach((bufferId, stages) -> {
+            TreeSet<Integer> stageKeys = new TreeSet<>(stages.keySet());
+            sortedStages.put(bufferId, new ArrayList<>(stageKeys));
         });
 
-        return sortedPriorities;
+        return sortedStages;
     }
 
 
-    private static Map<Integer, Map<Integer, Integer>> calcPriorityDataByBuffer(Map<Integer,
-            ArrayList<Integer>> prioritiesByBuffer) {
-        Map<Integer, Map<Integer, Integer>> priorityData = new HashMap<>();
-        prioritiesByBuffer.forEach((bufferId, priorities) -> {
-            Map<Integer, Integer> priorityPairs = new HashMap<>();
-            priorities.forEach((priority) -> {
-                int lead = priorities.get((priorities.indexOf(priority) + 1) % priorities.size());
-                priorityPairs.put(lead, priority);
+    private static Map<Integer, Map<Integer, Integer>> calcStageDataByBuffer(Map<Integer,
+            ArrayList<Integer>> stagesByBuffer) {
+        Map<Integer, Map<Integer, Integer>> stageData = new HashMap<>();
+        stagesByBuffer.forEach((bufferId, stages) -> {
+            Map<Integer, Integer> stagePairs = new HashMap<>();
+            stages.forEach((stage) -> {
+                int lead = stages.get((stages.indexOf(stage) + 1) % stages.size());
+                stagePairs.put(lead, stage);
             });
-            priorityData.put(bufferId, priorityPairs);
+            stageData.put(bufferId, stagePairs);
         });
-        return priorityData;
+        return stageData;
     }
 
 
@@ -172,9 +172,9 @@ public final class ProcessorWorkflow {
      * @return the leading stage position (anything before that is then free for anyone else to use)
      */
     public static int getLeadPos(int bufferId, int stage) throws IndexOutOfBoundsException {
-        int leadProcessorPriority = priorityPairsByBuffer.get(bufferId).get(stage);
+        int leadProcessorStage = stagePairsByBuffer.get(bufferId).get(stage);
         List<ProcProperties> props =
-                propertiesByBufferByStage.get(bufferId).get(leadProcessorPriority);
+                propertiesByBufferByStage.get(bufferId).get(leadProcessorStage);
 
         Optional<Integer> leadProcPos = props
                 .stream()

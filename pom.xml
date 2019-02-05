@@ -5,7 +5,7 @@
 
     <groupId>com.thecrunchycorner.lmax</groupId>
     <artifactId>lmax</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>lmax</name>
@@ -30,6 +30,7 @@
     </properties>
 
     <dependencies>
+        <!-- APPLICATION DEPENDENCIES -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -42,22 +43,7 @@
             <version>${log4j.version}</version>
         </dependency>
 
-
         <!-- TEST DEPENDENCIES -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
@@ -76,13 +62,6 @@
             <version>${spock-objenesis.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
     <profiles>

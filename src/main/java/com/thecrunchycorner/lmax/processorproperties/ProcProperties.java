@@ -100,7 +100,7 @@ public class ProcProperties {
 
     /**
      * Get the current position this processor is working on, not other processor with a higher
-     * sequence processorPriorities (which denotes lower stage) may go past this position.
+     * sequence processorStage (which denotes lower stage) may go past this position.
      *
      * @return the position
      */

@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesBuilderMissingPrioritySpec extends Specification {
+class ProcPropertiesBuilderMissingStageSpec extends Specification {
     def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
     def id = IdGenerator.id

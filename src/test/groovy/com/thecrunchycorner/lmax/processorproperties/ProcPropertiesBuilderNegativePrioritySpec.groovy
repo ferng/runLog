@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 import java.util.function.UnaryOperator
 
-class ProcPropertiesBuilderNegativePrioritySpec extends Specification {
+class ProcPropertiesBuilderNegativeStageSpec extends Specification {
     def reader = Mock(BufferReader.class)
     def process = Mock(UnaryOperator)
     def id = IdGenerator.id

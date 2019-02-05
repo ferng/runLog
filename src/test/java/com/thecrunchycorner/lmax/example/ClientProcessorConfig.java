@@ -106,7 +106,7 @@ public class ClientProcessorConfig {
         //
         //  when looking in the logs you will notice that sometimes the logged message is
         //  unMarshalled and other times it is still raw, this is because logger and unmarshaller
-        //  have the same priority so either can go first, normally you wouldn't do this you'd
+        //  have the same stage so either can go first, normally you wouldn't do this you'd
         //  probably do a logger and replicator for example as both read, but do not update the
         //  data so it will always be consistent.
         Reader loggerBuffReader = new BufferReader(leftBuffer);
