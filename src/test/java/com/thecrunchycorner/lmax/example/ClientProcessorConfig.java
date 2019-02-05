@@ -1,6 +1,5 @@
 package com.thecrunchycorner.lmax.example;
 
-
 import com.thecrunchycorner.lmax.buffer.BufferReader;
 import com.thecrunchycorner.lmax.buffer.BufferWriter;
 import com.thecrunchycorner.lmax.buffer.Message;
@@ -18,22 +17,38 @@ import java.util.function.UnaryOperator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+/**
+ * This simply provides a set of properties used by LMAX to create processors, these processors
+ * in turn run independent of each other and do their own bit of processing along the chain.
+ * <p>
+ * <p>
+ * This is just an example you could arrange these as you like, one per class would be a good way
+ * and possibly in individual packages if there was lots of processes.
+ * </p>
+ */
 public class ClientProcessorConfig {
     private static Logger LOGGER = LogManager.getLogger(ClientProcessorConfig.class);
 
     private static List<ProcProperties> props = new ArrayList<>();
 
+
+    /**
+     * called by main
+     */
     public static void init() {
         OptionalInt inputSizeOpt = SystemProperties.getAsOptInt("input.buffer.size");
         int thresholdBufferSize = SystemProperties.getThresholdBufferSize();
         int inputBufferSize = inputSizeOpt.orElse(thresholdBufferSize);
-        ProcPropertiesBuilder builder = new ProcPropertiesBuilder();
 
 
         int leftBufferId = 1;
         int rightBufferId = 2;
         RingBuffer leftBuffer = new RingBuffer(leftBufferId, inputBufferSize);
         RingBuffer rightBuffer = new RingBuffer(rightBufferId, inputBufferSize);
+
+
+        ProcPropertiesBuilder builder = new ProcPropertiesBuilder();
 
 
         //================================================
@@ -89,11 +104,11 @@ public class ClientProcessorConfig {
         //================================================
         //processor 2: logger: log data just written into LEFT buffer
         //
-        //when looking in the logs you will notice that sometimes the logged message is
-        // unMarshalled and other times it is still raw, this is because logger and unmarshaller
-        // have the same priority so either can go first, normally you wouldn't do this you'd
-        // probably do a logger and replicator for example as both read, but do not update the
-        // data so it will always be consistent.
+        //  when looking in the logs you will notice that sometimes the logged message is
+        //  unMarshalled and other times it is still raw, this is because logger and unmarshaller
+        //  have the same priority so either can go first, normally you wouldn't do this you'd
+        //  probably do a logger and replicator for example as both read, but do not update the
+        //  data so it will always be consistent.
         Reader loggerBuffReader = new BufferReader(leftBuffer);
         ProcProperties loggerReader =
                 builder.setId(4)
@@ -118,7 +133,6 @@ public class ClientProcessorConfig {
                         .setProcess(process())
                         .build();
         props.add(processorReader);
-
 
         //processor 3: writer to RIGHT buffer
         Writer processorBuffWriter = new BufferWriter(rightBuffer);
@@ -187,6 +201,11 @@ public class ClientProcessorConfig {
     }
 
 
+    /**
+     * A simple processor which does nothing but log this stage
+     *
+     * @return the same message we put in
+     */
     private static UnaryOperator<Message> getSimpleprocessorReceiver() {
         return (m) -> {
             LOGGER.debug("Reading message: {}", m.getPayload());
@@ -194,6 +213,12 @@ public class ClientProcessorConfig {
         };
     }
 
+
+    /**
+     * A simple unmarhsaller
+     *
+     * @return the unmarshalled message
+     */
     private static UnaryOperator<Message> unMarshallInboundMessage() {
         return (m) -> {
             String text = (String) m.getPayload();
@@ -202,6 +227,13 @@ public class ClientProcessorConfig {
         };
     }
 
+
+    /**
+     * A simple logger
+     *
+     * @return the same message it logged this will probably be ignored but it fits the function
+     * signature
+     */
     private static UnaryOperator<Message> logMessage() {
         return (m) -> {
             LOGGER.debug("Log message {}", m.getPayload());
@@ -209,6 +241,12 @@ public class ClientProcessorConfig {
         };
     }
 
+
+    /**
+     * A simple processor
+     *
+     * @return a processed message, in this case we add 100 to whatever number we originally got
+     */
     private static UnaryOperator<Message> process() {
         return (m) -> {
             String text = (String) m.getPayload();
@@ -218,6 +256,11 @@ public class ClientProcessorConfig {
         };
     }
 
+    /**
+     * A simple marshaller
+     *
+     * @return a marshalled message
+     */
     private static UnaryOperator<Message> marshallOutboundMessage() {
         return (m) -> {
             int val = (int) m.getPayload();
@@ -226,12 +269,16 @@ public class ClientProcessorConfig {
         };
     }
 
+
+    /**
+     * A simple processor which does nothing but log this stage
+     *
+     * @return the same message we put in
+     */
     private static UnaryOperator<Message> getSimpleprocessorSender() {
         return (m) -> {
             LOGGER.debug("Writing message: {}", m.getPayload());
             return m;
         };
     }
-
-
 }
